@@ -4,6 +4,7 @@ import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { site } from "@/config/site";
 import type { Locale } from "@/data/types";
+import { BodyMode } from "@/components/BodyMode";
 import { SelectionView } from "@/components/SelectionView";
 
 export async function generateMetadata({
@@ -38,6 +39,7 @@ export default async function SelectionPage({
 
   return (
     <div data-mode="kadin" className="min-h-[70vh] bg-ground">
+      <BodyMode mode="kadin" />
       <div className="mx-auto max-w-[1100px] px-5 pb-28 pt-32 md:px-10 md:pt-36">
         <header className="mb-12">
           <h1 className="font-display text-[clamp(2rem,5vw,3.6rem)] leading-[1.06] tracking-[-0.02em] text-ink">

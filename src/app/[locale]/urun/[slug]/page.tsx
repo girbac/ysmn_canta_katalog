@@ -6,6 +6,7 @@ import { site } from "@/config/site";
 import type { Form, Locale } from "@/data/types";
 import { getProduct, products } from "@/data/products";
 import { materialName } from "@/data/materials";
+import { BodyMode } from "@/components/BodyMode";
 import { ProductDetail } from "@/components/ProductDetail";
 import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
@@ -90,6 +91,7 @@ export default async function ProductPage({
 
   return (
     <div data-mode={product.segment} className="bg-ground">
+      <BodyMode mode={product.segment} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

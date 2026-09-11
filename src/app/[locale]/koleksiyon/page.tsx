@@ -9,6 +9,7 @@ import { colorName, type ColorKey } from "@/data/colors";
 import { materialKeys } from "@/data/materials";
 import { applyFilters, hasActiveFilters, parseFilters } from "@/lib/filters";
 import { interpolate } from "@/lib/utils";
+import { BodyMode } from "@/components/BodyMode";
 import { FilterBar } from "@/components/FilterBar";
 import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
@@ -61,6 +62,7 @@ export default async function CollectionPage({
 
   return (
     <div data-mode={filters.bolum === "erkek" ? "erkek" : "kadin"} className="bg-ground">
+      <BodyMode mode={filters.bolum === "erkek" ? "erkek" : "kadin"} />
       <div className="mx-auto max-w-[1600px] px-5 pb-28 pt-32 md:px-10 md:pt-36">
         <header>
           <h1 className="font-display text-[clamp(2rem,5vw,3.6rem)] leading-[1.06] tracking-[-0.02em] text-ink">
