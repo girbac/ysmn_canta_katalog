@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# YSMN — Çanta Kataloğu
 
-## Getting Started
+Kaydırmanın kendisinin keyifli olduğu bir vitrin. Kadın koleksiyonu editoryal ve
+sıcak; erkek/evrak koleksiyonu teknik ve koyu. İkisi arasındaki geçiş sekme değil,
+sayfanın kendi paletini değiştirmesi.
 
-First, run the development server:
+Ziyaretçi gezerken beğendiklerini **seçkisine** ekler; seçkiyi tek tıkla
+WhatsApp'tan gönderir, bağlantı olarak paylaşır ya da PDF indirir.
+
+## Çalıştırma
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # marka, WhatsApp numarası, alan adı
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```bash
+npm run build && npm start   # production
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Ürün eklemek / düzenlemek
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Tek kaynak: **`src/data/products.ts`**. Listeye yeni bir satır ekleyin:
 
-## Learn More
+```ts
+{
+  slug: "yeni-canta",            // adreste görünür, ASCII olmalı
+  code: "YSM-1042",
+  tr: "Yeni Çanta", en: "New Bag",
+  segment: "kadin",              // kadin | erkek
+  form: "omuz",                  // tote | omuz | baguette | clutch | sirt | evrak | postaci
+  colors: ["taba", "siyah"],     // src/data/colors.ts
+  material: "deri",              // src/data/materials.ts
+  dims: [26, 18, 8],             // G, Y, D — santimetre
+  strap: "ayarlanabilir",
+  features: [F.manyetik, F.kart],
+  isNew: true,
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
+`dims` yalnızca künye için değil: ürün sayfasındaki **ölçek karşılaştırması**
+(170 cm insan, A4, telefon) bu değerlerden çiziliyor.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Fotoğraf eklemek
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Gerçek fotoğraf yokken katalog forma göre çizilmiş silüetler gösterir.
+Fotoğraflar geldiğinde `public/products/README.md` dosyasındaki kurala göre
+ekleyin; kod tarafında değişmesi gereken tek yer `src/components/ProductMedia.tsx`
+değil — o zaten hazır, sadece `products.ts` içindeki `images` dizilerini doldurun.
 
-## Deploy on Vercel
+## Yapı
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/
+  app/[locale]/           tr / en — tüm sayfalar dil önekli
+    page.tsx              anasayfa (sekiz bölümlük ritim)
+    koleksiyon/           filtreli ızgara (filtre durumu URL'de)
+    urun/[slug]/          ürün detayı (tam sayfa)
+    @modal/(.)urun/       aynı detay, ızgaradan açılınca pencere olarak
+    secki/                seçki + /yazdir A4 baskı görünümü
+    atolye/
+  components/
+    BagSilhouette.tsx     7 form için çizgisel SVG silüet
+    ProductMedia.tsx      fotoğraf ↔ silüet sınırı (tek değişim noktası)
+    ModeSection.tsx       bölüm ekranın ortasına gelince <body> modunu çevirir
+    ScaleCompare.tsx      gerçek ölçekli boyut karşılaştırması
+  data/                   products / colors / materials — içerik burada
+  i18n/                   tr.json, en.json (anahtarları eşit tutun)
+  store/selection.ts      seçki (zustand + localStorage)
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Dikkat edilenler
+
+- **Tema** `data-mode` attribute'una bağlı CSS değişkenleriyle çalışır; bir
+  bölümün üstüne `data-mode="erkek"` koymak o bölümün tamamını dönüştürür.
+- **Hero giriş animasyonu bilerek CSS** (`.hero-line`). JS ile yapılsaydı
+  hidrasyon bitene kadar metin görünmez kalır ve LCP ~2.3s'ye çıkardı; CSS ile
+  0.3s.
+- **CLS = 0**: her görsel sabit en-boy oranlı kutuda.
+- `prefers-reduced-motion` açıkken tüm hareket kapanır, içerik eksiksiz kalır.
+- Seçki sayfaları `robots` ile dizine kapalıdır (kişiye özel ve paylaşım
+  bağlantılı).

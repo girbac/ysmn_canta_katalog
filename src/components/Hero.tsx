@@ -7,8 +7,14 @@ import { BagSilhouette } from "./BagSilhouette";
 
 /**
  * Açılış. Solda tipografi, sağda tek çanta.
- * Sayfa kaydıkça çanta hafifçe büyüyüp yukarı süzülür, metin geride kalır —
- * katalogdaki ilk "fizik" hissi burada veriliyor.
+ *
+ * Giriş animasyonu (başlığın perde gibi yükselmesi) bilerek CSS ile yapıldı:
+ * motion ile yapılsaydı hidrasyon bitene kadar metin görünmez kalır ve
+ * sayfanın ölçülen yükleme süresi uzardı. Yardımcı metinler hiç animasyonlu
+ * değil — ilk boyamada oradalar.
+ *
+ * motion yalnızca scroll'a bağlı hareket için kullanılıyor; o zaten
+ * kullanıcı kaydırmaya başlamadan devreye girmiyor.
  */
 export function Hero({
   product,
@@ -42,49 +48,24 @@ export function Hero({
           style={reduce ? undefined : { y: textY, opacity: fade }}
           className="order-2 md:order-1"
         >
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="text-xs uppercase tracking-[0.24em] text-ink-40"
-          >
-            {eyebrow}
-          </motion.p>
+          <p className="text-xs uppercase tracking-[0.24em] text-ink-40">{eyebrow}</p>
 
           <h1 className="mt-6 font-display text-[clamp(2.1rem,5vw,4.4rem)] leading-[1.04] tracking-[-0.02em] text-ink">
             {lines.map((line, i) => (
               <span key={i} className="block overflow-hidden pb-[0.08em]">
-                <motion.span
-                  className="block"
-                  initial={{ y: reduce ? 0 : "110%" }}
-                  animate={{ y: 0 }}
-                  transition={{
-                    duration: 1,
-                    delay: 0.12 + i * 0.12,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
+                <span
+                  className="hero-line block"
+                  style={{ animationDelay: `${i * 0.08}s` }}
                 >
                   {line}
-                </motion.span>
+                </span>
               </span>
             ))}
           </h1>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.9, delay: 0.5 }}
-            className="mt-7 max-w-md text-base leading-relaxed text-ink-60"
-          >
-            {lead}
-          </motion.p>
+          <p className="mt-7 max-w-md text-base leading-relaxed text-ink-60">{lead}</p>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.9, delay: 0.8 }}
-            className="mt-10 flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-ink-40 md:mt-14"
-          >
+          <div className="mt-10 flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-ink-40 md:mt-14">
             <span>{scrollHint}</span>
             <motion.span
               aria-hidden="true"
@@ -101,7 +82,7 @@ export function Hero({
                 />
               </svg>
             </motion.span>
-          </motion.div>
+          </div>
         </motion.div>
 
         {/* ── Çanta ── */}

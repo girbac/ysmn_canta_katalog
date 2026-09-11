@@ -100,6 +100,23 @@ body {
   contain-intrinsic-size: auto 800px;
 }
 
+/* ── Hero giriş animasyonu ──
+   Kasıtlı olarak CSS: motion ile yapılsaydı animasyon ancak hidrasyondan
+   sonra başlar, o zamana kadar metin opacity:0'da bekler ve ölçülen
+   yükleme süresi (LCP) bir saniyeden fazla uzardı. CSS ilk boyamada başlar. */
+@keyframes hero-rise {
+  from {
+    transform: translateY(104%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.hero-line {
+  animation: hero-rise 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 /* Yalnızca ekran okuyucu */
 .sr-only {
   position: absolute;
