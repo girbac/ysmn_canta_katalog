@@ -1,0 +1,153 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   İki dünya, tek motor.
+   Tüm palet `data-mode` attribute'una bağlı. Bir bölümün üzerine
+   data-mode="erkek" koymak o bölümün tamamını dönüştürür.
+   ───────────────────────────────────────────────────────────── */
+
+:root,
+[data-mode="kadin"] {
+  --ground: #f5f0ea;
+  --ground-2: #ebe3d8;
+  --ground-3: #e0d5c6;
+  --ink: #17150f;
+  --ink-60: rgb(23 21 15 / 0.6);
+  --ink-40: rgb(23 21 15 / 0.4);
+  --accent: #8a6a4f;
+  --line: rgb(23 21 15 / 0.12);
+  --line-strong: rgb(23 21 15 / 0.28);
+  --shadow: rgb(23 21 15 / 0.1);
+}
+
+[data-mode="erkek"] {
+  --ground: #14161a;
+  --ground-2: #1c2026;
+  --ground-3: #252b33;
+  --ink: #e8eaed;
+  --ink-60: rgb(232 234 237 / 0.6);
+  --ink-40: rgb(232 234 237 / 0.4);
+  --accent: #8fa3ad;
+  --line: rgb(232 234 237 / 0.14);
+  --line-strong: rgb(232 234 237 / 0.32);
+  --shadow: rgb(0 0 0 / 0.45);
+}
+
+@theme inline {
+  --color-ground: var(--ground);
+  --color-ground-2: var(--ground-2);
+  --color-ground-3: var(--ground-3);
+  --color-ink: var(--ink);
+  --color-ink-60: var(--ink-60);
+  --color-ink-40: var(--ink-40);
+  --color-accent: var(--accent);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --font-display: var(--font-display), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Mod geçişinde renkler yumuşak dönüşsün */
+  color-scheme: light;
+}
+
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Mod geçişi: zemin ve mürekkep rengi yumuşak değişir */
+[data-mode] {
+  transition:
+    background-color 700ms var(--ease-out-soft),
+    color 700ms var(--ease-out-soft),
+    border-color 700ms var(--ease-out-soft);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--ground);
+}
+
+/* Odak halkası — klavye kullanıcıları için her zaman görünür */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Yatay rayların scrollbar'ını gizle, kaydırma serbest kalsın */
+.rail-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.rail-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ekran dışı ağır bölümleri render etme — uzun katalogda scroll akıcılığı */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
+/* Yalnızca ekran okuyucu */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ── Hareket azaltma: tercih edildiğinde tüm hareket kapanır ── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─────────────────── A4 baskı görünümü (seçki PDF) ─────────────────── */
+@page {
+  size: A4;
+  margin: 14mm 12mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  a[href]::after {
+    content: "";
+  }
+}
