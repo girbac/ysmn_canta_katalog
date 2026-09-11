@@ -29,14 +29,40 @@
     "craftTitle": "Craft",
     "craftLead": "A bag takes about four days. No part of it is in a hurry.",
     "craftItems": [
-      { "n": "01", "t": "Selecting the hide", "d": "Every hide is sorted by hand — stretch marks, grain and thickness checked one by one." },
-      { "n": "02", "t": "Cutting", "d": "Cut to the hide, not to a template. No two bags of the same model are ever identical." },
-      { "n": "03", "t": "Stitching", "d": "Critical seams are hand-sewn — saddle stitch, two needles. It doesn't unravel; if it gives, it gives at one point only." },
-      { "n": "04", "t": "Edge & burnish", "d": "Edges are sanded, burnished, sanded again. Six passes in total." }
+      {
+        "n": "01",
+        "t": "Selecting the hide",
+        "d": "Every hide is sorted by hand — stretch marks, grain and thickness checked one by one."
+      },
+      {
+        "n": "02",
+        "t": "Cutting",
+        "d": "Cut to the hide, not to a template. No two bags of the same model are ever identical."
+      },
+      {
+        "n": "03",
+        "t": "Stitching",
+        "d": "Critical seams are hand-sewn — saddle stitch, two needles. It doesn't unravel; if it gives, it gives at one point only."
+      },
+      {
+        "n": "04",
+        "t": "Edge & burnish",
+        "d": "Edges are sanded, burnished, sanded again. Six passes in total."
+      }
     ],
     "ctaTitle": "Keep what you like.",
     "ctaLead": "Add bags to your selection as you browse. When you're done, send it to us on WhatsApp in one tap or download it as a PDF.",
-    "ctaButton": "Browse the collection"
+    "ctaButton": "Browse the collection",
+    "strips": [
+      {
+        "q": "A bag lasts as long as its weakest seam. We sew that seam by hand.",
+        "c": "Saddle stitch · two needles"
+      },
+      {
+        "q": "Leather is a living material. The difference between day one and year five isn't a flaw — it's a record.",
+        "c": "Vegetable tanned"
+      }
+    ]
   },
   "collection": {
     "title": "Collection",

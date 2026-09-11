@@ -6,6 +6,9 @@ import { locales, isLocale, htmlLang } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { site } from "@/config/site";
 import type { Locale } from "@/data/types";
+import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "@/components/SiteFooter";
+import { SelectionDock } from "@/components/SelectionDock";
 
 const display = Fraunces({
   subsets: ["latin", "latin-ext"],
@@ -78,7 +81,28 @@ export default async function LocaleLayout({
         >
           {t.nav.skipToContent}
         </a>
-        {children}
+        <SiteHeader
+          locale={l}
+          brand={site.brand}
+          labels={{
+            collection: t.nav.collection,
+            women: t.nav.women,
+            men: t.nav.men,
+            about: t.nav.about,
+            selection: t.nav.selection,
+            menu: t.nav.menu,
+            close: t.nav.close,
+          }}
+        />
+
+        <main id="main">{children}</main>
+
+        <SiteFooter locale={l} t={t} />
+
+        <SelectionDock
+          locale={l}
+          labels={{ dockLabel: t.selection.dockLabel, itemCount: t.selection.itemCount }}
+        />
       </body>
     </html>
   );

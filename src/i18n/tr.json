@@ -29,14 +29,40 @@
     "craftTitle": "Zanaat",
     "craftLead": "Bir çanta ortalama 4 günde bitiyor. Acele eden kısmı yok.",
     "craftItems": [
-      { "n": "01", "t": "Deri seçimi", "d": "Her post elle ayıklanır. Gergi izi, doku ve kalınlık tek tek bakılır." },
-      { "n": "02", "t": "Kesim", "d": "Şablon değil, deriye göre kesim. Aynı modelin iki çantası hiç birebir aynı olmaz." },
-      { "n": "03", "t": "Dikiş", "d": "Kritik hatlar el dikişi — eyer dikişi, çift iğne. Sökülmez, sökülse tek nokta sökülür." },
-      { "n": "04", "t": "Kenar & cila", "d": "Kenarlar zımparalanır, cilalanır, yeniden zımparalanır. Toplam altı geçiş." }
+      {
+        "n": "01",
+        "t": "Deri seçimi",
+        "d": "Her post elle ayıklanır. Gergi izi, doku ve kalınlık tek tek bakılır."
+      },
+      {
+        "n": "02",
+        "t": "Kesim",
+        "d": "Şablon değil, deriye göre kesim. Aynı modelin iki çantası hiç birebir aynı olmaz."
+      },
+      {
+        "n": "03",
+        "t": "Dikiş",
+        "d": "Kritik hatlar el dikişi — eyer dikişi, çift iğne. Sökülmez, sökülse tek nokta sökülür."
+      },
+      {
+        "n": "04",
+        "t": "Kenar & cila",
+        "d": "Kenarlar zımparalanır, cilalanır, yeniden zımparalanır. Toplam altı geçiş."
+      }
     ],
     "ctaTitle": "Beğendiklerinizi biriktirin.",
     "ctaLead": "Gezerken beğendiğiniz çantaları seçkinize ekleyin. Sonunda tek tıkla WhatsApp'tan bize gönderin ya da PDF olarak indirin.",
-    "ctaButton": "Koleksiyonu gez"
+    "ctaButton": "Koleksiyonu gez",
+    "strips": [
+      {
+        "q": "Bir çantanın ömrü, en zayıf dikişi kadardır. Biz o dikişi elle atıyoruz.",
+        "c": "Eyer dikişi · çift iğne"
+      },
+      {
+        "q": "Deri yaşayan bir malzeme. İlk gün ile beşinci yıl arasındaki fark, kusur değil kayıt.",
+        "c": "Bitkisel tabaklama"
+      }
+    ]
   },
   "collection": {
     "title": "Koleksiyon",
