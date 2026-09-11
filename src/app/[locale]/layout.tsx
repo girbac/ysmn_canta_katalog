@@ -62,9 +62,12 @@ export async function generateMetadata({
 
 export default async function LocaleLayout({
   children,
+  modal,
   params,
 }: {
   children: React.ReactNode;
+  /** Intercepting route yuvası — ızgaradan açılan ürün penceresi */
+  modal: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
@@ -73,7 +76,11 @@ export default async function LocaleLayout({
   const t = getDictionary(l);
 
   return (
-    <html lang={htmlLang[l]} className={`${display.variable} ${sans.variable}`}>
+    <html
+      lang={htmlLang[l]}
+      // Next route geçişlerinde yumuşak scroll'u devre dışı bırakır
+      data-scroll-behavior="smooth"
+      className={`${display.variable} ${sans.variable}`}>
       <body data-mode="kadin">
         <a
           href="#main"
@@ -96,6 +103,8 @@ export default async function LocaleLayout({
         />
 
         <main id="main">{children}</main>
+
+        {modal}
 
         <SiteFooter locale={l} t={t} />
 

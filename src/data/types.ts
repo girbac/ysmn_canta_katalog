@@ -15,6 +15,8 @@ export type Form =
   | "evrak"
   | "postaci";
 
+import type { MaterialKey } from "./materials";
+
 export type Strap = "ayarlanabilir" | "zincir" | "sabit" | "yok";
 
 export type ColorVariant = {
@@ -38,7 +40,7 @@ export type Product = {
   segment: Segment;
   form: Form;
   colors: ColorVariant[];
-  material: Localized;
+  material: MaterialKey;
   /** Santimetre. ScaleCompare bu değerlerden ölçek çizer. */
   dimensions: { w: number; h: number; d: number };
   strap?: Strap;

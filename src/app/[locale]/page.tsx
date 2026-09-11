@@ -5,6 +5,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { site } from "@/config/site";
 import type { Form, Locale } from "@/data/types";
 import { featured, menProducts, womenProducts, products } from "@/data/products";
+import { materialName } from "@/data/materials";
 import { BagSilhouette } from "@/components/BagSilhouette";
 import { EditorialStrip } from "@/components/EditorialStrip";
 import { Hero } from "@/components/Hero";
@@ -180,7 +181,7 @@ export default async function HomePage({
                   </div>
                   <div className="mt-1 flex justify-between gap-4">
                     <dt className="text-ink-40">{t.product.material}</dt>
-                    <dd className="text-ink-60">{p.material[locale]}</dd>
+                    <dd className="text-ink-60">{materialName(p.material)[locale]}</dd>
                   </div>
                 </dl>
               </Reveal>
