@@ -1,7 +1,6 @@
 import type { Form, Locale, Product, Segment } from "@/data/types";
 import type { ColorKey } from "@/data/colors";
 import type { MaterialKey } from "@/data/materials";
-import { products } from "@/data/products";
 
 export type Sort = "katalog" | "yeni" | "isim";
 
@@ -59,8 +58,12 @@ function matches(p: Product, f: Filters, except?: Facet): boolean {
   return true;
 }
 
-export function applyFilters(f: Filters, locale: Locale): Product[] {
-  const list = products.filter((p) => matches(p, f));
+export function applyFilters(
+  catalog: Product[],
+  f: Filters,
+  locale: Locale,
+): Product[] {
+  const list = catalog.filter((p) => matches(p, f));
 
   switch (f.sirala) {
     case "yeni":
@@ -108,14 +111,17 @@ export function activeFilterCount(f: Filters): number {
  * Kendi boyutu hesap dışı bırakıldığı için seçili olan seçenek her zaman
  * listede kalır — yani geri alınabilir.
  */
-export function availableOptions(f: Filters): {
+export function availableOptions(
+  catalog: Product[],
+  f: Filters,
+): {
   forms: Form[];
   colors: string[];
   materials: MaterialKey[];
 } {
-  const byForm = products.filter((p) => matches(p, f, "form"));
-  const byColor = products.filter((p) => matches(p, f, "renk"));
-  const byMaterial = products.filter((p) => matches(p, f, "malzeme"));
+  const byForm = catalog.filter((p) => matches(p, f, "form"));
+  const byColor = catalog.filter((p) => matches(p, f, "renk"));
+  const byMaterial = catalog.filter((p) => matches(p, f, "malzeme"));
 
   return {
     forms: FORMS.filter((x) => byForm.some((p) => p.form === x)),

@@ -3,7 +3,7 @@ import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { site } from "@/config/site";
 import type { Locale } from "@/data/types";
-import { getProduct } from "@/data/products";
+import { getProductBySlug } from "@/lib/catalog/catalog";
 import { Modal } from "@/components/Modal";
 import { ProductDetail } from "@/components/ProductDetail";
 
@@ -20,7 +20,7 @@ export default async function ProductModal({
   const { locale: raw, slug } = await params;
   if (!isLocale(raw)) notFound();
   const locale = raw as Locale;
-  const product = getProduct(slug);
+  const product = await getProductBySlug(slug);
   if (!product) notFound();
   const t = getDictionary(locale);
 

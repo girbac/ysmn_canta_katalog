@@ -4,16 +4,20 @@ import { isLocale, locales, htmlLang } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { site } from "@/config/site";
 import type { Form, Locale } from "@/data/types";
-import { getProduct, products } from "@/data/products";
+import { getCatalog, getProductBySlug } from "@/lib/catalog/catalog";
 import { materialName } from "@/data/materials";
 import { BodyMode } from "@/components/BodyMode";
 import { ProductDetail } from "@/components/ProductDetail";
 import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const products = await getCatalog();
   return locales.flatMap((locale) => products.map((p) => ({ locale, slug: p.slug })));
 }
+
+/** Panelden sonradan eklenen ürünler ilk istekte üretilsin */
+export const dynamicParams = true;
 
 export async function generateMetadata({
   params,
@@ -22,7 +26,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!isLocale(locale)) return {};
-  const product = getProduct(slug);
+  const product = await getProductBySlug(slug);
   if (!product) return {};
   const t = getDictionary(locale);
 
@@ -56,9 +60,10 @@ export default async function ProductPage({
   const { locale: raw, slug } = await params;
   if (!isLocale(raw)) notFound();
   const locale = raw as Locale;
-  const product = getProduct(slug);
+  const product = await getProductBySlug(slug);
   if (!product) notFound();
   const t = getDictionary(locale);
+  const products = await getCatalog();
 
   // Aynı formdan, sonra aynı bölümden tamamlanan benzer parçalar
   const related = [

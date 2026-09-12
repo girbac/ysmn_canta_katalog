@@ -5,6 +5,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { site } from "@/config/site";
 import type { Locale } from "@/data/types";
 import { BodyMode } from "@/components/BodyMode";
+import { getCatalog } from "@/lib/catalog/catalog";
 import { SelectionView } from "@/components/SelectionView";
 
 export async function generateMetadata({
@@ -36,6 +37,7 @@ export default async function SelectionPage({
 
   const sp = await searchParams;
   const s = Array.isArray(sp.s) ? sp.s[0] : sp.s;
+  const catalog = await getCatalog();
 
   return (
     <div data-mode="kadin" className="min-h-[70vh] bg-ground">
@@ -55,6 +57,7 @@ export default async function SelectionPage({
           t={t}
           whatsapp={site.whatsapp}
           siteUrl={site.url}
+          catalog={catalog}
           sharedRaw={s}
         />
       </div>

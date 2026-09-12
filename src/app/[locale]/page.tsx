@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { site } from "@/config/site";
-import type { Form, Locale } from "@/data/types";
-import { featured, menProducts, womenProducts, products } from "@/data/products";
+import type { Form, Locale, Product } from "@/data/types";
+import { getCatalogViews } from "@/lib/catalog/catalog";
 import { materialName } from "@/data/materials";
 import { EditorialStrip } from "@/components/EditorialStrip";
 import { Hero } from "@/components/Hero";
@@ -24,6 +24,7 @@ export default async function HomePage({
   if (!isLocale(raw)) notFound();
   const locale = raw as Locale;
   const t = getDictionary(locale);
+  const { products, women: womenProducts, men: menProducts, featured } = await getCatalogViews();
 
   const cardLabels = (form: Form) => ({
     add: t.product.add,
@@ -235,7 +236,7 @@ function Grid({
   locale,
   labels,
 }: {
-  products: typeof products;
+  products: Product[];
   locale: Locale;
   labels: (form: Form) => React.ComponentProps<typeof ProductCard>["labels"];
 }) {

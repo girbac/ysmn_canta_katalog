@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
-import type { Locale } from "@/data/types";
+import type { Locale, Product } from "@/data/types";
 import type { Dictionary } from "@/i18n/dictionaries";
-import { getProduct } from "@/data/products";
 import { materialName } from "@/data/materials";
 import { itemKey, useHydrated, useSelection } from "@/store/selection";
 import { BagSilhouette } from "./BagSilhouette";
@@ -22,12 +21,16 @@ export function PrintSelection({
   t,
   brand,
   contact,
+  /** Katalogun tamamı sunucudan gelir — bkz. SelectionView */
+  catalog,
 }: {
   locale: Locale;
   t: Dictionary;
   brand: string;
   contact: { whatsapp: string; email: string; url: string };
+  catalog: Product[];
 }) {
+  const getProduct = (slug: string) => catalog.find((p) => p.slug === slug);
   const hydrated = useHydrated();
   const items = useSelection((s) => s.items);
 

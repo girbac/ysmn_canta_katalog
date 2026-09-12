@@ -1,11 +1,10 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/config/site";
 import { locales } from "@/i18n/config";
-import { products } from "@/data/products";
+import { getCatalog } from "@/lib/catalog/catalog";
 
-export const dynamic = "force-static";
-
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const products = await getCatalog();
   const staticPaths = ["", "/koleksiyon", "/atolye"];
   const lastModified = new Date();
 

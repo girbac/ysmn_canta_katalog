@@ -23,35 +23,94 @@ npm run dev                  # http://localhost:3000
 npm run build && npm start   # production
 ```
 
-## Ürün eklemek / düzenlemek
+## Yönetim paneli (`/admin`)
 
-Tek kaynak: **`src/data/products.ts`**. Listeye yeni bir satır ekleyin:
+Ürün ekleme/düzenleme/silme, sıralama ve fotoğraf yükleme panelden yapılır.
+Kod bilgisi gerekmez.
 
-```ts
+### Açmak için
+
+Panel **şifre tanımlanmadan açılmaz** (varsayılan: kapalı). Sunucu ortamına:
+
+```
+ADMIN_PASSWORD=en-az-8-karakter
+ADMIN_SECRET=rastgele-uzun-bir-dize        # zorunlu değil, tercih edilir
+```
+
+Yereldeyken aynı değerleri `.env.local` dosyasına yazın.
+
+### Katalog nerede duruyor?
+
+İki depo adaptörü var, ikisi de aynı arayüzü konuşuyor
+(`src/lib/catalog/store.ts`):
+
+| Depo | Ne zaman | Nereye yazar |
+|---|---|---|
+| **Vercel Blob** | `BLOB_READ_WRITE_TOKEN` tanımlıysa | Blob: `catalog/products.json` + `products/<slug>/…` |
+| **Dosya sistemi** | Token yoksa (yerel geliştirme) | `src/data/products.json` + `public/products/<slug>/` |
+
+Canlıda Blob şart: sunucu dosya sistemi salt okunurdur. Vercel projesinde bir
+Blob deposu oluşturduğunuzda `BLOB_READ_WRITE_TOKEN` otomatik gelir; panel
+üstteki göstergeden hangi depoda olduğunu söyler ve yanlış ortamda uyarır.
+
+Depoda henüz veri yokken katalog paketle gelen tohumdan (`src/data/products.json`)
+okunur — ilk dağıtımda site hiç boş görünmez.
+
+### Nasıl çalışır
+
+- Doğrulama tek şemadan gelir: `src/lib/catalog/schema.ts` (zod). Aynı şema
+  hem depodan okunanı hem panelden gireni doğrular, hem de TypeScript
+  tiplerini üretir — panelden katalogun kabul etmeyeceği bir veri geçemez.
+- Kaydetmeden sonra ilgili genel sayfalar `revalidatePath` ile tazelenir;
+  sayfalar statik hızını korur.
+- Fotoğraf dosya adı **sunucuda** üretilir (`renk-zamandamgası.uzantı`);
+  kullanıcıdan gelen ad hiç kullanılmaz. Tür ve boyut sınırı: webp/avif/jpg/png,
+  en fazla 6 MB.
+- Oturum, HMAC-SHA256 ile imzalanmış httpOnly bir kurabiyedir (12 saat).
+  Şifre kurabiyede tutulmaz. Hem `proxy.ts` hem her sayfa/aksiyon oturumu
+  ayrıca doğrular — tek katmana güvenilmez.
+- `/admin` `robots.txt` ile dizine kapalıdır.
+
+## Ürün eklemek / düzenlemek (kodla)
+
+Panel yerine dosyayı elle düzenlemek isterseniz tek kaynak
+**`src/data/products.json`**. Alan yapısı:
+
+```json
 {
-  slug: "yeni-canta",            // adreste görünür, ASCII olmalı
-  code: "YSM-1042",
-  tr: "Yeni Çanta", en: "New Bag",
-  segment: "kadin",              // kadin | erkek
-  form: "omuz",                  // tote | omuz | baguette | clutch | sirt | evrak | postaci
-  colors: ["taba", "siyah"],     // src/data/colors.ts
-  material: "deri",              // src/data/materials.ts
-  dims: [26, 18, 8],             // G, Y, D — santimetre
-  strap: "ayarlanabilir",
-  features: [F.manyetik, F.kart],
-  isNew: true,
+  "slug": "yeni-canta",
+  "code": "YSM-1042",
+  "name": { "tr": "Yeni Çanta", "en": "New Bag" },
+  "segment": "kadin",
+  "form": "omuz",
+  "material": "deri",
+  "dimensions": { "w": 26, "h": 18, "d": 8 },
+  "colors": [
+    { "key": "taba", "name": { "tr": "Taba", "en": "Tan" },
+      "hex": "#A9784E", "images": [] }
+  ],
+  "features": [{ "tr": "Manyetik kapak", "en": "Magnetic flap" }],
+  "strap": "ayarlanabilir",
+  "isNew": true
 }
 ```
 
-`dims` yalnızca künye için değil: ürün sayfasındaki **ölçek karşılaştırması**
-(170 cm insan, A4, telefon) bu değerlerden çiziliyor.
+Geçerli değerler: `segment` → kadin | erkek · `form` → tote | omuz | baguette |
+clutch | sirt | evrak | postaci · `material` → `src/data/materials.ts` ·
+renk anahtarları → `src/data/colors.ts`. Listedeki **sıra** katalog sırasıdır.
+
+`dimensions` yalnızca künye için değil: ürün sayfasındaki **ölçek
+karşılaştırması** (170 cm insan, A4, telefon) bu değerlerden çiziliyor.
 
 ## Fotoğraf eklemek
 
-Gerçek fotoğraf yokken katalog forma göre çizilmiş silüetler gösterir.
-Fotoğraflar geldiğinde `public/products/README.md` dosyasındaki kurala göre
-ekleyin; kod tarafında değişmesi gereken tek yer `src/components/ProductMedia.tsx`
-değil — o zaten hazır, sadece `products.ts` içindeki `images` dizilerini doldurun.
+En kolay yol panel: **/admin → ürün → Fotoğraflar**, her renk için ayrı yükleme.
+
+Elle eklemek isterseniz `public/products/README.md` dosyasındaki kurala göre
+dosyaları koyup ilgili rengin `images` dizisine yazın. Üç biçim de kabul edilir
+(`src/lib/catalog/image-source.ts`): dosya adı, köke göre yol ya da tam URL.
+Fotoğraf olmayan renkler forma göre çizilmiş silüetle gösterilir; yani
+fotoğrafları tek tek ekleyebilirsiniz, eksik olanlar hata vermez.
 
 ## Yapı
 
@@ -69,7 +128,10 @@ src/
     ProductMedia.tsx      fotoğraf ↔ silüet sınırı (tek değişim noktası)
     ModeSection.tsx       bölüm ekranın ortasına gelince <body> modunu çevirir
     ScaleCompare.tsx      gerçek ölçekli boyut karşılaştırması
-  data/                   products / colors / materials — içerik burada
+  app/admin/              yönetim paneli (liste, form, fotoğraf, giriş)
+  lib/catalog/            şema (zod), depo adaptörleri, okuma/yazma
+  lib/admin-auth.ts       imzalı oturum kurabiyesi
+  data/                   products.json / colors / materials — içerik burada
   i18n/                   tr.json, en.json (anahtarları eşit tutun)
   store/selection.ts      seçki (zustand + localStorage)
 ```

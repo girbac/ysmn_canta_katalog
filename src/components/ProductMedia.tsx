@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { Locale, Product } from "@/data/types";
+import { resolveImageSource } from "@/lib/catalog/image-source";
 import { BagSilhouette } from "./BagSilhouette";
 
 /**
@@ -39,7 +40,7 @@ export function ProductMedia({
     >
       {file ? (
         <Image
-          src={`/products/${product.slug}/${file}`}
+          src={resolveImageSource(file, product.slug)}
           alt={alt}
           fill
           sizes={sizes}

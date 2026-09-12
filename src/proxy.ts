@@ -1,13 +1,24 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { defaultLocale, locales } from "@/i18n/config";
+import {
+  SESSION_COOKIE,
+  getAdminConfig,
+  verifySession,
+} from "@/lib/admin-auth";
 
 const PUBLIC_FILE = /\.[^/]+$/;
+const LOGIN_PATH = "/admin/giris";
 
 /**
- * Dil önekini zorunlu kılar: "/" → "/tr", "/koleksiyon" → "/tr/koleksiyon".
- * Tarayıcı dili İngilizceyse "/en" tarafına yönlendirir.
+ * İki iş yapıyor:
+ *  1. Admin alanını koruyor (oturum kurabiyesinin imzasını doğrulayarak).
+ *  2. Genel sitede dil önekini zorunlu kılıyor: "/" → "/tr".
+ *
+ * Not: buradaki kontrol tek savunma değil. Sayfalar ve API uçları da
+ * oturumu ayrıca doğruluyor — proxy atlanabilir bir katman olarak
+ * görülmeli, kapının kendisi değil.
  */
-export default function proxy(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (
@@ -18,6 +29,26 @@ export default function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // ── Admin ──
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) {
+    const config = getAdminConfig();
+
+    // Şifre tanımlı değilse panel tümüyle kapalı
+    if (!config) return NextResponse.next();
+
+    if (pathname === LOGIN_PATH) return NextResponse.next();
+
+    const ok = await verifySession(request.cookies.get(SESSION_COOKIE)?.value, config);
+    if (ok) return NextResponse.next();
+
+    const url = request.nextUrl.clone();
+    url.pathname = LOGIN_PATH;
+    // Giriş sonrası kullanıcıyı gitmek istediği yere döndürmek için
+    url.search = pathname === "/admin" ? "" : `?devam=${encodeURIComponent(pathname)}`;
+    return NextResponse.redirect(url);
+  }
+
+  // ── Genel site: dil öneki ──
   const hasLocale = locales.some(
     (l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`),
   );

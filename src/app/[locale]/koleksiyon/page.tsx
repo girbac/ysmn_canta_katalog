@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import type { Form, Locale } from "@/data/types";
-import { usedColorKeys, colorHexByKey } from "@/data/products";
+import { getCatalogViews } from "@/lib/catalog/catalog";
 import { colorName, type ColorKey } from "@/data/colors";
 import { materialKeys, materialName } from "@/data/materials";
 import {
@@ -39,6 +39,7 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const t = getDictionary(locale);
+  const { usedColorKeys } = await getCatalogViews();
   const filters = parseFilters(await searchParams, usedColorKeys, materialKeys);
 
   return {
@@ -61,12 +62,13 @@ export default async function CollectionPage({
   const t = getDictionary(locale);
 
   const sp = await searchParams;
+  const { products, usedColorKeys, colorHex } = await getCatalogViews();
   const filters = parseFilters(sp, usedColorKeys, materialKeys);
-  const list = applyFilters(filters, locale);
+  const list = applyFilters(products, filters, locale);
 
   // Tıklanabilir her seçenek en az bir ürüne çıkar: erkek tarafında clutch,
   // bordo seçiliyken bordosu olmayan malzeme hiç gösterilmez.
-  const options = availableOptions(filters);
+  const options = availableOptions(products, filters);
 
   const colorNames = Object.fromEntries(
     usedColorKeys.map((k) => [k, colorName(k as ColorKey)[locale]]),
@@ -106,7 +108,7 @@ export default async function CollectionPage({
             forms={options.forms}
             colors={options.colors}
             materials={options.materials}
-            colorHex={Object.fromEntries(colorHexByKey)}
+            colorHex={colorHex}
             resultCount={countLabel}
             labels={{
               color: t.collection.filterColor,

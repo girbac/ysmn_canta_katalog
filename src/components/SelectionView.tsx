@@ -3,9 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import type { Locale } from "@/data/types";
+import type { Locale, Product } from "@/data/types";
 import type { Dictionary } from "@/i18n/dictionaries";
-import { getProduct, productsBySlug } from "@/data/products";
 import { materialName } from "@/data/materials";
 import {
   decodeSelection,
@@ -31,6 +30,15 @@ export function SelectionView({
   t,
   whatsapp,
   siteUrl,
+  /**
+   * Katalogun tamamı sunucudan geliyor.
+   *
+   * Seçki localStorage'da durduğu için hangi ürünlerin gerekeceği
+   * sunucuda bilinemiyor; bu yüzden liste prop olarak aktarılıyor.
+   * Veri kaynağı artık admin panelinden değişebildiği için bileşenin
+   * doğrudan import etmesi doğru olmazdı.
+   */
+  catalog,
   /** Adreste paylaşılmış bir seçki varsa ham dizesi */
   sharedRaw,
 }: {
@@ -38,8 +46,10 @@ export function SelectionView({
   t: Dictionary;
   whatsapp: string;
   siteUrl: string;
+  catalog: Product[];
   sharedRaw?: string;
 }) {
+  const getProduct = (slug: string) => catalog.find((p) => p.slug === slug);
   const router = useRouter();
   const hydrated = useHydrated();
   const items = useSelection((s) => s.items);
@@ -47,8 +57,8 @@ export function SelectionView({
   const [copied, setCopied] = useState(false);
 
   const shared = useMemo(
-    () => decodeSelection(sharedRaw, (slug) => productsBySlug.has(slug)),
-    [sharedRaw],
+    () => decodeSelection(sharedRaw, (slug) => catalog.some((p) => p.slug === slug)),
+    [sharedRaw, catalog],
   );
 
   useEffect(() => {

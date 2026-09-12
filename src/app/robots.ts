@@ -8,8 +8,13 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      // Seçki kişiye özel ve paylaşım bağlantılı — dizine girmesin
-      disallow: ["/tr/secki", "/en/secki"],
+      disallow: [
+        // Seçki kişiye özel ve paylaşım bağlantılı
+        "/tr/secki",
+        "/en/secki",
+        // Yönetim paneli
+        "/admin",
+      ],
     },
     sitemap: `${site.url}/sitemap.xml`,
   };
