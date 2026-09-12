@@ -41,36 +41,34 @@ export default async function AtelierPage({
       <BodyMode mode="kadin" />
       <div className="mx-auto max-w-[1000px] px-5 pb-28 pt-32 md:px-10 md:pt-40">
         <Reveal>
-          <h1 className="font-display text-[clamp(2.2rem,6vw,4.6rem)] leading-[1.04] tracking-[-0.02em] text-ink">
+          <h1 className="font-whisper text-[clamp(2.4rem,6vw,74px)] leading-[0.9] tracking-[-0.05em] text-ink">
             {t.about.title}
           </h1>
-          <p className="mt-5 font-display text-xl text-ink-60">{t.about.lead}</p>
+          <p className="mt-6 text-subheading text-ink-60">{t.about.lead}</p>
         </Reveal>
 
         <div className="mt-16 max-w-2xl space-y-7 border-t border-line pt-12">
           {t.about.body.map((paragraph, i) => (
             <Reveal key={i} delay={i * 0.08}>
-              <p className="text-base leading-[1.75] text-ink-60">{paragraph}</p>
+              <p className="text-body text-ink-60">{paragraph}</p>
             </Reveal>
           ))}
         </div>
 
         <Reveal className="mt-20 border-t border-line pt-12">
-          <h2 className="text-xs uppercase tracking-[0.18em] text-ink-40">
-            {t.about.contactTitle}
-          </h2>
+          <h2 className="eyebrow text-ink-40">{t.about.contactTitle}</h2>
           <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:gap-10">
             <a
               href={whatsappUrl(site.whatsapp, t.selection.whatsappIntro)}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-display text-2xl text-ink transition-colors hover:text-accent"
+              className="text-heading-sm font-whisper text-ink transition-colors hover:text-ink-60"
             >
               {t.about.whatsapp}
             </a>
             <a
               href={`mailto:${site.email}`}
-              className="font-display text-2xl text-ink transition-colors hover:text-accent"
+              className="text-heading-sm font-whisper text-ink transition-colors hover:text-ink-60"
             >
               {site.email}
             </a>
@@ -78,7 +76,7 @@ export default async function AtelierPage({
               href={`https://instagram.com/${site.instagram}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-display text-2xl text-ink transition-colors hover:text-accent"
+              className="text-heading-sm font-whisper text-ink transition-colors hover:text-ink-60"
             >
               @{site.instagram}
             </a>

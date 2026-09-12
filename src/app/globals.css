@@ -1,36 +1,45 @@
 @import "tailwindcss";
 
-/* ─────────────────────────────────────────────────────────────
-   İki dünya, tek motor.
-   Tüm palet `data-mode` attribute'una bağlı. Bir bölümün üzerine
-   data-mode="erkek" koymak o bölümün tamamını dönüştürür.
-   ───────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   Cosmos — keten galeri duvarı
+   ───────────────────────────────────────────────────────────────
+   Renk yalnızca ürün görselinden gelir; arayüzün kendisi
+   krem / mürekkep / gri üçlüsünde kalır. Yüzey farkı gölgeyle değil
+   zemin renginin kendisiyle anlatılır: Linen Canvas tabanda,
+   Paper White kartlarda.
+
+   Palet yine `data-mode` attribute'una bağlı — katalogun iki dünyası
+   (kadın / erkek) korunuyor, ama ikisi de aynı Cosmos disiplininde:
+   biri keten üstüne mürekkep, diğeri mürekkep üstüne keten.
+   ═══════════════════════════════════════════════════════════════ */
 
 :root,
 [data-mode="kadin"] {
-  --ground: #f5f0ea;
-  --ground-2: #ebe3d8;
-  --ground-3: #e0d5c6;
-  --ink: #17150f;
-  --ink-60: rgb(23 21 15 / 0.6);
-  --ink-40: rgb(23 21 15 / 0.4);
-  --accent: #8a6a4f;
-  --line: rgb(23 21 15 / 0.12);
-  --line-strong: rgb(23 21 15 / 0.28);
-  --shadow: rgb(23 21 15 / 0.1);
+  --ground: #f7f5f3; /* Linen Canvas */
+  --ground-2: #ffffff; /* Paper White — tek yükseltilmiş yüzey */
+  --ground-3: #ffffff;
+  --ink: #0d0d0d; /* Ink Black — asla saf siyah değil */
+  --ink-60: #6e6a69; /* Stone */
+  --ink-40: #9a9796; /* Pebble */
+  /* Arayüzde vurgu rengi yok: renk yalnızca çantanın kendisinde */
+  --accent: #0d0d0d;
+  --line: rgb(13 13 13 / 0.1);
+  --line-strong: rgb(13 13 13 / 0.15);
 }
 
 [data-mode="erkek"] {
-  --ground: #14161a;
-  --ground-2: #1c2026;
-  --ground-3: #252b33;
-  --ink: #e8eaed;
-  --ink-60: rgb(232 234 237 / 0.6);
-  --ink-40: rgb(232 234 237 / 0.4);
-  --accent: #8fa3ad;
-  --line: rgb(232 234 237 / 0.14);
-  --line-strong: rgb(232 234 237 / 0.32);
-  --shadow: rgb(0 0 0 / 0.45);
+  --ground: #0d0d0d;
+  /* Kart yüzeyi: siyah deri (#14110F) zeminden ayrışsın diye
+     tabandan belirgin şekilde yükseltildi — Cosmos'ta derinlik
+     gölgeyle değil yalnızca yüzey kontrastıyla anlatılıyor. */
+  --ground-2: #232221;
+  --ground-3: #232221;
+  --ink: #f7f5f3;
+  --ink-60: #9a9796;
+  --ink-40: #6e6a69;
+  --accent: #f7f5f3;
+  --line: rgb(247 245 243 / 0.14);
+  --line-strong: rgb(247 245 243 / 0.2);
 }
 
 @theme inline {
@@ -44,15 +53,57 @@
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
 
-  --font-display: var(--font-display), Georgia, "Times New Roman", serif;
-  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  /* Tek yazı karakteri — display de gövde de aynı seriften */
+  --font-display: var(--font-cosmos), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-cosmos), Georgia, "Times New Roman", serif;
+
+  /* 350 imza ağırlık: başlıklar kalın değil, fısıltı */
+  --font-weight-whisper: 350;
+
+  /* ── Tip ölçeği ──
+     Negatif tracking boyutla birlikte açılıyor: 74px'te -0.05em,
+     14px'te 0. Büyük başlıkları dekoratif değil mimari yapan bu. */
+  --text-caption: 14px;
+  --text-caption--line-height: 1.5;
+  --text-caption--letter-spacing: 0;
+
+  --text-body: 16px;
+  --text-body--line-height: 1.5;
+  --text-body--letter-spacing: -0.011em;
+
+  --text-subheading: 18px;
+  --text-subheading--line-height: 1.29;
+  --text-subheading--letter-spacing: -0.011em;
+
+  --text-heading-sm: 24px;
+  --text-heading-sm--line-height: 1.2;
+  --text-heading-sm--letter-spacing: -0.02em;
+
+  --text-heading: 33px;
+  --text-heading--line-height: 1.1;
+  --text-heading--letter-spacing: -0.04em;
+
+  --text-heading-lg: 38px;
+  --text-heading-lg--line-height: 1.08;
+  --text-heading-lg--letter-spacing: -0.04em;
+
+  --text-display: 58px;
+  --text-display--line-height: 1.06;
+  --text-display--letter-spacing: -0.04em;
+
+  --text-display-xl: 74px;
+  --text-display-xl--line-height: 0.8;
+  --text-display-xl--letter-spacing: -0.05em;
+
+  /* Tek imza radius: 16px. 12px yalnızca görsel karolarında. */
+  --radius-tile: 12px;
+  --radius-card: 16px;
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 html {
   scroll-behavior: smooth;
-  /* Mod geçişinde renkler yumuşak dönüşsün */
   color-scheme: light;
 }
 
@@ -60,6 +111,10 @@ body {
   background: var(--ground);
   color: var(--ink);
   font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.011em;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
@@ -74,15 +129,28 @@ body {
 }
 
 ::selection {
-  background: var(--accent);
+  background: var(--ink);
   color: var(--ground);
 }
 
 /* Odak halkası — klavye kullanıcıları için her zaman görünür */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--ink);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: 4px;
+}
+
+/**
+ * Eyebrow — bölüm üstü küçük büyük harf damgası.
+ * Cosmos'ta bu tek "uppercase" kullanımı: 15px, weight 500, tracking 0.
+ * Eskiden her yerde 10–12px + 0.16em tracking vardı; o dil bırakıldı.
+ */
+.eyebrow {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: uppercase;
 }
 
 /* Yatay rayların scrollbar'ını gizle, kaydırma serbest kalsın */

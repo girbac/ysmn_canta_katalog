@@ -34,11 +34,11 @@ export function SelectionDock({
         >
           <Link
             href={`/${locale}/secki`}
-            className="flex items-center gap-3 rounded-full bg-ink py-3 pl-5 pr-4 text-ground shadow-[0_18px_40px_-16px_var(--shadow)] transition-transform duration-300 hover:scale-[1.03]"
+            className="flex items-center gap-3 rounded-card bg-ink py-4 pl-6 pr-4 text-ground transition-transform duration-300 hover:scale-[1.02]"
           >
-            <span className="text-xs uppercase tracking-[0.16em]">{labels.dockLabel}</span>
+            <span className="text-body font-medium">{labels.dockLabel}</span>
             <span
-              className="grid h-7 min-w-7 place-items-center rounded-full bg-ground px-2 text-sm font-medium text-ink tabular-nums"
+              className="grid h-7 min-w-7 place-items-center rounded-full bg-ground px-2 text-caption font-medium text-ink tabular-nums"
               aria-label={interpolate(labels.itemCount, { n: count })}
             >
               {count}

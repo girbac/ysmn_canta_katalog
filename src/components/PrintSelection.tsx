@@ -57,29 +57,29 @@ export function PrintSelection({
         <div className="no-print mb-10 flex flex-wrap items-center gap-4">
           <Link
             href={`/${locale}/secki`}
-            className="border-b border-line-strong pb-1 text-xs uppercase tracking-[0.16em] text-ink-60 hover:text-ink"
+            className="border-b border-line-strong pb-1 text-body text-ink-60 hover:text-ink"
           >
             ← {t.selection.printBack}
           </Link>
           <button
             type="button"
             onClick={() => window.print()}
-            className="bg-ink px-6 py-3 text-xs uppercase tracking-[0.16em] text-ground"
+            className="rounded-card bg-ink px-6 py-4 text-body font-medium text-ground"
           >
             {t.selection.printNow}
           </button>
         </div>
 
         {rows.length === 0 ? (
-          <p className="font-display text-2xl text-ink">{t.selection.empty}</p>
+          <p className="text-heading-sm font-whisper text-ink">{t.selection.empty}</p>
         ) : (
           <>
             <header className="flex items-end justify-between gap-6 border-b-2 border-black/80 pb-5 print:border-black">
               <div>
-                <p className="font-display text-3xl tracking-[0.14em] text-ink print:text-black">
+                <p className="font-whisper text-3xl text-ink print:text-black">
                   {brand}
                 </p>
-                <p className="mt-1 text-xs uppercase tracking-[0.18em] text-ink-40 print:text-black/60">
+                <p className="mt-1 text-xs uppercase text-ink-40 print:text-black/60">
                   {t.selection.printTitle}
                 </p>
               </div>
@@ -94,7 +94,7 @@ export function PrintSelection({
 
             <table className="mt-8 w-full border-collapse text-left">
               <thead>
-                <tr className="border-b border-black/30 text-[9px] uppercase tracking-[0.14em] text-ink-40 print:text-black/60">
+                <tr className="border-b border-black/30 text-[9px] uppercase text-ink-40 print:text-black/60">
                   <th className="w-[74px] pb-2 font-normal"> </th>
                   <th className="pb-2 font-normal">{t.product.code}</th>
                   <th className="pb-2 font-normal">{t.common.product}</th>
@@ -122,9 +122,9 @@ export function PrintSelection({
                           />
                         </div>
                       </td>
-                      <td className="py-3 pr-3 font-mono text-[10px] tracking-wide">{p.code}</td>
+                      <td className="py-3 pr-3 text-[10px] tracking-wide">{p.code}</td>
                       <td className="py-3 pr-3">
-                        <span className="block font-display text-[13px] leading-tight">
+                        <span className="block font-whisper text-[13px] leading-tight">
                           {p.name[locale]}
                         </span>
                         <span className="mt-0.5 block text-[10px] text-ink-40 print:text-black/60">

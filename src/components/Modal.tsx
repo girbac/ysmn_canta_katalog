@@ -90,12 +90,12 @@ export function Modal({ children, closeLabel }: { children: ReactNode; closeLabe
         initial={{ opacity: 0, scale: reduce ? 1 : 0.965, y: reduce ? 0 : 18 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
-        className="relative mx-auto my-6 w-[min(1280px,calc(100%-1.5rem))] bg-ground px-5 py-10 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.6)] outline-none md:my-10 md:px-10 md:py-12"
+        className="relative mx-auto my-6 w-[min(1280px,calc(100%-1.5rem))] rounded-card bg-ground px-5 py-10 outline-none md:my-10 md:px-10 md:py-12"
       >
         <button
           type="button"
           onClick={close}
-          className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full border border-line-strong text-ink transition-colors hover:bg-ink hover:text-ground md:right-6 md:top-6"
+          className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full border border-line-strong bg-ground-2 text-ink transition-colors hover:bg-ink hover:text-ground md:right-6 md:top-6"
           aria-label={closeLabel}
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">

@@ -22,14 +22,14 @@ export function EditorialStrip({
     >
       <blockquote
         className={cx(
-          "font-display text-[clamp(1.4rem,3.2vw,2.6rem)] leading-[1.18] tracking-[-0.01em] text-ink",
+          "font-whisper text-[clamp(1.5rem,3.2vw,38px)] leading-[1.08] tracking-[-0.04em] text-ink",
           align === "right" ? "ml-auto" : "",
           "max-w-3xl",
         )}
       >
         {quote}
       </blockquote>
-      <p className="mt-6 text-xs uppercase tracking-[0.18em] text-ink-40">{caption}</p>
+      <p className="mt-6 eyebrow text-ink-40">{caption}</p>
     </div>
   );
 }

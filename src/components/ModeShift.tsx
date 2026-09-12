@@ -34,9 +34,9 @@ export function ModeShift({
     >
       <motion.div
         style={reduce ? undefined : { y }}
-        className="mx-auto w-full max-w-[1600px]"
+        className="mx-auto w-full max-w-[1280px]"
       >
-        <p className="text-xs uppercase tracking-[0.24em] text-ink-40">{eyebrow}</p>
+        <p className="eyebrow text-ink-60">{eyebrow}</p>
 
         <motion.div
           style={reduce ? undefined : { scaleX: ruleWidth }}
@@ -45,12 +45,12 @@ export function ModeShift({
 
         <motion.h2
           style={reduce ? undefined : { scale }}
-          className="mt-10 origin-left font-display text-[clamp(2.4rem,8vw,7rem)] leading-[0.98] tracking-[-0.03em] text-ink"
+          className="mt-10 origin-left font-whisper text-[clamp(2.6rem,8vw,74px)] leading-[0.8] tracking-[-0.05em] text-ink"
         >
           {title}
         </motion.h2>
 
-        <p className="mt-10 max-w-xl text-base leading-relaxed text-ink-60">{lead}</p>
+        <p className="mt-10 max-w-xl text-body text-ink-60">{lead}</p>
       </motion.div>
     </div>
   );

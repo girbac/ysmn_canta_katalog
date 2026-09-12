@@ -64,7 +64,7 @@ export function ProductDetail({
                 aria-pressed={i === colorIndex}
                 aria-label={c.name[locale]}
                 className={cx(
-                  "border transition-colors",
+                  "rounded-tile border transition-colors",
                   i === colorIndex ? "border-ink" : "border-transparent hover:border-line-strong",
                 )}
               >
@@ -85,32 +85,28 @@ export function ProductDetail({
         <div className="flex items-start justify-between gap-6">
           <div>
             {product.isNew && (
-              <span className="mb-3 inline-block bg-ink px-2 py-1 text-[10px] uppercase tracking-[0.14em] text-ground">
+              <span className="mb-3 inline-block rounded-tile bg-ink px-2.5 py-1 text-caption font-medium uppercase text-ground">
                 {t.product.new}
               </span>
             )}
             <h1
               className={cx(
-                "font-display leading-[1.06] tracking-[-0.02em] text-ink",
-                compact ? "text-[clamp(1.6rem,3.4vw,2.6rem)]" : "text-[clamp(1.9rem,4.4vw,3.4rem)]",
+                "font-whisper leading-[1.06] tracking-[-0.04em] text-ink",
+                compact ? "text-[clamp(1.8rem,3.4vw,38px)]" : "text-[clamp(2rem,4.4vw,58px)]",
               )}
             >
               {product.name[locale]}
             </h1>
-            <p className="mt-2 text-xs uppercase tracking-[0.16em] text-ink-40">
-              {t.forms[product.form]}
-            </p>
+            <p className="mt-2 text-body text-ink-60">{t.forms[product.form]}</p>
           </div>
-          <span className="shrink-0 pt-1 font-mono text-[11px] tracking-wider text-ink-40">
+          <span className="shrink-0 pt-2 text-caption text-ink-40 tabular-nums">
             {product.code}
           </span>
         </div>
 
         {/* Renk seçimi */}
         <div className="mt-8">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-ink-40">
-            {t.product.colors}
-          </p>
+          <p className="eyebrow text-ink-40">{t.product.colors}</p>
           <div className="mt-3 flex flex-wrap items-center gap-2">
             {product.colors.map((c, i) => (
               <button
@@ -120,7 +116,7 @@ export function ProductDetail({
                 aria-pressed={i === colorIndex}
                 title={c.name[locale]}
                 className={cx(
-                  "flex items-center gap-2 rounded-full border py-1 pl-1 pr-3 text-xs transition-colors",
+                  "flex items-center gap-2 rounded-card border bg-ground-2 py-1.5 pl-1.5 pr-3.5 text-caption transition-colors",
                   i === colorIndex
                     ? "border-ink text-ink"
                     : "border-line-strong text-ink-60 hover:border-ink hover:text-ink",
@@ -137,15 +133,15 @@ export function ProductDetail({
         </div>
 
         {/* Teknik künye */}
-        <dl className="mt-9 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-line pt-7 text-sm">
+        <dl className="mt-9 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-line pt-7 text-body">
           <div>
-            <dt className="text-[10px] uppercase tracking-[0.16em] text-ink-40">
+            <dt className="eyebrow text-ink-40">
               {t.product.material}
             </dt>
             <dd className="mt-1.5 text-ink">{materialName(product.material)[locale]}</dd>
           </div>
           <div>
-            <dt className="text-[10px] uppercase tracking-[0.16em] text-ink-40">
+            <dt className="eyebrow text-ink-40">
               {t.product.dimensions}{" "}
               <span className="normal-case tracking-normal">({t.product.dimensionsHint})</span>
             </dt>
@@ -155,7 +151,7 @@ export function ProductDetail({
           </div>
           {product.strap && (
             <div>
-              <dt className="text-[10px] uppercase tracking-[0.16em] text-ink-40">
+              <dt className="eyebrow text-ink-40">
                 {t.product.strap}
               </dt>
               <dd className="mt-1.5 text-ink">{t.product.strapLabels[product.strap]}</dd>
@@ -165,13 +161,11 @@ export function ProductDetail({
 
         {/* Detaylar */}
         <div className="mt-8 border-t border-line pt-7">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-ink-40">
-            {t.product.features}
-          </p>
-          <ul className="mt-3 space-y-1.5 text-sm text-ink-60">
+          <p className="eyebrow text-ink-40">{t.product.features}</p>
+          <ul className="mt-3 space-y-1.5 text-body text-ink-60">
             {product.features.map((f, i) => (
               <li key={i} className="flex gap-2.5">
-                <span aria-hidden="true" className="text-accent">
+                <span aria-hidden="true" className="text-ink-40">
                   —
                 </span>
                 {f[locale]}
@@ -192,7 +186,7 @@ export function ProductDetail({
             href={whatsappUrl(whatsapp, askMessage)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center border border-line-strong px-6 py-3 text-sm uppercase tracking-wide text-ink-60 transition-colors hover:border-ink hover:text-ink"
+            className="inline-flex items-center rounded-card border border-line-strong bg-ground-2 px-6 py-4 text-body font-medium text-ink transition-colors hover:bg-ink hover:text-ground"
           >
             {t.product.askOnWhatsApp}
           </a>
@@ -201,7 +195,7 @@ export function ProductDetail({
         {!compact && (
           <Link
             href={`/${locale}/koleksiyon`}
-            className="mt-10 self-start border-b border-line-strong pb-1 text-xs uppercase tracking-[0.16em] text-ink-40 hover:text-ink"
+            className="mt-10 self-start border-b border-line-strong pb-1 text-body text-ink-60 hover:text-ink"
           >
             ← {t.product.backToCollection}
           </Link>

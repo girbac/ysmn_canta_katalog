@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Fraunces } from "next/font/google";
 import { notFound } from "next/navigation";
 import "../globals.css";
 import { locales, isLocale, htmlLang } from "@/i18n/config";
@@ -10,17 +10,20 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SelectionDock } from "@/components/SelectionDock";
 
-const display = Fraunces({
+/**
+ * Tek yazı karakteri — başlık da gövde de aynı seriften.
+ *
+ * Cosmos'un cosmosOracle'ı için doğrudan önerdiği ikame Fraunces.
+ * Değişken eksenler sayesinde imza ağırlık 350'yi ("fısıltı") ve
+ * küçük punto için optik boyutlandırmayı aynı dosyadan alıyoruz.
+ * WONK kapalı: didone karakteri kalsın, tuhaflık girmesin.
+ */
+const cosmos = Fraunces({
   subsets: ["latin", "latin-ext"],
-  variable: "--font-display",
+  variable: "--font-cosmos",
   display: "swap",
-  axes: ["SOFT", "WONK", "opsz"],
-});
-
-const sans = Inter({
-  subsets: ["latin", "latin-ext"],
-  variable: "--font-sans",
-  display: "swap",
+  // weight verilmiyor: değişken eksen açık kalsın ki 350 kullanılabilsin
+  axes: ["SOFT", "opsz"],
 });
 
 export function generateStaticParams() {
@@ -80,7 +83,8 @@ export default async function LocaleLayout({
       lang={htmlLang[l]}
       // Next route geçişlerinde yumuşak scroll'u devre dışı bırakır
       data-scroll-behavior="smooth"
-      className={`${display.variable} ${sans.variable}`}>
+      className={cosmos.variable}
+    >
       <body data-mode="kadin">
         <a
           href="#main"

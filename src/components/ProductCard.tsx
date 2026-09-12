@@ -81,7 +81,7 @@ export function ProductCard({
         >
           <motion.div
             style={reduce ? undefined : { rotateX, rotateY, transformStyle: "preserve-3d" }}
-            className="relative transition-shadow duration-500 group-hover:shadow-[0_28px_60px_-24px_var(--shadow)]"
+            className="relative"
           >
             <ProductMedia
               product={product}
@@ -92,7 +92,7 @@ export function ProductCard({
             />
 
             {product.isNew && (
-              <span className="pointer-events-none absolute left-3 top-3 bg-ink px-2 py-1 text-[10px] uppercase tracking-[0.14em] text-ground">
+              <span className="pointer-events-none absolute left-3 top-3 rounded-tile bg-ink px-2.5 py-1 text-caption font-medium uppercase text-ground">
                 {labels.isNew}
               </span>
             )}
@@ -111,16 +111,14 @@ export function ProductCard({
 
       <div className="mt-4 flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <h3 className="truncate font-display text-lg leading-snug text-ink">
-            <Link href={`/${locale}/urun/${product.slug}`} className="hover:text-accent">
+          <h3 className="line-clamp-2 text-subheading text-ink">
+            <Link href={`/${locale}/urun/${product.slug}`} className="hover:text-ink-60">
               {product.name[locale]}
             </Link>
           </h3>
-          <p className="mt-0.5 text-xs uppercase tracking-[0.12em] text-ink-40">
-            {labels.form}
-          </p>
+          <p className="mt-0.5 text-caption text-ink-60">{labels.form}</p>
         </div>
-        <span className="shrink-0 pt-1 font-mono text-[10px] tracking-wider text-ink-40">
+        <span className="shrink-0 pt-1 text-caption text-ink-40 tabular-nums">
           {product.code}
         </span>
       </div>
@@ -140,9 +138,7 @@ export function ProductCard({
               title={c.name[locale]}
               className={cx(
                 "h-4 w-4 rounded-full border transition-transform duration-200",
-                i === colorIndex
-                  ? "scale-110 border-ink"
-                  : "border-line-strong hover:scale-110",
+                i === colorIndex ? "scale-110 border-ink" : "border-line-strong hover:scale-110",
               )}
               style={{ backgroundColor: c.hex }}
             />

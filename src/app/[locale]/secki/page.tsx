@@ -42,10 +42,10 @@ export default async function SelectionPage({
       <BodyMode mode="kadin" />
       <div className="mx-auto max-w-[1100px] px-5 pb-28 pt-32 md:px-10 md:pt-36">
         <header className="mb-12">
-          <h1 className="font-display text-[clamp(2rem,5vw,3.6rem)] leading-[1.06] tracking-[-0.02em] text-ink">
+          <h1 className="font-whisper text-[clamp(2rem,5vw,58px)] leading-[1.06] tracking-[-0.04em] text-ink">
             {t.selection.title}
           </h1>
-          <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-60">
+          <p className="mt-3 max-w-md text-body text-ink-60">
             {t.selection.lead}
           </p>
         </header>

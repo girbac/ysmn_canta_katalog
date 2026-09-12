@@ -34,7 +34,7 @@ export function ProductMedia({
 
   return (
     <div
-      className={`relative isolate aspect-square w-full overflow-hidden bg-ground-2 ${className}`}
+      className={`relative isolate aspect-square w-full overflow-hidden rounded-tile bg-ground-2 ${className}`}
       style={{ contain: "paint" }}
     >
       {file ? (
@@ -52,6 +52,9 @@ export function ProductMedia({
             form={product.form}
             hex={color?.hex ?? "#8A6A4F"}
             idSuffix={`${product.slug}-${colorIndex}`}
+            /* Cosmos: kartın arka planı yok, görselin kendisi karttır.
+               Stüdyo vinyeti Paper White üstünde gri leke gibi duruyordu. */
+            backdrop={false}
             className="absolute inset-0 h-full w-full"
           />
           <span className="sr-only">{alt}</span>

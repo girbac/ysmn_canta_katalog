@@ -39,8 +39,8 @@ export function ScaleCompare({
 
   return (
     <section className="border-t border-line pt-8">
-      <h2 className="text-xs uppercase tracking-[0.16em] text-ink-40">{labels.title}</h2>
-      <p className="mt-2 text-sm text-ink-60">{labels.lead}</p>
+      <h2 className="eyebrow text-ink-40">{labels.title}</h2>
+      <p className="mt-2 text-body text-ink-60">{labels.lead}</p>
 
       <div className="mt-8 grid gap-10 sm:grid-cols-[auto_1fr] sm:gap-12">
         {/* ── İnsan ölçeği ── */}
@@ -78,7 +78,7 @@ export function ScaleCompare({
               <path
                 d={`M50 42 L${56 + bag.w / 2} ${86 - bag.h / 2}`}
                 fill="none"
-                stroke="var(--accent)"
+                stroke="var(--ink)"
                 strokeOpacity="0.55"
                 strokeWidth="1.2"
                 vectorEffect="non-scaling-stroke"
@@ -89,9 +89,9 @@ export function ScaleCompare({
                 width={bag.w}
                 height={bag.h}
                 rx="2"
-                fill="var(--accent)"
+                fill="var(--ink)"
                 fillOpacity="0.22"
-                stroke="var(--accent)"
+                stroke="var(--ink)"
                 strokeWidth="1.4"
                 vectorEffect="non-scaling-stroke"
               />
@@ -104,7 +104,7 @@ export function ScaleCompare({
               <path d={`M-1 ${PERSON_H} H5`} />
             </g>
           </svg>
-          <figcaption className="mt-3 text-[11px] uppercase tracking-[0.14em] text-ink-40">
+          <figcaption className="mt-3 text-caption text-ink-40">
             {labels.person}
           </figcaption>
         </figure>
@@ -145,8 +145,8 @@ export function ScaleCompare({
             />
           </svg>
 
-          <figcaption className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-[11px] uppercase tracking-[0.14em]">
-            <span className="text-accent">
+          <figcaption className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-caption">
+            <span className="text-ink">
               {product.code} · {bag.w} × {bag.h} {labels.cm}
             </span>
             <span className="text-ink-40">

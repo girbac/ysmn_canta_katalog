@@ -137,10 +137,10 @@ export function FilterBar({
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           className={cx(
-            "inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs tracking-wide transition-colors duration-200",
+            "inline-flex items-center gap-2 rounded-card border px-4 py-2.5 text-body font-medium transition-colors duration-200",
             open || count > 0
-              ? "border-ink text-ink"
-              : "border-line-strong text-ink-60 hover:border-ink hover:text-ink",
+              ? "border-ink bg-ground-2 text-ink"
+              : "border-line-strong bg-ground-2 text-ink-60 hover:border-ink hover:text-ink",
           )}
         >
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
@@ -153,7 +153,7 @@ export function FilterBar({
           </svg>
           {open ? labels.hideFilters : labels.showFilters}
           {count > 0 && (
-            <span className="grid h-4 min-w-4 place-items-center rounded-full bg-ink px-1 text-[10px] leading-none text-ground tabular-nums">
+            <span className="grid h-5 min-w-5 place-items-center rounded-full bg-ink px-1 text-caption leading-none text-ground tabular-nums">
               {count}
             </span>
           )}
@@ -164,7 +164,7 @@ export function FilterBar({
             key={c.key}
             href={c.href}
             aria-label={`${labels.removeFilter}: ${c.label}`}
-            className="group inline-flex items-center gap-1.5 rounded-full border border-line-strong py-1 pl-2.5 pr-2 text-xs text-ink-60 transition-colors hover:border-ink hover:text-ink"
+            className="group inline-flex items-center gap-2 rounded-card border border-line-strong bg-ground-2 py-2 pl-3 pr-2.5 text-caption text-ink-60 transition-colors hover:border-ink hover:text-ink"
           >
             {c.hex && (
               <span
@@ -184,14 +184,14 @@ export function FilterBar({
           </Link>
         ))}
 
-        <span className="text-xs uppercase tracking-[0.14em] text-ink-40" aria-live="polite">
+        <span className="text-caption text-ink-40" aria-live="polite">
           {resultCount}
         </span>
 
         {hasActiveFilters(filters) && (
           <Link
             href={base}
-            className="ml-auto text-xs uppercase tracking-[0.14em] text-accent underline-offset-4 hover:underline"
+            className="ml-auto text-caption text-ink-60 underline-offset-4 hover:text-ink hover:underline"
           >
             {labels.clear}
           </Link>
@@ -273,11 +273,11 @@ function FormTile({
       <Link
         href={href}
         aria-current={active ? "true" : undefined}
-        className="group block w-[70px]"
+        className="group block w-[104px]"
       >
         <div
           className={cx(
-            "grid aspect-square place-items-center border bg-ground-2 transition-colors duration-200",
+            "grid aspect-square place-items-center rounded-tile border bg-ground-2 transition-colors duration-200",
             active ? "border-ink" : "border-transparent group-hover:border-line-strong",
           )}
         >
@@ -304,8 +304,9 @@ function FormTile({
         </div>
         <p
           className={cx(
-            "mt-2 text-center text-[10px] uppercase leading-tight tracking-[0.1em] transition-colors",
-            active ? "text-ink" : "text-ink-40 group-hover:text-ink",
+            /* min-h: iki satıra taşan etiketler sırayı bozmasın */
+            "mt-2 min-h-[2.6em] text-center text-caption leading-tight transition-colors",
+            active ? "text-ink" : "text-ink-60 group-hover:text-ink",
           )}
         >
           {label}
@@ -318,9 +319,7 @@ function FormTile({
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-      <span className="w-20 shrink-0 text-[10px] uppercase tracking-[0.16em] text-ink-40">
-        {label}
-      </span>
+      <span className="w-24 shrink-0 eyebrow text-ink-40">{label}</span>
       <div className="flex flex-wrap items-center gap-2">{children}</div>
     </div>
   );
@@ -340,10 +339,10 @@ function Pill({
       href={href}
       aria-current={active ? "true" : undefined}
       className={cx(
-        "rounded-full border px-3.5 py-1.5 text-xs tracking-wide transition-colors duration-200",
+        "rounded-card border px-4 py-2 text-caption transition-colors duration-200",
         active
           ? "border-ink bg-ink text-ground"
-          : "border-line-strong text-ink-60 hover:border-ink hover:text-ink",
+          : "border-line-strong bg-ground-2 text-ink-60 hover:border-ink hover:text-ink",
       )}
     >
       {children}

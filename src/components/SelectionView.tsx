@@ -98,16 +98,16 @@ export function SelectionView({
     <>
       {/* ── Paylaşılan seçki bildirimi ── */}
       {shared.length > 0 && (
-        <div className="no-print mb-12 border border-accent/40 bg-accent/5 p-6">
-          <p className="font-display text-xl text-ink">{t.selection.sharedTitle}</p>
-          <p className="mt-2 text-sm text-ink-60">{t.selection.sharedLead}</p>
+        <div className="no-print mb-12 rounded-card border border-line-strong bg-ground-2 p-6">
+          <p className="text-heading-sm font-whisper text-ink">{t.selection.sharedTitle}</p>
+          <p className="mt-2 text-body text-ink-60">{t.selection.sharedLead}</p>
           <ul className="mt-4 flex flex-wrap gap-2">
             {shared.map((s) => {
               const p = getProduct(s.slug);
               return p ? (
                 <li
                   key={s.slug}
-                  className="rounded-full border border-line-strong px-3 py-1 text-xs text-ink-60"
+                  className="rounded-card border border-line-strong px-3 py-1.5 text-caption text-ink-60"
                 >
                   {p.name[locale]}
                   {s.qty > 1 && ` × ${s.qty}`}
@@ -121,7 +121,7 @@ export function SelectionView({
               merge(shared);
               router.replace(`/${locale}/secki`);
             }}
-            className="mt-5 bg-ink px-6 py-3 text-xs uppercase tracking-[0.16em] text-ground"
+            className="mt-5 rounded-card bg-ink px-6 py-4 text-body font-medium text-ground"
           >
             {t.selection.importShared}
           </button>
@@ -130,20 +130,20 @@ export function SelectionView({
 
       {rows.length === 0 ? (
         <div className="py-24">
-          <p className="font-display text-3xl text-ink">{t.selection.empty}</p>
-          <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-60">
+          <p className="font-whisper text-heading text-ink">{t.selection.empty}</p>
+          <p className="mt-4 max-w-sm text-body text-ink-60">
             {t.selection.emptyLead}
           </p>
           <Link
             href={`/${locale}/koleksiyon`}
-            className="mt-8 inline-block bg-ink px-8 py-4 text-xs uppercase tracking-[0.18em] text-ground"
+            className="mt-8 inline-block rounded-card bg-ink px-6 py-4 text-body font-medium text-ground"
           >
             {t.selection.browse}
           </Link>
         </div>
       ) : (
         <>
-          <p className="text-xs uppercase tracking-[0.16em] text-ink-40">
+          <p className="text-caption text-ink-40">
             {interpolate(t.selection.itemCount, { n: rows.length })}
           </p>
 
@@ -165,17 +165,15 @@ export function SelectionView({
 
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-baseline gap-x-3">
-                      <h2 className="font-display text-xl text-ink">
-                        <Link href={`/${locale}/urun/${product.slug}`} className="hover:text-accent">
+                      <h2 className="text-subheading text-ink">
+                        <Link href={`/${locale}/urun/${product.slug}`} className="hover:text-ink-60">
                           {product.name[locale]}
                         </Link>
                       </h2>
-                      <span className="font-mono text-[11px] tracking-wider text-ink-40">
-                        {product.code}
-                      </span>
+                      <span className="text-caption text-ink-40 tabular-nums">{product.code}</span>
                     </div>
 
-                    <p className="mt-1 text-xs uppercase tracking-[0.12em] text-ink-40">
+                    <p className="mt-1 text-caption text-ink-60">
                       {t.forms[product.form]} · {materialName(product.material)[locale]} ·{" "}
                       {formatDimensions(product.dimensions, t.common.cm)}
                     </p>
@@ -190,7 +188,7 @@ export function SelectionView({
                           aria-pressed={c.key === color.key}
                           title={c.name[locale]}
                           className={cx(
-                            "flex items-center gap-1.5 rounded-full border py-0.5 pl-0.5 pr-2.5 text-[11px] transition-colors",
+                            "flex items-center gap-1.5 rounded-card border bg-ground-2 py-1 pl-1 pr-3 text-caption transition-colors",
                             c.key === color.key
                               ? "border-ink text-ink"
                               : "border-line-strong text-ink-40 hover:border-ink hover:text-ink",
@@ -212,29 +210,27 @@ export function SelectionView({
                         value={item.note ?? ""}
                         onChange={(e) => setNote(item.slug, e.target.value)}
                         placeholder={t.selection.notePlaceholder}
-                        className="w-full max-w-md border-b border-line bg-transparent py-1.5 text-sm text-ink placeholder:text-ink-40 focus:border-ink focus:outline-none"
+                        className="w-full max-w-md border-b border-line bg-transparent py-2 text-body text-ink placeholder:text-ink-40 focus:border-ink focus:outline-none"
                       />
                     </label>
                   </div>
 
                   <div className="flex items-start gap-4 sm:flex-col sm:items-end">
                     <label className="flex items-center gap-2">
-                      <span className="text-[10px] uppercase tracking-[0.14em] text-ink-40">
-                        {t.selection.quantity}
-                      </span>
+                      <span className="text-caption text-ink-40">{t.selection.quantity}</span>
                       <input
                         type="number"
                         min={1}
                         max={999}
                         value={item.qty}
                         onChange={(e) => setQty(item.slug, Number(e.target.value))}
-                        className="w-16 border border-line-strong bg-transparent px-2 py-1.5 text-center text-sm tabular-nums text-ink focus:border-ink focus:outline-none"
+                        className="w-16 rounded-card border border-line-strong bg-ground-2 px-2 py-2 text-center text-body tabular-nums text-ink focus:border-ink focus:outline-none"
                       />
                     </label>
                     <button
                       type="button"
                       onClick={() => remove(item.slug)}
-                      className="text-[11px] uppercase tracking-[0.14em] text-ink-40 underline-offset-4 hover:text-ink hover:underline"
+                      className="text-caption text-ink-40 underline-offset-4 hover:text-ink hover:underline"
                     >
                       {t.product.remove}
                     </button>
@@ -250,7 +246,7 @@ export function SelectionView({
               href={whatsappUrl(whatsapp, waMessage)}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-ink px-8 py-4 text-xs uppercase tracking-[0.16em] text-ground transition-transform duration-300 hover:scale-[1.02]"
+              className="rounded-card bg-ink px-6 py-4 text-body font-medium text-ground transition-transform duration-300 hover:scale-[1.02]"
             >
               {t.selection.sendWhatsApp}
             </a>
@@ -258,14 +254,14 @@ export function SelectionView({
             <button
               type="button"
               onClick={copyLink}
-              className="border border-line-strong px-8 py-4 text-xs uppercase tracking-[0.16em] text-ink transition-colors hover:bg-ink hover:text-ground"
+              className="rounded-card border border-line-strong bg-ground-2 px-6 py-4 text-body font-medium text-ink transition-colors hover:bg-ink hover:text-ground"
             >
               {copied ? t.selection.shared : t.selection.share}
             </button>
 
             <Link
               href={`/${locale}/secki/yazdir`}
-              className="border border-line-strong px-8 py-4 text-xs uppercase tracking-[0.16em] text-ink transition-colors hover:bg-ink hover:text-ground"
+              className="rounded-card border border-line-strong bg-ground-2 px-6 py-4 text-body font-medium text-ink transition-colors hover:bg-ink hover:text-ground"
             >
               {t.selection.print}
             </Link>
@@ -275,13 +271,13 @@ export function SelectionView({
               onClick={() => {
                 if (window.confirm(t.selection.clearConfirm)) clear();
               }}
-              className="ml-auto text-xs uppercase tracking-[0.14em] text-ink-40 underline-offset-4 hover:text-ink hover:underline"
+              className="ml-auto text-caption text-ink-40 underline-offset-4 hover:text-ink hover:underline"
             >
               {t.selection.clearAll}
             </button>
           </div>
 
-          <p className="no-print mt-4 text-xs text-ink-40">{t.selection.printHint}</p>
+          <p className="no-print mt-4 text-caption text-ink-40">{t.selection.printHint}</p>
         </>
       )}
     </>

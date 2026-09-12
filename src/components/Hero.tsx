@@ -42,15 +42,15 @@ export function Hero({
 
   return (
     <div ref={ref} className="relative min-h-[92vh] overflow-hidden">
-      <div className="mx-auto grid min-h-[92vh] max-w-[1600px] items-center gap-6 px-5 pb-14 pt-28 md:grid-cols-[1.05fr_0.95fr] md:gap-10 md:px-10 md:pt-24">
+      <div className="mx-auto grid min-h-[92vh] max-w-[1280px] items-center gap-6 px-5 pb-14 pt-28 md:grid-cols-[1.05fr_0.95fr] md:gap-10 md:px-10 md:pt-24">
         {/* ── Metin ── */}
         <motion.div
           style={reduce ? undefined : { y: textY, opacity: fade }}
           className="order-2 md:order-1"
         >
-          <p className="text-xs uppercase tracking-[0.24em] text-ink-40">{eyebrow}</p>
+          <p className="eyebrow text-ink">{eyebrow}</p>
 
-          <h1 className="mt-6 font-display text-[clamp(2.1rem,5vw,4.4rem)] leading-[1.04] tracking-[-0.02em] text-ink">
+          <h1 className="mt-6 font-whisper text-[clamp(2.4rem,5.6vw,4.6rem)] leading-[0.92] tracking-[-0.05em] text-ink">
             {lines.map((line, i) => (
               <span key={i} className="block overflow-hidden pb-[0.08em]">
                 <span
@@ -63,9 +63,9 @@ export function Hero({
             ))}
           </h1>
 
-          <p className="mt-7 max-w-md text-base leading-relaxed text-ink-60">{lead}</p>
+          <p className="mt-7 max-w-md text-body text-ink-60">{lead}</p>
 
-          <div className="mt-10 flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-ink-40 md:mt-14">
+          <div className="mt-10 flex items-center gap-3 text-caption text-ink-40 md:mt-14">
             <span>{scrollHint}</span>
             <motion.span
               aria-hidden="true"

@@ -92,9 +92,9 @@ export default async function CollectionPage({
   return (
     <div data-mode={filters.bolum === "erkek" ? "erkek" : "kadin"} className="bg-ground">
       <BodyMode mode={filters.bolum === "erkek" ? "erkek" : "kadin"} />
-      <div className="mx-auto max-w-[1600px] px-5 pb-28 pt-28 md:px-10 md:pt-32">
+      <div className="mx-auto max-w-[1280px] px-5 pb-28 pt-28 md:px-10 md:pt-32">
         <header>
-          <h1 className="font-display text-[clamp(2rem,5vw,3.6rem)] leading-[1.06] tracking-[-0.02em] text-ink">
+          <h1 className="font-whisper text-[clamp(2rem,5vw,58px)] leading-[1.06] tracking-[-0.04em] text-ink">
             {sectionTitle(t, filters.bolum)}
           </h1>
         </header>
@@ -133,11 +133,11 @@ export default async function CollectionPage({
 
         {list.length === 0 ? (
           <div className="py-28 text-center">
-            <p className="font-display text-2xl text-ink">{t.collection.empty}</p>
+            <p className="text-heading-sm text-ink">{t.collection.empty}</p>
             {hasActiveFilters(filters) && (
               <Link
                 href={`/${locale}/koleksiyon`}
-                className="mt-6 inline-block border-b border-line-strong pb-1 text-xs uppercase tracking-[0.16em] text-ink-60 hover:text-ink"
+                className="mt-6 inline-block border-b border-line-strong pb-1 text-body text-ink-60 hover:text-ink"
               >
                 {t.collection.clear}
               </Link>

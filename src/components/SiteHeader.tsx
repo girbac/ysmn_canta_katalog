@@ -82,24 +82,22 @@ export function SiteHeader({
   ];
 
   return (
-    <header
-      className={cx(
-        "no-print fixed inset-x-0 top-0 z-50 transition-all duration-500",
-        scrolled ? "bg-ground/85 backdrop-blur-md" : "bg-transparent",
-      )}
-    >
+    <header className="no-print fixed inset-x-0 top-0 z-50 px-4 pt-4 md:px-6 md:pt-5">
+      {/* Cosmos: tek yüzen pill, 9999px radius, Paper White, gölgesiz.
+          İkinci bir çubuğa asla bölünmez. */}
       <div
         className={cx(
-          "mx-auto flex max-w-[1600px] items-center justify-between gap-6 px-5 transition-all duration-500 md:px-10",
-          scrolled ? "h-14 border-b border-line" : "h-20",
+          "mx-auto flex max-w-[1280px] items-center justify-between gap-5 rounded-full border border-line px-5 py-3 transition-colors duration-500 md:px-6",
+          scrolled ? "bg-ground-2" : "bg-ground-2/80 backdrop-blur-md",
         )}
       >
         <Link
           href={`/${locale}`}
-          className="font-display text-xl tracking-[0.18em] text-ink"
+          className="flex items-center gap-2.5 text-ink"
           aria-label={brand}
         >
-          {brand}
+          <DotCluster />
+          <span className="text-subheading font-medium">{brand}</span>
         </Link>
 
         {/* Fallback aynı menüyü işaretsiz basar: bağlantılar ilk HTML'de
@@ -115,7 +113,7 @@ export function SiteHeader({
         </Suspense>
 
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 text-xs tracking-[0.12em]">
+          <div className="flex items-center gap-1 text-caption">
             {locales.map((l, i) => (
               <span key={l} className="flex items-center gap-1">
                 {i > 0 && <span className="text-ink-40">/</span>}
@@ -153,7 +151,7 @@ export function SiteHeader({
       </div>
 
       {open && (
-        <div className="border-b border-line bg-ground px-5 pb-8 pt-2 md:hidden">
+        <div className="mx-auto mt-3 max-w-[1280px] rounded-card border border-line bg-ground-2 px-5 pb-4 pt-2 md:hidden">
           <Suspense
             fallback={
               <MobileNav
@@ -206,6 +204,20 @@ function WithActiveHref({
   return <>{children(active)}</>;
 }
 
+/** Cosmos marka işareti: 3×3 ızgaradan ortası çıkarılmış sekiz nokta */
+function DotCluster() {
+  const dots = [0, 1, 2].flatMap((r) => [0, 1, 2].map((c) => [r, c] as const));
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" className="shrink-0">
+      {dots
+        .filter(([r, c]) => !(r === 1 && c === 1))
+        .map(([r, c]) => (
+          <circle key={`${r}${c}`} cx={2.5 + c * 6.5} cy={2.5 + r * 6.5} r="2" fill="currentColor" />
+        ))}
+    </svg>
+  );
+}
+
 function DesktopNav({
   links,
   activeHref,
@@ -216,7 +228,7 @@ function DesktopNav({
   label: string;
 }) {
   return (
-    <nav className="hidden items-center gap-8 md:flex" aria-label={label}>
+    <nav className="hidden items-center gap-7 md:flex" aria-label={label}>
       {links.map((l) => {
         const active = l.href === activeHref;
         return (
@@ -225,9 +237,9 @@ function DesktopNav({
             href={l.href}
             aria-current={active ? "page" : undefined}
             className={cx(
-              "relative text-xs uppercase tracking-[0.16em] transition-colors",
+              "relative text-body transition-colors",
               active
-                ? "text-ink after:absolute after:inset-x-0 after:-bottom-1.5 after:h-px after:bg-ink"
+                ? "font-medium text-ink after:absolute after:inset-x-0 after:-bottom-1 after:h-px after:bg-ink"
                 : "text-ink-60 hover:text-ink",
             )}
           >
@@ -265,8 +277,8 @@ function MobileNav({
             onClick={onNavigate}
             aria-current={active ? "page" : undefined}
             className={cx(
-              "border-b border-line py-4 font-display text-2xl",
-              active ? "text-accent" : "text-ink",
+              "border-b border-line py-4 text-heading-sm font-whisper",
+              active ? "text-ink" : "text-ink-60",
             )}
           >
             {l.label}
@@ -276,7 +288,7 @@ function MobileNav({
       <Link
         href={`/${locale}/secki`}
         onClick={onNavigate}
-        className="py-4 font-display text-2xl text-accent"
+        className="py-4 text-heading-sm font-whisper text-ink"
       >
         {selectionLabel}
       </Link>

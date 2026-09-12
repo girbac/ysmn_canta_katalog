@@ -34,10 +34,10 @@ export function SelectionButton({
         onClick={() => toggle(slug, color)}
         aria-pressed={on}
         className={cx(
-          "inline-flex items-center justify-center gap-2 border px-6 py-3 text-sm tracking-wide uppercase transition-colors duration-300",
+          "inline-flex items-center justify-center gap-2 rounded-card border px-6 py-4 text-body font-medium transition-colors duration-300",
           on
-            ? "border-accent bg-accent text-ground"
-            : "border-line-strong text-ink hover:bg-ink hover:text-ground",
+            ? "border-ink bg-ink text-ground"
+            : "border-line-strong bg-ground-2 text-ink hover:bg-ink hover:text-ground",
           className,
         )}
       >
@@ -61,8 +61,8 @@ export function SelectionButton({
       className={cx(
         "grid h-9 w-9 place-items-center rounded-full border backdrop-blur-sm transition-all duration-300",
         on
-          ? "border-accent bg-accent text-ground"
-          : "border-line-strong bg-ground/70 text-ink hover:bg-ink hover:text-ground",
+          ? "border-ink bg-ink text-ground"
+          : "border-line-strong bg-ground-2/80 text-ink hover:bg-ink hover:text-ground",
         className,
       )}
     >

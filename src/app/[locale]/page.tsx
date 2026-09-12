@@ -57,7 +57,7 @@ export default async function HomePage({
 
       {/* ── 2 · Öne çıkanlar rayı ── */}
       <ModeSection mode="kadin" className="bg-ground py-24 md:py-32">
-        <div className="mx-auto max-w-[1600px] px-5 md:px-10">
+        <div className="mx-auto max-w-[1280px] px-5 md:px-10">
           <Reveal>
             <SectionHead title={t.home.featuredTitle} lead={t.home.featuredLead} />
           </Reveal>
@@ -80,7 +80,7 @@ export default async function HomePage({
 
       {/* ── 3 · Kadın — vitrin tadı ── */}
       <ModeSection mode="kadin" id="kadin" className="cv-auto bg-ground py-24 md:py-32">
-        <div className="mx-auto max-w-[1600px] px-5 md:px-10">
+        <div className="mx-auto max-w-[1280px] px-5 md:px-10">
           <Reveal>
             <SectionHead
               title={t.home.womenTitle}
@@ -111,7 +111,7 @@ export default async function HomePage({
 
       {/* ── 5 · Erkek / Evrak — teknik ızgara ── */}
       <ModeSection mode="erkek" id="erkek" className="cv-auto bg-ground pb-28 md:pb-36">
-        <div className="mx-auto max-w-[1600px] px-5 md:px-10">
+        <div className="mx-auto max-w-[1280px] px-5 md:px-10">
           <Reveal>
             <SectionHead
               title={t.home.menTitle}
@@ -131,7 +131,7 @@ export default async function HomePage({
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 />
                 {/* Teknik künye — evrak tarafının dili ölçü ve malzeme */}
-                <dl className="mt-4 border-t border-line pt-3 text-[11px] leading-relaxed">
+                <dl className="mt-4 border-t border-line pt-3 text-caption">
                   <div className="flex justify-between gap-4">
                     <dt className="text-ink-40">{t.product.dimensions}</dt>
                     <dd className="text-ink-60 tabular-nums">
@@ -151,7 +151,7 @@ export default async function HomePage({
 
       {/* ── 6 · Zanaat ── */}
       <ModeSection mode="kadin" className="bg-ground-2 py-24 md:py-32">
-        <div className="mx-auto max-w-[1600px] px-5 md:px-10">
+        <div className="mx-auto max-w-[1280px] px-5 md:px-10">
           <Reveal>
             <SectionHead title={t.home.craftTitle} lead={t.home.craftLead} />
           </Reveal>
@@ -159,9 +159,9 @@ export default async function HomePage({
           <ol className="mt-16 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
             {t.home.craftItems.map((item, i) => (
               <Reveal as="li" key={item.n} delay={i * 0.08}>
-                <p className="font-mono text-xs tracking-widest text-accent">{item.n}</p>
-                <h3 className="mt-4 font-display text-2xl text-ink">{item.t}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-ink-60">{item.d}</p>
+                <p className="eyebrow text-ink-40">{item.n}</p>
+                <h3 className="mt-4 text-heading-sm text-ink">{item.t}</h3>
+                <p className="mt-3 text-body text-ink-60">{item.d}</p>
               </Reveal>
             ))}
           </ol>
@@ -170,17 +170,15 @@ export default async function HomePage({
 
       {/* ── 7 · Seçki çağrısı ── */}
       <ModeSection mode="kadin" className="bg-ground px-5 py-28 md:px-10 md:py-36">
-        <Reveal className="mx-auto max-w-[1600px]">
-          <h2 className="max-w-3xl font-display text-[clamp(2rem,5.4vw,4.2rem)] leading-[1.04] tracking-[-0.02em] text-ink">
+        <Reveal className="mx-auto max-w-[1280px]">
+          <h2 className="max-w-3xl font-whisper text-[clamp(2.2rem,5.4vw,58px)] leading-[1.06] tracking-[-0.04em] text-ink">
             {t.home.ctaTitle}
           </h2>
-          <p className="mt-7 max-w-xl text-base leading-relaxed text-ink-60">
-            {t.home.ctaLead}
-          </p>
+          <p className="mt-7 max-w-xl text-body text-ink-60">{t.home.ctaLead}</p>
           <div className="mt-12 flex flex-wrap items-center gap-4">
             <Link
               href={`/${locale}/koleksiyon`}
-              className="inline-flex items-center gap-3 bg-ink px-8 py-4 text-xs uppercase tracking-[0.18em] text-ground transition-transform duration-300 hover:scale-[1.02]"
+              className="inline-flex items-center gap-3 rounded-card bg-ink px-6 py-4 text-body font-medium text-ground transition-transform duration-300 hover:scale-[1.02]"
             >
               {t.home.ctaButton}
             </Link>
@@ -188,7 +186,7 @@ export default async function HomePage({
               href={`https://instagram.com/${site.instagram}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 border border-line-strong px-8 py-4 text-xs uppercase tracking-[0.18em] text-ink transition-colors hover:bg-ink hover:text-ground"
+              className="inline-flex items-center gap-3 rounded-card border border-line-strong bg-ground-2 px-6 py-4 text-body font-medium text-ink transition-colors hover:bg-ink hover:text-ground"
             >
               @{site.instagram}
             </a>
@@ -215,15 +213,15 @@ function SectionHead({
   return (
     <div className="flex flex-wrap items-end justify-between gap-6 border-b border-line pb-6">
       <div>
-        <h2 className="font-display text-[clamp(1.8rem,4vw,3.2rem)] leading-[1.06] tracking-[-0.02em] text-ink">
+        <h2 className="font-whisper text-[clamp(1.8rem,4vw,38px)] leading-[1.08] tracking-[-0.04em] text-ink">
           {title}
         </h2>
-        <p className="mt-3 max-w-lg text-sm leading-relaxed text-ink-60">{lead}</p>
+        <p className="mt-3 max-w-lg text-body text-ink-60">{lead}</p>
       </div>
       {href && hrefLabel && (
         <Link
           href={href}
-          className="shrink-0 border-b border-line-strong pb-1 text-xs uppercase tracking-[0.16em] text-ink-60 transition-colors hover:text-ink"
+          className="shrink-0 border-b border-line-strong pb-1 text-body text-ink-60 transition-colors hover:text-ink"
         >
           {hrefLabel}
         </Link>
