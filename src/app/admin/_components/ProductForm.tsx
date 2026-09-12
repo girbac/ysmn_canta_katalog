@@ -151,7 +151,7 @@ export function ProductForm({ product }: { product?: Product }) {
         <label className="flex items-center gap-3 text-body text-ink">
           <input type="checkbox" name="yeni" defaultChecked={v?.isNew}
             className="h-4 w-4 accent-[var(--ink)]" />
-          &quot;Yeni&quot; etiketi göster — anasayfadaki öne çıkanlar rayına da girer
+          &quot;Yeni&quot; etiketi göster — kartlarda rozet çıkar, koleksiyonda &quot;Önce yeniler&quot; sıralamasında öne geçer
         </label>
         <Field label="Fiyat" hint="Boş bırakılırsa arayüzde hiç gösterilmez">
           <input name="fiyat" type="number" min={0} step="1"

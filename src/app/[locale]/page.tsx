@@ -12,7 +12,6 @@ import { ModeSection } from "@/components/ModeSection";
 import { ModeShift } from "@/components/ModeShift";
 import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
-import { ScrollRail } from "@/components/ScrollRail";
 import { formatDimensions } from "@/lib/utils";
 
 export default async function HomePage({
@@ -35,7 +34,8 @@ export default async function HomePage({
     colorCount: t.product.colorCount,
   });
 
-  // Omuz çantası silüeti hero'da en okunaklı form
+  // Hero: sezonun yeni parçalarından biri, omuz çantası silüeti en okunaklı form.
+  // (`featured` artık yalnızca burada kullanılıyor — öne çıkanlar rayı kaldırıldı.)
   const hero = featured.find((p) => p.form === "omuz") ?? featured[0] ?? products[0];
   // Anasayfa bir vitrin: her bölümden tat verir, tamamını koleksiyona bırakır.
   // Katalogun tümü tek yerde (/koleksiyon) dursun ki müşteri aynı ürünlerle
@@ -56,30 +56,7 @@ export default async function HomePage({
         />
       </ModeSection>
 
-      {/* ── 2 · Öne çıkanlar rayı ── */}
-      <ModeSection mode="kadin" className="bg-ground py-24 md:py-32">
-        <div className="mx-auto max-w-[1280px] px-5 md:px-10">
-          <Reveal>
-            <SectionHead title={t.home.featuredTitle} lead={t.home.featuredLead} />
-          </Reveal>
-        </div>
-
-        <ScrollRail className="mt-14 overflow-hidden px-5 md:px-10" shift={-14}>
-          {featured.map((p, i) => (
-            <div key={p.slug} className="w-[68vw] shrink-0 sm:w-[42vw] lg:w-[26vw]">
-              <ProductCard
-                product={p}
-                locale={locale}
-                labels={cardLabels(p.form)}
-                priority={i < 2}
-                sizes="(max-width: 640px) 68vw, (max-width: 1024px) 42vw, 26vw"
-              />
-            </div>
-          ))}
-        </ScrollRail>
-      </ModeSection>
-
-      {/* ── 3 · Kadın — vitrin tadı ── */}
+      {/* ── 2 · Kadın — vitrin tadı ── */}
       <ModeSection mode="kadin" id="kadin" className="cv-auto bg-ground py-24 md:py-32">
         <div className="mx-auto max-w-[1280px] px-5 md:px-10">
           <Reveal>
@@ -101,7 +78,7 @@ export default async function HomePage({
         </div>
       </ModeSection>
 
-      {/* ── 4 · Perde: dünya değişiyor ── */}
+      {/* ── 3 · Perde: dünya değişiyor ── */}
       <ModeSection mode="erkek" className="bg-ground">
         <ModeShift
           eyebrow={t.home.modeShiftEyebrow}
@@ -110,7 +87,7 @@ export default async function HomePage({
         />
       </ModeSection>
 
-      {/* ── 5 · Erkek / Evrak — teknik ızgara ── */}
+      {/* ── 4 · Erkek / Evrak — teknik ızgara ── */}
       <ModeSection mode="erkek" id="erkek" className="cv-auto bg-ground pb-28 md:pb-36">
         <div className="mx-auto max-w-[1280px] px-5 md:px-10">
           <Reveal>
@@ -150,7 +127,7 @@ export default async function HomePage({
         </div>
       </ModeSection>
 
-      {/* ── 6 · Zanaat ── */}
+      {/* ── 5 · Zanaat ── */}
       <ModeSection mode="kadin" className="bg-ground-2 py-24 md:py-32">
         <div className="mx-auto max-w-[1280px] px-5 md:px-10">
           <Reveal>
@@ -169,7 +146,7 @@ export default async function HomePage({
         </div>
       </ModeSection>
 
-      {/* ── 7 · Seçki çağrısı ── */}
+      {/* ── 6 · Seçki çağrısı ── */}
       <ModeSection mode="kadin" className="bg-ground px-5 py-28 md:px-10 md:py-36">
         <Reveal className="mx-auto max-w-[1280px]">
           <h2 className="max-w-3xl font-whisper text-[clamp(2.2rem,5.4vw,58px)] leading-[1.06] tracking-[-0.04em] text-ink">
