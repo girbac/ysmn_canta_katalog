@@ -22,7 +22,10 @@ export function SelectionButton({
 }) {
   const hydrated = useHydrated();
   const toggle = useSelection((s) => s.toggle);
-  const selected = useSelection((s) => s.items.some((i) => i.slug === slug));
+  // Renk de kimliğin parçası: taba eklenmişken siyah "seçili" görünmemeli
+  const selected = useSelection((s) =>
+    s.items.some((i) => i.slug === slug && (i.color ?? "") === (color ?? "")),
+  );
   const on = hydrated && selected;
 
   const label = on ? labels.remove : labels.add;

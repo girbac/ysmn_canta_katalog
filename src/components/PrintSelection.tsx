@@ -6,7 +6,7 @@ import type { Locale } from "@/data/types";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { getProduct } from "@/data/products";
 import { materialName } from "@/data/materials";
-import { useHydrated, useSelection } from "@/store/selection";
+import { itemKey, useHydrated, useSelection } from "@/store/selection";
 import { BagSilhouette } from "./BagSilhouette";
 import { formatDimensions } from "@/lib/utils";
 
@@ -109,7 +109,7 @@ export function PrintSelection({
                   const color = p.colors.find((c) => c.key === item.color) ?? p.colors[0];
                   return (
                     <tr
-                      key={item.slug}
+                      key={itemKey(item.slug, item.color)}
                       className="print-break border-b border-black/12 align-top text-[11px] text-ink print:text-black"
                     >
                       <td className="py-3">

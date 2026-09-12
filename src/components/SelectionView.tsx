@@ -10,6 +10,7 @@ import { materialName } from "@/data/materials";
 import {
   decodeSelection,
   encodeSelection,
+  itemKey,
   useHydrated,
   useSelection,
   type SelectionItem,
@@ -106,7 +107,7 @@ export function SelectionView({
               const p = getProduct(s.slug);
               return p ? (
                 <li
-                  key={s.slug}
+                  key={itemKey(s.slug, s.color)}
                   className="rounded-card border border-line-strong px-3 py-1.5 text-caption text-ink-60"
                 >
                   {p.name[locale]}
@@ -153,7 +154,10 @@ export function SelectionView({
               const colorIndex = product.colors.findIndex((c) => c.key === color.key);
 
               return (
-                <li key={item.slug} className="grid gap-5 py-7 sm:grid-cols-[110px_1fr_auto]">
+                <li
+                  key={itemKey(item.slug, item.color)}
+                  className="grid gap-5 py-7 sm:grid-cols-[110px_1fr_auto]"
+                >
                   <Link href={`/${locale}/urun/${product.slug}`} className="block w-[110px]">
                     <ProductMedia
                       product={product}
@@ -184,7 +188,7 @@ export function SelectionView({
                         <button
                           key={c.key}
                           type="button"
-                          onClick={() => setColor(item.slug, c.key)}
+                          onClick={() => setColor(item.slug, item.color, c.key)}
                           aria-pressed={c.key === color.key}
                           title={c.name[locale]}
                           className={cx(
@@ -208,7 +212,7 @@ export function SelectionView({
                       <input
                         type="text"
                         value={item.note ?? ""}
-                        onChange={(e) => setNote(item.slug, e.target.value)}
+                        onChange={(e) => setNote(item.slug, item.color, e.target.value)}
                         placeholder={t.selection.notePlaceholder}
                         className="w-full max-w-md border-b border-line bg-transparent py-2 text-body text-ink placeholder:text-ink-40 focus:border-ink focus:outline-none"
                       />
@@ -223,13 +227,13 @@ export function SelectionView({
                         min={1}
                         max={999}
                         value={item.qty}
-                        onChange={(e) => setQty(item.slug, Number(e.target.value))}
+                        onChange={(e) => setQty(item.slug, item.color, Number(e.target.value))}
                         className="w-16 rounded-card border border-line-strong bg-ground-2 px-2 py-2 text-center text-body tabular-nums text-ink focus:border-ink focus:outline-none"
                       />
                     </label>
                     <button
                       type="button"
-                      onClick={() => remove(item.slug)}
+                      onClick={() => remove(item.slug, item.color)}
                       className="text-caption text-ink-40 underline-offset-4 hover:text-ink hover:underline"
                     >
                       {t.product.remove}

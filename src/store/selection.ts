@@ -12,14 +12,29 @@ export type SelectionItem = {
   note?: string;
 };
 
+/**
+ * Seçkideki satır kimliği: **ürün + renk**.
+ *
+ * Yalnızca slug'a bakılsaydı aynı çantanın bordosunu eklediğinizde siyahı da
+ * "seçili" görünür, ikinci rengi hiç ekleyemezdiniz. Oysa bir bayi çoğu zaman
+ * aynı modeli iki renkten ister — o yüzden her renk ayrı bir satır.
+ */
+export function itemKey(slug: string, color?: string): string {
+  return `${slug}~${color ?? ""}`;
+}
+
+const sameItem = (i: SelectionItem, slug: string, color?: string) =>
+  i.slug === slug && (i.color ?? "") === (color ?? "");
+
 type SelectionState = {
   items: SelectionItem[];
   add: (slug: string, color?: string) => void;
-  remove: (slug: string) => void;
+  remove: (slug: string, color?: string) => void;
   toggle: (slug: string, color?: string) => void;
-  setQty: (slug: string, qty: number) => void;
-  setNote: (slug: string, note: string) => void;
-  setColor: (slug: string, color: string) => void;
+  setQty: (slug: string, color: string | undefined, qty: number) => void;
+  setNote: (slug: string, color: string | undefined, note: string) => void;
+  /** Bir satırın rengini değiştirir; hedef renk zaten varsa adetler birleşir. */
+  setColor: (slug: string, from: string | undefined, to: string) => void;
   clear: () => void;
   /** Paylaşılan bir seçkiyi mevcut seçkiyle birleştirir */
   merge: (items: SelectionItem[]) => void;
@@ -32,47 +47,83 @@ export const useSelection = create<SelectionState>()(
 
       add: (slug, color) =>
         set((s) =>
-          s.items.some((i) => i.slug === slug)
+          s.items.some((i) => sameItem(i, slug, color))
             ? s
             : { items: [...s.items, { slug, color, qty: 1 }] },
         ),
 
-      remove: (slug) => set((s) => ({ items: s.items.filter((i) => i.slug !== slug) })),
+      remove: (slug, color) =>
+        set((s) => ({ items: s.items.filter((i) => !sameItem(i, slug, color)) })),
 
       toggle: (slug, color) =>
         set((s) =>
-          s.items.some((i) => i.slug === slug)
-            ? { items: s.items.filter((i) => i.slug !== slug) }
+          s.items.some((i) => sameItem(i, slug, color))
+            ? { items: s.items.filter((i) => !sameItem(i, slug, color)) }
             : { items: [...s.items, { slug, color, qty: 1 }] },
         ),
 
-      setQty: (slug, qty) =>
+      setQty: (slug, color, qty) =>
         set((s) => ({
           items: s.items.map((i) =>
-            i.slug === slug ? { ...i, qty: Math.max(1, Math.min(999, qty)) } : i,
+            sameItem(i, slug, color) ? { ...i, qty: Math.max(1, Math.min(999, qty)) } : i,
           ),
         })),
 
-      setNote: (slug, note) =>
+      setNote: (slug, color, note) =>
         set((s) => ({
-          items: s.items.map((i) => (i.slug === slug ? { ...i, note } : i)),
+          items: s.items.map((i) => (sameItem(i, slug, color) ? { ...i, note } : i)),
         })),
 
-      setColor: (slug, color) =>
-        set((s) => ({
-          items: s.items.map((i) => (i.slug === slug ? { ...i, color } : i)),
-        })),
+      setColor: (slug, from, to) =>
+        set((s) => {
+          if ((from ?? "") === to) return s;
+
+          const source = s.items.find((i) => sameItem(i, slug, from));
+          if (!source) return s;
+
+          // Hedef renk zaten seçkideyse iki satır tek satıra iner, adetler toplanır
+          const target = s.items.find((i) => sameItem(i, slug, to));
+          if (target) {
+            return {
+              items: s.items
+                .filter((i) => !sameItem(i, slug, from))
+                .map((i) =>
+                  sameItem(i, slug, to)
+                    ? { ...i, qty: Math.min(999, i.qty + source.qty) }
+                    : i,
+                ),
+            };
+          }
+
+          return {
+            items: s.items.map((i) => (sameItem(i, slug, from) ? { ...i, color: to } : i)),
+          };
+        }),
 
       clear: () => set({ items: [] }),
 
       merge: (incoming) =>
         set((s) => {
-          const bySlug = new Map(s.items.map((i) => [i.slug, i]));
-          for (const item of incoming) if (!bySlug.has(item.slug)) bySlug.set(item.slug, item);
-          return { items: [...bySlug.values()] };
+          const byKey = new Map(s.items.map((i) => [itemKey(i.slug, i.color), i]));
+          for (const item of incoming) {
+            const k = itemKey(item.slug, item.color);
+            if (!byKey.has(k)) byKey.set(k, item);
+          }
+          return { items: [...byKey.values()] };
         }),
     }),
-    { name: "ysmn-selection", version: 1 },
+    {
+      name: "ysmn-selection",
+      version: 2,
+      /**
+       * v1 → v2: kimlik slug'dan slug+renk'e geçti.
+       * Satırların şekli değişmedi ve v1'de zaten ürün başına en fazla bir
+       * satır vardı, dolayısıyla eski kayıtlar v2 kurallarına da uyuyor —
+       * olduğu gibi taşınıyorlar. Göç fonksiyonu olmasaydı zustand eski
+       * seçkiyi sessizce atardı.
+       */
+      migrate: (persisted) => persisted as { items: SelectionItem[] },
+    },
   ),
 );
 
@@ -94,9 +145,20 @@ export function useHydrated() {
   return useSyncExternalStore(noopSubscribe, onClient, onServer);
 }
 
-/** Seçkiyi paylaşılabilir bir sorgu dizesine çevirir: "slug:2,slug2" */
+/**
+ * Seçkiyi paylaşılabilir bir sorgu dizesine çevirir.
+ *
+ * Biçim: `slug~renk:adet` — renk ve adet ikisi de isteğe bağlı.
+ * Örn: "meridyen-tote~taba:3,hilal-omuz~siyah,liman-tote"
+ * Renk ayracı "~" olduğu için eski "slug:adet" bağlantıları da okunabilir.
+ */
 export function encodeSelection(items: SelectionItem[]): string {
-  return items.map((i) => (i.qty > 1 ? `${i.slug}:${i.qty}` : i.slug)).join(",");
+  return items
+    .map((i) => {
+      const base = i.color ? `${i.slug}~${i.color}` : i.slug;
+      return i.qty > 1 ? `${base}:${i.qty}` : base;
+    })
+    .join(",");
 }
 
 /** Paylaşım dizesini çözer. Bilinmeyen slug'lar `known` ile elenir. */
@@ -108,10 +170,12 @@ export function decodeSelection(
   return value
     .split(",")
     .map((chunk) => {
-      const [slug, rawQty] = chunk.split(":");
+      const [head, rawQty] = chunk.split(":");
+      const [slug, color] = head.split("~");
       const qty = Number(rawQty);
       return {
         slug: slug.trim(),
+        color: color?.trim() || undefined,
         qty: Number.isFinite(qty) && qty > 0 ? Math.min(999, Math.floor(qty)) : 1,
       };
     })
