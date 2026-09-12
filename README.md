@@ -4,6 +4,10 @@ Kaydırmanın kendisinin keyifli olduğu bir vitrin. Kadın koleksiyonu editorya
 sıcak; erkek/evrak koleksiyonu teknik ve koyu. İkisi arasındaki geçiş sekme değil,
 sayfanın kendi paletini değiştirmesi.
 
+**Anasayfa katalog değil, vitrindir:** her bölümden birkaç parça gösterir ve iki
+net kapı verir (Kadın / Erkek). Katalogun tamamı tek yerde, `/koleksiyon`'da durur —
+müşteri aynı ürünlerle iki ayrı yerde karşılaşmasın diye.
+
 Ziyaretçi gezerken beğendiklerini **seçkisine** ekler; seçkiyi tek tıkla
 WhatsApp'tan gönderir, bağlantı olarak paylaşır ya da PDF indirir.
 
@@ -54,8 +58,8 @@ değil — o zaten hazır, sadece `products.ts` içindeki `images` dizilerini do
 ```
 src/
   app/[locale]/           tr / en — tüm sayfalar dil önekli
-    page.tsx              anasayfa (sekiz bölümlük ritim)
-    koleksiyon/           filtreli ızgara (filtre durumu URL'de)
+    page.tsx              anasayfa (yedi bölümlük vitrin, ~18 ürün)
+    koleksiyon/           katalogun tamamı + filtre (filtre durumu URL'de)
     urun/[slug]/          ürün detayı (tam sayfa)
     @modal/(.)urun/       aynı detay, ızgaradan açılınca pencere olarak
     secki/                seçki + /yazdir A4 baskı görünümü
@@ -78,6 +82,13 @@ src/
   hidrasyon bitene kadar metin görünmez kalır ve LCP ~2.3s'ye çıkardı; CSS ile
   0.3s.
 - **CLS = 0**: her görsel sabit en-boy oranlı kutuda.
+- **Filtrede ölü uç yok.** Tıklanabilir her seçenek en az bir ürüne çıkar:
+  seçenekler faceted mantıkla, *diğer* filtrelere göre süzülmüş listeden
+  hesaplanır (`availableOptions`, `src/lib/filters.ts`). Erkek tarafında clutch,
+  bordo seçiliyken bordosu olmayan malzeme hiç gösterilmez.
+- **Menüde aktif sayfa işaretlidir.** Bölüm bilgisi query string'de olduğu için
+  `useSearchParams` gerekiyor; nav bu yüzden `<Suspense>` içinde. Fallback aynı
+  menüyü işaretsiz basar, böylece bağlantılar ilk HTML'de yerinde kalır.
 - `prefers-reduced-motion` açıkken tüm hareket kapanır, içerik eksiksiz kalır.
 - Seçki sayfaları `robots` ile dizine kapalıdır (kişiye özel ve paylaşım
   bağlantılı).

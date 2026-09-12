@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -76,15 +76,22 @@ export const useSelection = create<SelectionState>()(
   ),
 );
 
+/** useSyncExternalStore için sabit referanslar — her render'da yenilenmesinler */
+const noopSubscribe = () => () => {};
+const onClient = () => true;
+const onServer = () => false;
+
 /**
  * localStorage'dan okunan durum ilk render'da sunucuyla uyuşmaz.
  * Bu hook hidrasyon bitene kadar `false` döner; seçki sayısı gibi
  * kişiye özel değerleri ancak ondan sonra basıyoruz.
+ *
+ * useEffect + setState yerine useSyncExternalStore: sunucu anlık görüntüsü
+ * false, istemci anlık görüntüsü true olduğu için hidrasyondan sonra
+ * fazladan bir render turu olmadan doğru değere geçiyoruz.
  */
 export function useHydrated() {
-  const [hydrated, setHydrated] = useState(false);
-  useEffect(() => setHydrated(true), []);
-  return hydrated;
+  return useSyncExternalStore(noopSubscribe, onClient, onServer);
 }
 
 /** Seçkiyi paylaşılabilir bir sorgu dizesine çevirir: "slug:2,slug2" */

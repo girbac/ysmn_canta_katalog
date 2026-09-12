@@ -44,14 +44,23 @@ export function parseFilters(raw: Raw, knownColors: readonly string[], knownMate
   };
 }
 
+/** Süzülebilir boyutlar — "except" ile biri hesap dışı bırakılabilir */
+type Facet = "form" | "renk" | "malzeme";
+
+/**
+ * Ürün filtreye uyuyor mu? `except` verilirse o boyut yok sayılır —
+ * faceted seçenek hesabı bunu kullanıyor.
+ */
+function matches(p: Product, f: Filters, except?: Facet): boolean {
+  if (f.bolum && p.segment !== f.bolum) return false;
+  if (except !== "form" && f.form && p.form !== f.form) return false;
+  if (except !== "malzeme" && f.malzeme && p.material !== f.malzeme) return false;
+  if (except !== "renk" && f.renk && !p.colors.some((c) => c.key === f.renk)) return false;
+  return true;
+}
+
 export function applyFilters(f: Filters, locale: Locale): Product[] {
-  const list = products.filter((p) => {
-    if (f.bolum && p.segment !== f.bolum) return false;
-    if (f.form && p.form !== f.form) return false;
-    if (f.malzeme && p.material !== f.malzeme) return false;
-    if (f.renk && !p.colors.some((c) => c.key === f.renk)) return false;
-    return true;
-  });
+  const list = products.filter((p) => matches(p, f));
 
   switch (f.sirala) {
     case "yeni":
@@ -71,6 +80,48 @@ export function applyFilters(f: Filters, locale: Locale): Product[] {
 /** Aktif filtre var mı? "Temizle" düğmesini göstermek için. */
 export function hasActiveFilters(f: Filters): boolean {
   return Boolean(f.bolum || f.form || f.renk || f.malzeme) || f.sirala !== "katalog";
+}
+
+/**
+ * Panelin arkasındaki aktif filtre sayısı — "Filtrele (2)" rozeti ve
+ * panelin açık başlaması için.
+ *
+ * Form (birincil satır) ve bölüm (menü + sayfa başlığı) sayıma girmez;
+ * ikisi de zaten ekranda görünür durumda. Bölüm sayılsaydı menüden
+ * "Erkek"e her basışta panel kendiliğinden açılır, sadeleştirme boşa giderdi.
+ */
+export function activeFilterCount(f: Filters): number {
+  return (
+    Number(Boolean(f.renk)) +
+    Number(Boolean(f.malzeme)) +
+    Number(f.sirala !== "katalog")
+  );
+}
+
+/**
+ * Tıklanabilir seçenekler — hiçbiri sıfır sonuca götürmez.
+ *
+ * Her boyut, DİĞER boyutlara göre süzülmüş listeden hesaplanır (faceted
+ * arama). Böylece "Bordo + Süet = 0 ürün" gibi bir çıkmaz oluşmaz: süet
+ * pastili, bordo seçiliyken süet ürün kalmadıysa hiç gösterilmez.
+ *
+ * Kendi boyutu hesap dışı bırakıldığı için seçili olan seçenek her zaman
+ * listede kalır — yani geri alınabilir.
+ */
+export function availableOptions(f: Filters): {
+  forms: Form[];
+  colors: string[];
+  materials: MaterialKey[];
+} {
+  const byForm = products.filter((p) => matches(p, f, "form"));
+  const byColor = products.filter((p) => matches(p, f, "renk"));
+  const byMaterial = products.filter((p) => matches(p, f, "malzeme"));
+
+  return {
+    forms: FORMS.filter((x) => byForm.some((p) => p.form === x)),
+    colors: [...new Set(byColor.flatMap((p) => p.colors.map((c) => c.key)))],
+    materials: [...new Set(byMaterial.map((p) => p.material))],
+  };
 }
 
 /**

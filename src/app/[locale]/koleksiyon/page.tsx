@@ -4,10 +4,16 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import type { Form, Locale } from "@/data/types";
-import { usedColorKeys, usedMaterialKeys, colorHexByKey } from "@/data/products";
+import { usedColorKeys, colorHexByKey } from "@/data/products";
 import { colorName, type ColorKey } from "@/data/colors";
-import { materialKeys } from "@/data/materials";
-import { applyFilters, hasActiveFilters, parseFilters } from "@/lib/filters";
+import { materialKeys, materialName } from "@/data/materials";
+import {
+  applyFilters,
+  availableOptions,
+  hasActiveFilters,
+  parseFilters,
+  type Filters,
+} from "@/lib/filters";
 import { interpolate } from "@/lib/utils";
 import { BodyMode } from "@/components/BodyMode";
 import { FilterBar } from "@/components/FilterBar";
@@ -16,16 +22,27 @@ import { Reveal } from "@/components/Reveal";
 
 type SP = Promise<Record<string, string | string[] | undefined>>;
 
+/** Hangi odadayız? Başlık bunu söylüyor — "Koleksiyon" değil, "Kadın Koleksiyonu". */
+function sectionTitle(t: ReturnType<typeof getDictionary>, bolum: Filters["bolum"]) {
+  if (bolum === "kadin") return t.collection.titleWomen;
+  if (bolum === "erkek") return t.collection.titleMen;
+  return t.collection.title;
+}
+
 export async function generateMetadata({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: SP;
 }): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const t = getDictionary(locale);
+  const filters = parseFilters(await searchParams, usedColorKeys, materialKeys);
+
   return {
-    title: t.meta.collectionTitle,
+    title: sectionTitle(t, filters.bolum),
     description: t.meta.collectionDescription,
     alternates: { canonical: `/${locale}/koleksiyon` },
   };
@@ -47,9 +64,21 @@ export default async function CollectionPage({
   const filters = parseFilters(sp, usedColorKeys, materialKeys);
   const list = applyFilters(filters, locale);
 
+  // Tıklanabilir her seçenek en az bir ürüne çıkar: erkek tarafında clutch,
+  // bordo seçiliyken bordosu olmayan malzeme hiç gösterilmez.
+  const options = availableOptions(filters);
+
   const colorNames = Object.fromEntries(
     usedColorKeys.map((k) => [k, colorName(k as ColorKey)[locale]]),
   );
+  const materialNames = Object.fromEntries(
+    materialKeys.map((k) => [k, materialName(k)[locale]]),
+  );
+
+  const countLabel =
+    list.length === 1
+      ? t.collection.countOne
+      : interpolate(t.collection.count, { n: list.length });
 
   const cardLabels = (form: Form) => ({
     add: t.product.add,
@@ -63,31 +92,31 @@ export default async function CollectionPage({
   return (
     <div data-mode={filters.bolum === "erkek" ? "erkek" : "kadin"} className="bg-ground">
       <BodyMode mode={filters.bolum === "erkek" ? "erkek" : "kadin"} />
-      <div className="mx-auto max-w-[1600px] px-5 pb-28 pt-32 md:px-10 md:pt-36">
+      <div className="mx-auto max-w-[1600px] px-5 pb-28 pt-28 md:px-10 md:pt-32">
         <header>
           <h1 className="font-display text-[clamp(2rem,5vw,3.6rem)] leading-[1.06] tracking-[-0.02em] text-ink">
-            {t.collection.title}
+            {sectionTitle(t, filters.bolum)}
           </h1>
-          <p className="mt-3 max-w-lg text-sm leading-relaxed text-ink-60">
-            {t.collection.lead}
-          </p>
         </header>
 
-        <div className="mt-10">
+        <div className="mt-8">
           <FilterBar
             locale={locale}
             filters={filters}
-            colors={usedColorKeys}
-            materials={usedMaterialKeys}
+            forms={options.forms}
+            colors={options.colors}
+            materials={options.materials}
             colorHex={Object.fromEntries(colorHexByKey)}
+            resultCount={countLabel}
             labels={{
-              filters: t.collection.filters,
               color: t.collection.filterColor,
               form: t.collection.filterForm,
               material: t.collection.filterMaterial,
-              segment: t.collection.filterSegment,
               all: t.collection.all,
               clear: t.collection.clear,
+              showFilters: t.collection.showFilters,
+              hideFilters: t.collection.hideFilters,
+              removeFilter: t.collection.removeFilter,
               sortLabel: t.collection.sortLabel,
               sorts: {
                 katalog: t.collection.sortDefault,
@@ -97,15 +126,10 @@ export default async function CollectionPage({
               forms: t.forms,
               segments: t.segments,
               colorNames,
+              materialNames,
             }}
           />
         </div>
-
-        <p className="mt-8 text-xs uppercase tracking-[0.16em] text-ink-40" aria-live="polite">
-          {list.length === 1
-            ? t.collection.countOne
-            : interpolate(t.collection.count, { n: list.length })}
-        </p>
 
         {list.length === 0 ? (
           <div className="py-28 text-center">

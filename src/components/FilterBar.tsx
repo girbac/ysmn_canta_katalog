@@ -1,90 +1,207 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import type { Form, Locale, Segment } from "@/data/types";
 import type { MaterialKey } from "@/data/materials";
 import { materialName } from "@/data/materials";
-import { buildQuery, hasActiveFilters, type Filters, type Sort } from "@/lib/filters";
+import {
+  activeFilterCount,
+  buildQuery,
+  hasActiveFilters,
+  type Filters,
+  type Sort,
+} from "@/lib/filters";
+import { BagSilhouette } from "./BagSilhouette";
 import { cx } from "@/lib/utils";
 
 export type FilterLabels = {
-  filters: string;
   color: string;
   form: string;
   material: string;
-  segment: string;
   all: string;
   clear: string;
+  showFilters: string;
+  hideFilters: string;
+  removeFilter: string;
   sortLabel: string;
   sorts: Record<Sort, string>;
   forms: Record<Form, string>;
   segments: Record<Segment, string>;
   colorNames: Record<string, string>;
+  materialNames: Record<string, string>;
 };
 
+/** Silüet tonlaması — deri rengi, iki modda da zeminden ayrışıyor */
+const TILE_HEX = "#8A6A4F";
+
 /**
- * Dropdown yok. Filtreler fiziksel: renk pastilleri, form ve malzeme etiketleri.
- * Her seçim bir <Link> — yani durum URL'de. Paylaşılabilir, geri tuşu çalışır,
- * sonuçlar sunucuda render edilir.
+ * Filtre bir duvar değil, araç.
+ *
+ * Her zaman açık olan tek şey **form** — çünkü insan çantayı önce
+ * "nasıl taşıyacağım" diye seçer. Bölüm/renk/malzeme/sıralama "Filtrele"
+ * düğmesinin arkasında durur; seçilenler panel kapalıyken de silinebilir
+ * etiket olarak görünür, yani ne seçtiğini görmek için paneli açman gerekmez.
+ *
+ * Durum URL'de: her seçim bir <Link>. Paylaşılabilir adres, çalışan geri tuşu,
+ * sunucuda render edilen sonuçlar.
+ *
+ * Sunulan seçenekler o anki bölüme göre süzülür (bkz. availableOptions) —
+ * sıfır sonuca götüren bir filtre hiç gösterilmez.
  */
 export function FilterBar({
   locale,
   filters,
+  forms,
   colors,
   materials,
   colorHex,
+  resultCount,
   labels,
 }: {
   locale: Locale;
   filters: Filters;
+  /** Bu bölümde gerçekten bulunan formlar */
+  forms: Form[];
   colors: string[];
   materials: MaterialKey[];
   /** renk anahtarı → hex (sunucudan düz nesne olarak gelir) */
   colorHex: Record<string, string>;
+  /** Sonuç sayısı yazısı — ikincil çubukta, ayrı satır harcamadan */
+  resultCount: string;
   labels: FilterLabels;
 }) {
   const base = `/${locale}/koleksiyon`;
   const to = (patch: Partial<Filters>) => `${base}${buildQuery(filters, patch)}`;
 
-  const FORMS: Form[] = ["tote", "omuz", "baguette", "clutch", "sirt", "evrak", "postaci"];
-  const SEGMENTS: Segment[] = ["kadin", "erkek"];
+  const count = activeFilterCount(filters);
+
+  // Paylaşılan filtreli bir adrese girildiğinde panel açık başlasın ki
+  // ziyaretçi neyin süzülü olduğunu görsün. Aynı route içinde gezinirken
+  // App Router bu bileşeni yeniden bağlamadığı için durum korunur.
+  const [open, setOpen] = useState(count > 0);
+
   const SORTS: Sort[] = ["katalog", "yeni", "isim"];
 
-  return (
-    <div className="no-print border-y border-line py-6">
-      <div className="flex flex-col gap-6">
-        <Row label={labels.segment}>
-          <Pill href={to({ bolum: undefined })} active={!filters.bolum}>
-            {labels.all}
-          </Pill>
-          {SEGMENTS.map((s) => (
-            <Pill
-              key={s}
-              href={to({ bolum: filters.bolum === s ? undefined : s })}
-              active={filters.bolum === s}
-            >
-              {labels.segments[s]}
-            </Pill>
-          ))}
-        </Row>
+  /** Panel kapalıyken bile görünen, tek tıkla kaldırılabilir seçimler */
+  const chips = [
+    filters.bolum && {
+      key: `bolum-${filters.bolum}`,
+      label: labels.segments[filters.bolum],
+      href: to({ bolum: undefined }),
+    },
+    filters.renk && {
+      key: `renk-${filters.renk}`,
+      label: labels.colorNames[filters.renk] ?? filters.renk,
+      href: to({ renk: undefined }),
+      hex: colorHex[filters.renk],
+    },
+    filters.malzeme && {
+      key: `malzeme-${filters.malzeme}`,
+      label: labels.materialNames[filters.malzeme] ?? filters.malzeme,
+      href: to({ malzeme: undefined }),
+    },
+    filters.sirala !== "katalog" && {
+      key: `sirala-${filters.sirala}`,
+      label: labels.sorts[filters.sirala],
+      href: to({ sirala: "katalog" }),
+    },
+  ].filter(Boolean) as Array<{ key: string; label: string; href: string; hex?: string }>;
 
-        <Row label={labels.form}>
-          <Pill href={to({ form: undefined })} active={!filters.form}>
-            {labels.all}
-          </Pill>
-          {FORMS.map((f) => (
-            <Pill
+  return (
+    <div className="no-print border-y border-line">
+      {/* ── Birincil: form ── */}
+      <div className="py-4">
+        <ul className="rail-scroll flex gap-3 overflow-x-auto">
+          <FormTile
+            href={to({ form: undefined })}
+            label={labels.all}
+            active={!filters.form}
+          />
+          {forms.map((f) => (
+            <FormTile
               key={f}
               href={to({ form: filters.form === f ? undefined : f })}
+              label={labels.forms[f]}
               active={filters.form === f}
-            >
-              {labels.forms[f]}
-            </Pill>
+              form={f}
+            />
           ))}
-        </Row>
+        </ul>
+      </div>
 
-        <Row label={labels.color}>
-          <div className="flex flex-wrap items-center gap-2">
+      {/* ── İkincil: panel düğmesi, sonuç sayısı, seçili etiketler ── */}
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-line py-3">
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          className={cx(
+            "inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs tracking-wide transition-colors duration-200",
+            open || count > 0
+              ? "border-ink text-ink"
+              : "border-line-strong text-ink-60 hover:border-ink hover:text-ink",
+          )}
+        >
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path
+              d="M1 2.5h10M3 6h6M5 9.5h2"
+              stroke="currentColor"
+              strokeWidth="1.3"
+              strokeLinecap="round"
+            />
+          </svg>
+          {open ? labels.hideFilters : labels.showFilters}
+          {count > 0 && (
+            <span className="grid h-4 min-w-4 place-items-center rounded-full bg-ink px-1 text-[10px] leading-none text-ground tabular-nums">
+              {count}
+            </span>
+          )}
+        </button>
+
+        {chips.map((c) => (
+          <Link
+            key={c.key}
+            href={c.href}
+            aria-label={`${labels.removeFilter}: ${c.label}`}
+            className="group inline-flex items-center gap-1.5 rounded-full border border-line-strong py-1 pl-2.5 pr-2 text-xs text-ink-60 transition-colors hover:border-ink hover:text-ink"
+          >
+            {c.hex && (
+              <span
+                className="h-3 w-3 rounded-full border border-line"
+                style={{ backgroundColor: c.hex }}
+              />
+            )}
+            {c.label}
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+              <path
+                d="M2.5 2.5l5 5M7.5 2.5l-5 5"
+                stroke="currentColor"
+                strokeWidth="1.3"
+                strokeLinecap="round"
+              />
+            </svg>
+          </Link>
+        ))}
+
+        <span className="text-xs uppercase tracking-[0.14em] text-ink-40" aria-live="polite">
+          {resultCount}
+        </span>
+
+        {hasActiveFilters(filters) && (
+          <Link
+            href={base}
+            className="ml-auto text-xs uppercase tracking-[0.14em] text-accent underline-offset-4 hover:underline"
+          >
+            {labels.clear}
+          </Link>
+        )}
+      </div>
+
+      {/* ── Panel ── */}
+      {open && (
+        <div className="flex flex-col gap-5 border-t border-line py-6">
+          <Row label={labels.color}>
             {colors.map((key) => {
               const active = filters.renk === key;
               const name = labels.colorNames[key] ?? key;
@@ -96,46 +213,36 @@ export function FilterBar({
                   aria-current={active ? "true" : undefined}
                   title={name}
                   className={cx(
-                    "relative grid h-8 w-8 place-items-center rounded-full border transition-transform duration-200 hover:scale-110",
+                    "grid h-8 w-8 place-items-center rounded-full border transition-transform duration-200 hover:scale-110",
                     active ? "scale-110 border-ink" : "border-line-strong",
                   )}
                 >
                   <span
                     className="h-5 w-5 rounded-full"
-                    style={{ backgroundColor: colorHex[key] ?? "#8A6A4F" }}
+                    style={{ backgroundColor: colorHex[key] ?? TILE_HEX }}
                   />
                   {/* Renk körü / ekran okuyucu kullanıcıları için isim */}
                   <span className="sr-only">{name}</span>
                 </Link>
               );
             })}
-            {filters.renk && (
-              <Link
-                href={to({ renk: undefined })}
-                className="ml-1 text-xs uppercase tracking-[0.14em] text-ink-40 underline-offset-4 hover:text-ink hover:underline"
-              >
-                {labels.all}
-              </Link>
-            )}
-          </div>
-        </Row>
+          </Row>
 
-        <Row label={labels.material}>
-          <Pill href={to({ malzeme: undefined })} active={!filters.malzeme}>
-            {labels.all}
-          </Pill>
-          {materials.map((m) => (
-            <Pill
-              key={m}
-              href={to({ malzeme: filters.malzeme === m ? undefined : m })}
-              active={filters.malzeme === m}
-            >
-              {materialName(m)[locale]}
+          <Row label={labels.material}>
+            <Pill href={to({ malzeme: undefined })} active={!filters.malzeme}>
+              {labels.all}
             </Pill>
-          ))}
-        </Row>
+            {materials.map((m) => (
+              <Pill
+                key={m}
+                href={to({ malzeme: filters.malzeme === m ? undefined : m })}
+                active={filters.malzeme === m}
+              >
+                {materialName(m)[locale]}
+              </Pill>
+            ))}
+          </Row>
 
-        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-line pt-5">
           <Row label={labels.sortLabel}>
             {SORTS.map((s) => (
               <Pill key={s} href={to({ sirala: s })} active={filters.sirala === s}>
@@ -143,18 +250,68 @@ export function FilterBar({
               </Pill>
             ))}
           </Row>
+        </div>
+      )}
+    </div>
+  );
+}
 
-          {hasActiveFilters(filters) && (
-            <Link
-              href={base}
-              className="text-xs uppercase tracking-[0.14em] text-accent underline-offset-4 hover:underline"
-            >
-              {labels.clear}
-            </Link>
+/** Form karosu — silüetin kendisi etiket görevi görüyor */
+function FormTile({
+  href,
+  label,
+  active,
+  form,
+}: {
+  href: string;
+  label: string;
+  active: boolean;
+  form?: Form;
+}) {
+  return (
+    <li className="shrink-0">
+      <Link
+        href={href}
+        aria-current={active ? "true" : undefined}
+        className="group block w-[70px]"
+      >
+        <div
+          className={cx(
+            "grid aspect-square place-items-center border bg-ground-2 transition-colors duration-200",
+            active ? "border-ink" : "border-transparent group-hover:border-line-strong",
+          )}
+        >
+          {form ? (
+            <BagSilhouette
+              form={form}
+              hex={TILE_HEX}
+              idSuffix={`filter-${form}`}
+              backdrop={false}
+              className="h-full w-full"
+            />
+          ) : (
+            /* "Tümü" karosu: altındaki etiket zaten adını söylüyor,
+               içine nötr bir ızgara işareti koyuyoruz */
+            <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+              <g fill="none" stroke="var(--ink)" strokeOpacity="0.32" strokeWidth="1.4">
+                <rect x="1" y="1" width="10" height="10" rx="1.5" />
+                <rect x="15" y="1" width="10" height="10" rx="1.5" />
+                <rect x="1" y="15" width="10" height="10" rx="1.5" />
+                <rect x="15" y="15" width="10" height="10" rx="1.5" />
+              </g>
+            </svg>
           )}
         </div>
-      </div>
-    </div>
+        <p
+          className={cx(
+            "mt-2 text-center text-[10px] uppercase leading-tight tracking-[0.1em] transition-colors",
+            active ? "text-ink" : "text-ink-40 group-hover:text-ink",
+          )}
+        >
+          {label}
+        </p>
+      </Link>
+    </li>
   );
 }
 

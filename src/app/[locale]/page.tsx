@@ -6,7 +6,6 @@ import { site } from "@/config/site";
 import type { Form, Locale } from "@/data/types";
 import { featured, menProducts, womenProducts, products } from "@/data/products";
 import { materialName } from "@/data/materials";
-import { BagSilhouette } from "@/components/BagSilhouette";
 import { EditorialStrip } from "@/components/EditorialStrip";
 import { Hero } from "@/components/Hero";
 import { ModeSection } from "@/components/ModeSection";
@@ -15,8 +14,6 @@ import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
 import { ScrollRail } from "@/components/ScrollRail";
 import { formatDimensions } from "@/lib/utils";
-
-const FORM_ORDER: Form[] = ["tote", "omuz", "baguette", "clutch", "sirt", "evrak", "postaci"];
 
 export default async function HomePage({
   params,
@@ -39,9 +36,11 @@ export default async function HomePage({
 
   // Omuz çantası silüeti hero'da en okunaklı form
   const hero = featured.find((p) => p.form === "omuz") ?? featured[0] ?? products[0];
-  const womenFirst = womenProducts.slice(0, 12);
-  const womenSecond = womenProducts.slice(12, 24);
-  const womenRest = womenProducts.slice(24);
+  // Anasayfa bir vitrin: her bölümden tat verir, tamamını koleksiyona bırakır.
+  // Katalogun tümü tek yerde (/koleksiyon) dursun ki müşteri aynı ürünlerle
+  // iki farklı yerde karşılaşıp "burayı görmüş müydüm?" demesin.
+  const womenPreview = womenProducts.slice(0, 8);
+  const menPreview = menProducts.slice(0, 4);
 
   return (
     <>
@@ -79,39 +78,7 @@ export default async function HomePage({
         </ScrollRail>
       </ModeSection>
 
-      {/* ── 3 · Forma göre gezinme ── */}
-      <ModeSection mode="kadin" className="bg-ground-2 py-24 md:py-32">
-        <div className="mx-auto max-w-[1600px] px-5 md:px-10">
-          <Reveal>
-            <SectionHead title={t.home.formsTitle} lead={t.home.formsLead} />
-          </Reveal>
-
-          <ul className="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-4 lg:grid-cols-7">
-            {FORM_ORDER.map((form, i) => (
-              <Reveal as="li" key={form} delay={i * 0.05}>
-                <Link
-                  href={`/${locale}/koleksiyon?form=${form}`}
-                  className="group block text-center"
-                >
-                  <div className="bg-ground transition-transform duration-500 group-hover:-translate-y-1.5">
-                    <BagSilhouette
-                      form={form}
-                      hex="#8A6A4F"
-                      idSuffix={`form-${form}`}
-                      className="w-full"
-                    />
-                  </div>
-                  <p className="mt-3 text-xs uppercase tracking-[0.14em] text-ink-60 transition-colors group-hover:text-ink">
-                    {t.forms[form]}
-                  </p>
-                </Link>
-              </Reveal>
-            ))}
-          </ul>
-        </div>
-      </ModeSection>
-
-      {/* ── 4 · Kadın koleksiyonu ── */}
+      {/* ── 3 · Kadın — vitrin tadı ── */}
       <ModeSection mode="kadin" id="kadin" className="cv-auto bg-ground py-24 md:py-32">
         <div className="mx-auto max-w-[1600px] px-5 md:px-10">
           <Reveal>
@@ -119,29 +86,21 @@ export default async function HomePage({
               title={t.home.womenTitle}
               lead={t.home.womenLead}
               href={`/${locale}/koleksiyon?bolum=kadin`}
-              hrefLabel={t.common.viewAll}
+              hrefLabel={`${t.common.viewAll} (${womenProducts.length})`}
             />
           </Reveal>
 
           <div className="mt-16 grid grid-cols-2 gap-x-4 gap-y-14 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4 lg:gap-x-8">
-            <Grid products={womenFirst} locale={locale} labels={cardLabels} />
+            <Grid products={womenPreview.slice(0, 4)} locale={locale} labels={cardLabels} />
 
             <EditorialStrip quote={t.home.strips[0].q} caption={t.home.strips[0].c} />
 
-            <Grid products={womenSecond} locale={locale} labels={cardLabels} />
-
-            <EditorialStrip
-              quote={t.home.strips[1].q}
-              caption={t.home.strips[1].c}
-              align="right"
-            />
-
-            <Grid products={womenRest} locale={locale} labels={cardLabels} />
+            <Grid products={womenPreview.slice(4)} locale={locale} labels={cardLabels} />
           </div>
         </div>
       </ModeSection>
 
-      {/* ── 5 · Perde: dünya değişiyor ── */}
+      {/* ── 4 · Perde: dünya değişiyor ── */}
       <ModeSection mode="erkek" className="bg-ground">
         <ModeShift
           eyebrow={t.home.modeShiftEyebrow}
@@ -150,7 +109,7 @@ export default async function HomePage({
         />
       </ModeSection>
 
-      {/* ── 6 · Erkek / Evrak — teknik ızgara ── */}
+      {/* ── 5 · Erkek / Evrak — teknik ızgara ── */}
       <ModeSection mode="erkek" id="erkek" className="cv-auto bg-ground pb-28 md:pb-36">
         <div className="mx-auto max-w-[1600px] px-5 md:px-10">
           <Reveal>
@@ -158,12 +117,12 @@ export default async function HomePage({
               title={t.home.menTitle}
               lead={t.home.menLead}
               href={`/${locale}/koleksiyon?bolum=erkek`}
-              hrefLabel={t.common.viewAll}
+              hrefLabel={`${t.common.viewAll} (${menProducts.length})`}
             />
           </Reveal>
 
           <ul className="mt-16 grid grid-cols-1 gap-x-6 gap-y-16 sm:grid-cols-2 lg:grid-cols-4">
-            {menProducts.map((p, i) => (
+            {menPreview.map((p, i) => (
               <Reveal as="li" key={p.slug} delay={(i % 4) * 0.06}>
                 <ProductCard
                   product={p}
@@ -190,7 +149,7 @@ export default async function HomePage({
         </div>
       </ModeSection>
 
-      {/* ── 7 · Zanaat ── */}
+      {/* ── 6 · Zanaat ── */}
       <ModeSection mode="kadin" className="bg-ground-2 py-24 md:py-32">
         <div className="mx-auto max-w-[1600px] px-5 md:px-10">
           <Reveal>
@@ -209,7 +168,7 @@ export default async function HomePage({
         </div>
       </ModeSection>
 
-      {/* ── 8 · Seçki çağrısı ── */}
+      {/* ── 7 · Seçki çağrısı ── */}
       <ModeSection mode="kadin" className="bg-ground px-5 py-28 md:px-10 md:py-36">
         <Reveal className="mx-auto max-w-[1600px]">
           <h2 className="max-w-3xl font-display text-[clamp(2rem,5.4vw,4.2rem)] leading-[1.04] tracking-[-0.02em] text-ink">
