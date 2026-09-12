@@ -120,7 +120,7 @@
     "itemCount": "{n} ürün",
     "quantity": "Adet",
     "note": "Not",
-    "notePlaceholder": "Renk tercihi, adet, teslim tarihi...",
+    "notePlaceholder": "Teslim tarihi, özel istek, not...",
     "clearAll": "Seçkiyi temizle",
     "clearConfirm": "Seçkideki tüm ürünler silinecek. Emin misiniz?",
     "sendWhatsApp": "WhatsApp'tan gönder",

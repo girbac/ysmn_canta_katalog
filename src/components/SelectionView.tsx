@@ -16,7 +16,7 @@ import {
   type SelectionItem,
 } from "@/store/selection";
 import { ProductMedia } from "./ProductMedia";
-import { cx, formatDimensions, interpolate, whatsappUrl } from "@/lib/utils";
+import { formatDimensions, interpolate, whatsappUrl } from "@/lib/utils";
 
 /**
  * Seçki — katalogu pasif bir vitrinden aktif bir araca çeviren ekran.
@@ -43,7 +43,7 @@ export function SelectionView({
   const router = useRouter();
   const hydrated = useHydrated();
   const items = useSelection((s) => s.items);
-  const { remove, setQty, setNote, setColor, clear, merge } = useSelection();
+  const { remove, setQty, setNote, clear, merge } = useSelection();
   const [copied, setCopied] = useState(false);
 
   const shared = useMemo(
@@ -182,30 +182,17 @@ export function SelectionView({
                       {formatDimensions(product.dimensions, t.common.cm)}
                     </p>
 
-                    {/* Renk seçimi — seçkide renk değiştirilebilsin */}
-                    <div className="mt-4 flex flex-wrap items-center gap-2">
-                      {product.colors.map((c) => (
-                        <button
-                          key={c.key}
-                          type="button"
-                          onClick={() => setColor(item.slug, item.color, c.key)}
-                          aria-pressed={c.key === color.key}
-                          title={c.name[locale]}
-                          className={cx(
-                            "flex items-center gap-1.5 rounded-card border bg-ground-2 py-1 pl-1 pr-3 text-caption transition-colors",
-                            c.key === color.key
-                              ? "border-ink text-ink"
-                              : "border-line-strong text-ink-40 hover:border-ink hover:text-ink",
-                          )}
-                        >
-                          <span
-                            className="h-4 w-4 rounded-full border border-line"
-                            style={{ backgroundColor: c.hex }}
-                          />
-                          {c.name[locale]}
-                        </button>
-                      ))}
-                    </div>
+                    {/* Renk seçkiye eklendiği anda sabitlenir — burada
+                        değiştirilmez, yalnızca gösterilir. Başka bir renk
+                        isteniyorsa ürün sayfasından ayrı satır olarak eklenir. */}
+                    <p className="mt-3 flex items-center gap-2 text-caption text-ink">
+                      <span
+                        aria-hidden="true"
+                        className="h-4 w-4 shrink-0 rounded-full border border-line"
+                        style={{ backgroundColor: color.hex }}
+                      />
+                      {color.name[locale]}
+                    </p>
 
                     <label className="mt-4 block">
                       <span className="sr-only">{t.selection.note}</span>

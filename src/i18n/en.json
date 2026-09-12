@@ -120,7 +120,7 @@
     "itemCount": "{n} items",
     "quantity": "Qty",
     "note": "Note",
-    "notePlaceholder": "Colour preference, quantity, delivery date...",
+    "notePlaceholder": "Delivery date, special request, note...",
     "clearAll": "Clear selection",
     "clearConfirm": "This will remove every item from your selection. Are you sure?",
     "sendWhatsApp": "Send on WhatsApp",

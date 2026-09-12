@@ -33,8 +33,6 @@ type SelectionState = {
   toggle: (slug: string, color?: string) => void;
   setQty: (slug: string, color: string | undefined, qty: number) => void;
   setNote: (slug: string, color: string | undefined, note: string) => void;
-  /** Bir satırın rengini değiştirir; hedef renk zaten varsa adetler birleşir. */
-  setColor: (slug: string, from: string | undefined, to: string) => void;
   clear: () => void;
   /** Paylaşılan bir seçkiyi mevcut seçkiyle birleştirir */
   merge: (items: SelectionItem[]) => void;
@@ -73,32 +71,6 @@ export const useSelection = create<SelectionState>()(
         set((s) => ({
           items: s.items.map((i) => (sameItem(i, slug, color) ? { ...i, note } : i)),
         })),
-
-      setColor: (slug, from, to) =>
-        set((s) => {
-          if ((from ?? "") === to) return s;
-
-          const source = s.items.find((i) => sameItem(i, slug, from));
-          if (!source) return s;
-
-          // Hedef renk zaten seçkideyse iki satır tek satıra iner, adetler toplanır
-          const target = s.items.find((i) => sameItem(i, slug, to));
-          if (target) {
-            return {
-              items: s.items
-                .filter((i) => !sameItem(i, slug, from))
-                .map((i) =>
-                  sameItem(i, slug, to)
-                    ? { ...i, qty: Math.min(999, i.qty + source.qty) }
-                    : i,
-                ),
-            };
-          }
-
-          return {
-            items: s.items.map((i) => (sameItem(i, slug, from) ? { ...i, color: to } : i)),
-          };
-        }),
 
       clear: () => set({ items: [] }),
 
