@@ -102,7 +102,7 @@ export default async function ProductPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="mx-auto max-w-[1280px] px-5 pb-28 pt-32 md:px-10 md:pt-36">
+      <div className="mx-auto max-w-[1280px] px-5 pb-28 pt-24 md:px-10 md:pt-32">
         <ProductDetail product={product} locale={locale} t={t} whatsapp={site.whatsapp} />
 
         {related.length > 0 && (

@@ -36,7 +36,7 @@ export function ProductDetail({
   const askMessage = `${t.selection.whatsappIntro}\n\n• ${product.name[locale]} (${product.code}) — ${color.name[locale]}\n\n${t.selection.whatsappOutro}`;
 
   return (
-    <article className={cx("grid gap-10 lg:grid-cols-2 lg:gap-16", compact && "lg:gap-12")}>
+    <article className={cx("grid gap-7 lg:grid-cols-2 lg:gap-16", compact && "lg:gap-12")}>
       {/* ── Görsel ── */}
       <div>
         <motion.div
@@ -55,7 +55,11 @@ export function ProductDetail({
         </motion.div>
 
         {product.colors.length > 1 && (
-          <div className="mt-4 grid grid-cols-4 gap-3 sm:grid-cols-5">
+          <div
+            /* Dar ekranda gizli: aşağıdaki isimli renk pastilleri aynı seçimi
+               yapıyor, bu şerit butonu 116 px daha aşağı itiyordu. */
+            className="mt-4 hidden grid-cols-4 gap-3 lg:grid sm:grid-cols-5"
+          >
             {product.colors.map((c, i) => (
               <button
                 key={c.key}
@@ -132,6 +136,29 @@ export function ProductDetail({
           </div>
         </div>
 
+        {/*
+          Aksiyonlar künyeden ÖNCE.
+          Ölçüm: eskiden buton sayfanın 813 px altındaydı; 1440×760
+          dizüstünde ve mobilde (1230 px) kaydırmadan hiç görünmüyordu.
+          Ürünü sepete atma kararı, malzeme ve ölçü okumadan önce verilir.
+        */}
+        <div className="mt-9 flex flex-wrap gap-3 border-t border-line pt-7">
+          <SelectionButton
+            slug={product.slug}
+            color={color.key}
+            variant="full"
+            labels={{ add: t.product.add, added: t.product.added, remove: t.product.remove }}
+          />
+          <a
+            href={whatsappUrl(whatsapp, askMessage)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center rounded-card border border-line-strong bg-ground-2 px-6 py-4 text-body font-medium text-ink transition-colors hover:bg-ink hover:text-ground"
+          >
+            {t.product.askOnWhatsApp}
+          </a>
+        </div>
+
         {/* Teknik künye */}
         <dl className="mt-9 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-line pt-7 text-body">
           <div>
@@ -172,24 +199,6 @@ export function ProductDetail({
               </li>
             ))}
           </ul>
-        </div>
-
-        {/* Aksiyonlar */}
-        <div className="mt-10 flex flex-wrap gap-3">
-          <SelectionButton
-            slug={product.slug}
-            color={color.key}
-            variant="full"
-            labels={{ add: t.product.add, added: t.product.added, remove: t.product.remove }}
-          />
-          <a
-            href={whatsappUrl(whatsapp, askMessage)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center rounded-card border border-line-strong bg-ground-2 px-6 py-4 text-body font-medium text-ink transition-colors hover:bg-ink hover:text-ground"
-          >
-            {t.product.askOnWhatsApp}
-          </a>
         </div>
 
         {!compact && (
