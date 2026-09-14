@@ -16,21 +16,21 @@
     },
     "colors": [
       {
-        "key": "siyah",
-        "name": {
-          "tr": "Siyah",
-          "en": "Black"
-        },
-        "hex": "#14110F",
-        "images": []
-      },
-      {
         "key": "taba",
         "name": {
           "tr": "Taba",
           "en": "Tan"
         },
         "hex": "#A9784E",
+        "images": []
+      },
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
         "images": []
       },
       {
