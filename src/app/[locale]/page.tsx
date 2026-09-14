@@ -12,6 +12,18 @@ import { ModeSection } from "@/components/ModeSection";
 import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
 import { formatDimensions } from "@/lib/utils";
+import { pickHeroBags } from "@/lib/hero";
+
+/**
+ * Anasayfa belirli aralıklarla yeniden üretiliyor: açılıştaki çanta seti
+ * her üretimde bir kayıyor, böylece farklı zamanlarda giren farklı bir
+ * parçayla karşılaşıyor. Katalog değişince zaten ayrıca tazeleniyor.
+ *
+ * Doğrudan sayı yazılmak zorunda: Next bu ayarı derleme sırasında statik
+ * olarak okuyor, içe aktarılan bir sabit kabul edilmiyor. Aynı değer
+ * aşağıda pickHeroBags'e veriliyor, yani tek kaynak yine burası.
+ */
+export const revalidate = 600;
 
 export default async function HomePage({
   params,
@@ -33,9 +45,9 @@ export default async function HomePage({
     colorCount: t.product.colorCount,
   });
 
-  // Hero: sezonun yeni parçalarından biri, omuz çantası silüeti en okunaklı form.
-  // (`featured` artık yalnızca burada kullanılıyor — öne çıkanlar rayı kaldırıldı.)
-  const hero = featured.find((p) => p.form === "omuz") ?? featured[0] ?? products[0];
+  // Açılışta birkaç çanta sırayla geçiyor; seçim ve zamana göre kayma
+  // src/lib/hero.ts içinde (render saf kalsın diye orada).
+  const heroList = pickHeroBags(featured, products, revalidate);
   // Anasayfa bir vitrin: her bölümden tat verir, tamamını koleksiyona bırakır.
   // Katalogun tümü tek yerde (/koleksiyon) dursun ki müşteri aynı ürünlerle
   // iki farklı yerde karşılaşıp "burayı görmüş müydüm?" demesin.
@@ -47,7 +59,7 @@ export default async function HomePage({
       {/* ── 1 · Açılış ── */}
       <ModeSection mode="kadin" className="bg-ground">
         <Hero
-          product={hero}
+          products={heroList}
           eyebrow={t.home.eyebrow}
           title={t.home.heroTitle}
           lead={t.home.heroLead}

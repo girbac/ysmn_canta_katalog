@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import type { Product } from "@/data/types";
 import { BagSilhouette } from "./BagSilhouette";
@@ -13,17 +13,22 @@ import { BagSilhouette } from "./BagSilhouette";
  * sayfanın ölçülen yükleme süresi uzardı. Yardımcı metinler hiç animasyonlu
  * değil — ilk boyamada oradalar.
  *
- * motion yalnızca scroll'a bağlı hareket için kullanılıyor; o zaten
- * kullanıcı kaydırmaya başlamadan devreye girmiyor.
+ * motion yalnızca scroll'a bağlı hareket ve çantalar arası geçiş için
+ * kullanılıyor; ikisi de ilk boyamayı bekletmiyor.
+ *
+ * Çanta tek değil: birkaç parça sırayla geçiyor. Hepsi ilk render'da
+ * basılıyor ve yalnızca opaklıkları değişiyor — böylece geçiş sırasında
+ * yeni bir şey yüklenmiyor ve sayfa hiç zıplamıyor.
  */
 export function Hero({
-  product,
+  products,
   eyebrow,
   title,
   lead,
   scrollHint,
 }: {
-  product: Product;
+  /** Sırayla gösterilecek çantalar; ilki ilk boyamada görünen */
+  products: Product[];
   eyebrow: string;
   title: string;
   lead: string;
@@ -31,6 +36,24 @@ export function Hero({
 }) {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
+  const [aktif, setAktif] = useState(0);
+
+  /**
+   * Yedi saniye: bir ziyaretçi anasayfada ortalama 10-30 saniye kalıyor,
+   * yani bu aralıkta birkaç çanta görüyor. Daha uzun bir aralıkta (bir
+   * dakika gibi) değişimi neredeyse kimse göremezdi.
+   *
+   * Hareket azaltma tercihinde hiç dönmüyor: kendiliğinden başlayan ve
+   * durmayan bir hareket, tam da o tercihin kapatmak istediği şey.
+   */
+  useEffect(() => {
+    if (reduce || products.length < 2) return;
+    const id = setInterval(
+      () => setAktif((v) => (v + 1) % products.length),
+      7000,
+    );
+    return () => clearInterval(id);
+  }, [reduce, products.length]);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
 
   const bagY = useTransform(scrollYProgress, [0, 1], ["0%", "-18%"]);
@@ -90,13 +113,28 @@ export function Hero({
           style={reduce ? undefined : { y: bagY, scale: bagScale }}
           className="order-1 md:order-2"
         >
-          <BagSilhouette
-            form={product.form}
-            hex={product.colors[0].hex}
-            idSuffix="hero"
-            backdrop={false}
-            className="mx-auto h-auto w-[min(74vw,460px)] md:w-full md:max-w-[540px]"
-          />
+          {/* Hepsi aynı ızgara gözünde üst üste duruyor: yükseklik en uzun
+              çantaya göre sabit kalıyor, geçişte sayfa kaymıyor. */}
+          <div className="grid">
+            {products.map((p, i) => (
+              <motion.div
+                key={p.slug}
+                className="[grid-area:1/1]"
+                initial={{ opacity: i === 0 ? 1 : 0 }}
+                animate={{ opacity: i === aktif ? 1 : 0 }}
+                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                aria-hidden={i === aktif ? undefined : true}
+              >
+                <BagSilhouette
+                  form={p.form}
+                  hex={p.colors[0].hex}
+                  idSuffix={`hero-${p.slug}`}
+                  backdrop={false}
+                  className="mx-auto h-auto w-[min(74vw,460px)] md:w-full md:max-w-[540px]"
+                />
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </div>
