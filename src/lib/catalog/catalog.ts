@@ -2,6 +2,7 @@ import "server-only";
 import { cache } from "react";
 import type { Product } from "@/data/types";
 import { getStore } from "./store";
+import { seedProducts } from "./seed";
 import type { StoredProduct } from "./schema";
 
 /**
@@ -19,7 +20,20 @@ function withOrder(list: StoredProduct[]): Product[] {
 }
 
 export const getCatalog = cache(async (): Promise<Product[]> => {
-  return withOrder(await getStore().read());
+  /**
+   * Okuma burada dayanıklı: depoya ulaşılamasa bile genel site boş
+   * görünmesin diye pakete gömülü tohum veriyle devam ediliyor.
+   *
+   * Yazma yolları bu işlevi KULLANMIYOR; onlar store.read()'i doğrudan
+   * çağırıyor ve hata alırsa duruyorlar. Ayrım bilinçli: gösterirken
+   * eldekiyle idare etmek iyi, yazarken eksik veriyle devam etmek
+   * katalogun üzerine yazmak demek olurdu.
+   */
+  try {
+    return withOrder(await getStore().read());
+  } catch {
+    return withOrder(seedProducts);
+  }
 });
 
 export const getProductBySlug = cache(async (slug: string): Promise<Product | undefined> => {

@@ -40,13 +40,17 @@ export const fsStore: CatalogStore = {
   },
 
   async read() {
+    let raw: string;
     try {
-      const raw = await readFile(DATA_FILE, "utf8");
-      return catalogSchema.parse(JSON.parse(raw));
-    } catch {
-      // Dosya yoksa ya da bozulmuşsa tohumla devam et — katalog hiç boş kalmasın
-      return seedProducts;
+      raw = await readFile(DATA_FILE, "utf8");
+    } catch (cause) {
+      // Yalnızca "dosya yok" tohuma düşer (ilk kurulum). Başka her hata
+      // yukarı çıkar: yazma işlemleri önce okuduğu için, yutulan bir hata
+      // katalogun üzerine tohum verinin yazılmasına yol açardı.
+      if ((cause as NodeJS.ErrnoException)?.code === "ENOENT") return seedProducts;
+      throw cause;
     }
+    return catalogSchema.parse(JSON.parse(raw));
   },
 
   async write(products) {
