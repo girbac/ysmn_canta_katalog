@@ -67,8 +67,7 @@ export function ImageManager({
 
       <div className="mt-6 space-y-6">
         {selected.map((key) => {
-          const color = saved.get(key);
-          const images = color?.images ?? [];
+          const images = saved.get(key)?.images ?? [];
 
           return (
             <div key={key} className="rounded-card border border-line p-4">
@@ -129,13 +128,15 @@ export function ImageManager({
                 </ul>
               )}
 
-              {product && color ? (
+              {/* Renk henüz kaydedilmemiş olsa da yükleme açık: yükleme
+                  işlemi rengi ürüne kendisi ekliyor (bkz. addImages).
+                  Eskiden önce Kaydet'e basmak gerekiyordu. */}
+              {product ? (
                 <Uploader slug={product.slug} colorKey={key} />
               ) : (
                 <p className="mt-4 text-caption text-ink-40">
-                  {product
-                    ? "Bu renk henüz kaydedilmedi. Kaydet'e basın, sonra fotoğraf yükleyebilirsiniz."
-                    : "Ürünü oluşturduktan sonra bu renge fotoğraf yükleyebilirsiniz."}
+                  Aşağıdaki &quot;Ürünü oluştur&quot; düğmesine basın; hemen
+                  ardından bu renge fotoğraf yükleyebilirsiniz.
                 </p>
               )}
             </div>

@@ -1,6 +1,7 @@
 import "server-only";
 import { revalidatePath } from "next/cache";
 import { locales } from "@/i18n/config";
+import { colorHex, colorKeys, colorName, type ColorKey } from "@/data/colors";
 import { getStore } from "./store";
 import { parseProduct, type StoredProduct } from "./schema";
 
@@ -21,6 +22,18 @@ function revalidateCatalog(slug?: string) {
   // Yeni ürün ekleniyorsa henüz üretilmemiş yollar da kalıbıyla işaretlenir
   revalidatePath("/[locale]/urun/[slug]", "page");
   revalidatePath("/sitemap.xml");
+
+  /**
+   * Panelin kendi sayfaları da tazelenmeli.
+   *
+   * Eskiden yalnızca genel sitenin yolları işaretleniyordu. Panel sayfaları
+   * force-dynamic olduğu için sunucuda önbelleğe girmiyor, ama istemcideki
+   * router önbelleği bir yazma sonrası eski RSC yükünü sunmaya devam
+   * ediyordu: renk işaretleyip Kaydet'e basınca alt taraf değişmiyor,
+   * ancak sayfadan çıkıp girince düzeliyordu.
+   */
+  revalidatePath("/admin");
+  if (slug) revalidatePath(`/admin/urun/${slug}`);
 }
 
 export type SaveResult =
@@ -105,8 +118,37 @@ export async function addImages(params: {
   if (index === -1) return { ok: false, error: "Ürün bulunamadı." };
 
   const product = list[index];
-  const colorIndex = product.colors.findIndex((c) => c.key === params.colorKey);
-  if (colorIndex === -1) return { ok: false, error: "Bu üründe böyle bir renk yok." };
+
+  /**
+   * Renk üründe yoksa yükleme sırasında ekleniyor.
+   *
+   * Eskiden "önce Kaydet'e basın" deniyordu: renk işaretlemek yetmiyordu,
+   * fotoğraf yükleyebilmek için önce formu kaydetmek gerekiyordu. Oysa
+   * fotoğraf yüklemek zaten rengi seçmiş olmak demek; ayrıca bir adım
+   * istemenin karşılığı yok.
+   */
+  let colors = product.colors;
+  if (!colors.some((c) => c.key === params.colorKey)) {
+    if (!(colorKeys as readonly string[]).includes(params.colorKey)) {
+      return { ok: false, error: "Bu renk palette yok." };
+    }
+    const key = params.colorKey as ColorKey;
+    const eklenen = { key, name: colorName(key), hex: colorHex(key), images: [] };
+
+    /**
+     * Yeni renk palet sırasına göre araya giriyor ama MEVCUT renklerin
+     * sırası olduğu gibi kalıyor. Tüm listeyi yeniden dizmek, ilk renk
+     * kapak görseli olduğu için ürünün kartlarda görünen rengini
+     * değiştirirdi — fotoğraf yüklemenin böyle bir yan etkisi olmamalı.
+     */
+    const sira = (k: string) => colorKeys.indexOf(k as ColorKey);
+    const nereye = colors.findIndex((c) => sira(c.key) > sira(key));
+    colors =
+      nereye === -1
+        ? [...colors, eklenen]
+        : [...colors.slice(0, nereye), eklenen, ...colors.slice(nereye)];
+  }
+  const colorIndex = colors.findIndex((c) => c.key === params.colorKey);
 
   const sources: string[] = [];
   for (const file of params.files) {
@@ -121,12 +163,14 @@ export async function addImages(params: {
   }
 
   const next: StoredProduct[] = [...list];
-  const colors = product.colors.map((c, i) => {
-    if (i !== colorIndex) return c;
-    const fresh = sources.filter((src) => !c.images.includes(src));
-    return { ...c, images: [...c.images, ...fresh] };
-  });
-  next[index] = { ...product, colors };
+  next[index] = {
+    ...product,
+    colors: colors.map((c, i) => {
+      if (i !== colorIndex) return c;
+      const fresh = sources.filter((src) => !c.images.includes(src));
+      return { ...c, images: [...c.images, ...fresh] };
+    }),
+  };
 
   await store.write(next);
   revalidateCatalog(params.slug);
