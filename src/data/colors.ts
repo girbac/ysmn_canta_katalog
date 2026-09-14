@@ -7,6 +7,7 @@ import type { ColorVariant, Localized } from "./types";
 const PALETTE = {
   siyah: { tr: "Siyah", en: "Black", hex: "#14110F" },
   kahve: { tr: "Koyu Kahve", en: "Espresso", hex: "#40301F" },
+  kahverengi: { tr: "Kahverengi", en: "Brown", hex: "#6B4423" },
   taba: { tr: "Taba", en: "Tan", hex: "#A9784E" },
   konyak: { tr: "Konyak", en: "Cognac", hex: "#8B4A2B" },
   krem: { tr: "Krem", en: "Cream", hex: "#E3D5BE" },
