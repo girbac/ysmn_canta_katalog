@@ -1467,8 +1467,8 @@
     "slug": "kumsal-postaci",
     "code": "YSM-1501",
     "name": {
-      "tr": "Kumsal Postacı",
-      "en": "Kumsal Messenger"
+      "tr": "Kumsal Seyahat",
+      "en": "Kumsal Travel"
     },
     "segment": "kadin",
     "form": "postaci",
@@ -1527,8 +1527,8 @@
     "slug": "ruzgar-postaci",
     "code": "YSM-1502",
     "name": {
-      "tr": "Rüzgâr Postacı",
-      "en": "Rüzgâr Messenger"
+      "tr": "Rüzgâr Seyahat",
+      "en": "Rüzgâr Travel"
     },
     "segment": "kadin",
     "form": "postaci",
@@ -1574,8 +1574,8 @@
     "slug": "mavi-postaci",
     "code": "YSM-1503",
     "name": {
-      "tr": "Mavi Postacı",
-      "en": "Mavi Messenger"
+      "tr": "Mavi Seyahat",
+      "en": "Mavi Travel"
     },
     "segment": "kadin",
     "form": "postaci",
@@ -1630,8 +1630,8 @@
     "slug": "yaz-postaci",
     "code": "YSM-1504",
     "name": {
-      "tr": "Yaz Postacı",
-      "en": "Yaz Messenger"
+      "tr": "Yaz Seyahat",
+      "en": "Yaz Travel"
     },
     "segment": "kadin",
     "form": "postaci",
@@ -2083,8 +2083,8 @@
     "slug": "sefer-postaci",
     "code": "YSM-8101",
     "name": {
-      "tr": "Sefer Postacı",
-      "en": "Sefer Messenger"
+      "tr": "Sefer Seyahat",
+      "en": "Sefer Travel"
     },
     "segment": "erkek",
     "form": "postaci",
@@ -2143,8 +2143,8 @@
     "slug": "rota-postaci",
     "code": "YSM-8102",
     "name": {
-      "tr": "Rota Postacı",
-      "en": "Rota Messenger"
+      "tr": "Rota Seyahat",
+      "en": "Rota Travel"
     },
     "segment": "erkek",
     "form": "postaci",

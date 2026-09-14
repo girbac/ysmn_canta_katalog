@@ -55,15 +55,43 @@ export const blobStore: CatalogStore = {
     return catalogSchema.parse(JSON.parse(text));
   },
 
+  /**
+   * Katalogu yazar ve yazdığının geri okunabildiğini DOĞRULAR.
+   *
+   * Doğrulama olmadan şu oluyordu: panelden fotoğraf yükleniyor, yazma
+   * başarılı dönüyor, ama hemen ardından yapılan okuma deponun eski hâlini
+   * getiriyordu — fotoğraf görünmüyordu. Kullanıcı aynı fotoğrafı tekrar
+   * yüklüyordu ve asıl tehlike buydu: ikinci yükleme de eski listeyi okuyup
+   * üzerine yazdığı için ilk fotoğrafı düşürebiliyordu.
+   *
+   * Artık yazma, içerik geri okunana kadar bitmiş sayılmıyor. Birkaç kısa
+   * deneme yetiyor; yerleşmezse hata verilmiyor (veri yazıldı, yalnızca
+   * görünmesi gecikti) ama en azından bekleniyor.
+   */
   async write(products) {
     const valid = catalogSchema.parse(products);
-    await put(CATALOG_KEY, JSON.stringify(valid, null, 2), {
+    const body = JSON.stringify(valid, null, 2);
+
+    await put(CATALOG_KEY, body, {
       access: "public",
       contentType: "application/json",
       addRandomSuffix: false,
       allowOverwrite: true,
       cacheControlMaxAge: 0,
     });
+
+    for (let deneme = 0; deneme < 5; deneme++) {
+      try {
+        const found = await get(CATALOG_KEY, { access: "public", useCache: false });
+        if (found?.statusCode === 200) {
+          const text = await new Response(found.stream).text();
+          if (text === body) return;
+        }
+      } catch {
+        // Geçici bir okuma hatası; aşağıda tekrar denenecek
+      }
+      await new Promise((r) => setTimeout(r, 120 * (deneme + 1)));
+    }
   },
 
   async putImage({ slug, filename, contentType, body }) {

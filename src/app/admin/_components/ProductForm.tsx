@@ -9,7 +9,7 @@ import { cx } from "@/lib/utils";
 
 const FORM_LABEL: Record<string, string> = {
   tote: "Tote", omuz: "Omuz çantası", baguette: "Baguette", clutch: "Clutch",
-  sirt: "Sırt çantası", evrak: "Evrak çantası", postaci: "Postacı çantası",
+  sirt: "Sırt çantası", evrak: "Evrak çantası", postaci: "Seyahat çantası",
 };
 const STRAP_LABEL: Record<string, string> = {
   ayarlanabilir: "Ayarlanabilir askı", zincir: "Zincir askı",

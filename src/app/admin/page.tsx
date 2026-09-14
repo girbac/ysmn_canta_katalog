@@ -18,7 +18,7 @@ const FORM_LABEL: Record<string, string> = {
   clutch: "Clutch",
   sirt: "Sırt",
   evrak: "Evrak",
-  postaci: "Postacı",
+  postaci: "Seyahat",
 };
 
 export default async function AdminHome({

@@ -94,20 +94,29 @@ const GEOMETRY: Record<Form, Geometry> = {
     box: [86, 142, 314, 320],
   },
 
+  /**
+   * Seyahat çantası (duffel). Anahtar hâlâ `postaci`: katalogdaki ürünler
+   * bu değeri kayıtlı tutuyor, değiştirmek onları bozardı. Değişen yalnızca
+   * çizim ve arayüzdeki ad.
+   */
   postaci: {
-    body:
-      "M110 196 H290 A10 10 0 0 1 300 206 V304 A10 10 0 0 1 290 314 H110 " +
-      "A10 10 0 0 1 100 304 V206 A10 10 0 0 1 110 196 Z",
+    // Yatık hap biçimi: iki ucu yuvarlak, yumuşak gövde
+    body: "M134 206 H266 A48 48 0 0 1 266 302 H134 A48 48 0 0 1 134 206 Z",
     panels: [
-      "M100 206 A10 10 0 0 1 110 196 H290 A10 10 0 0 1 300 206 V254 " +
-        "C236 280 164 280 100 254 Z",
+      // Fermuarın üstünde kalan yarım — hacmi o anlatıyor
+      "M86 254 A48 48 0 0 1 134 206 H266 A48 48 0 0 1 314 254 Z",
     ],
     details: [
-      "M116 200 C98 116 302 116 284 200",
-      "M170 262 h16 v16 h-16 z",
-      "M214 262 h16 v16 h-16 z",
+      // Boydan boya fermuar
+      "M86 254 H314",
+      // İki sap, tepede birleşiyor
+      "M158 210 C158 148 242 148 242 210",
+      "M192 158 h16 v14 h-16 z",
+      // Yuvarlak uç kapağının dikişi
+      "M126 214 C114 236 114 272 126 294",
+      "M274 214 C286 236 286 272 274 294",
     ],
-    box: [98, 116, 302, 314],
+    box: [86, 148, 314, 302],
   },
 };
 
