@@ -103,7 +103,8 @@
       "zincir": "Zincir askı",
       "sabit": "Sabit sap",
       "yok": "Askısız"
-    }
+    },
+    "price": "Fiyat"
   },
   "selection": {
     "title": "Seçkim",
@@ -131,7 +132,9 @@
     "printTitle": "Seçki",
     "printDate": "Tarih",
     "printBack": "Geri dön",
-    "printNow": "Yazdır"
+    "printNow": "Yazdır",
+    "total": "Toplam",
+    "totalPartial": "{n} ürünün fiyatı belirtilmemiş — toplama dahil değil."
   },
   "about": {
     "title": "Atölye",

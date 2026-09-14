@@ -103,7 +103,8 @@
       "zincir": "Chain strap",
       "sabit": "Fixed handles",
       "yok": "No strap"
-    }
+    },
+    "price": "Price"
   },
   "selection": {
     "title": "My Selection",
@@ -131,7 +132,9 @@
     "printTitle": "Selection",
     "printDate": "Date",
     "printBack": "Go back",
-    "printNow": "Print"
+    "printNow": "Print",
+    "total": "Total",
+    "totalPartial": "{n} item(s) have no price — not included in the total."
   },
   "about": {
     "title": "Atelier",

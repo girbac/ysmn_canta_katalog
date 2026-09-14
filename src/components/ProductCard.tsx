@@ -6,7 +6,7 @@ import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } fro
 import type { Locale, Product } from "@/data/types";
 import { ProductMedia } from "./ProductMedia";
 import { SelectionButton } from "./SelectionButton";
-import { cx } from "@/lib/utils";
+import { cx, formatPrice } from "@/lib/utils";
 
 export type CardLabels = {
   add: string;
@@ -117,6 +117,13 @@ export function ProductCard({
             </Link>
           </h3>
           <p className="mt-0.5 text-caption text-ink-60">{labels.form}</p>
+          {/* Fiyat girilmemişse satır hiç çıkmaz — "—" ya da "0" göstermek,
+              fiyatı henüz belirlenmemiş bir parçayı bedavaymış gibi okutur. */}
+          {typeof product.price === "number" && (
+            <p className="mt-1.5 text-body text-ink tabular-nums">
+              {formatPrice(product.price, locale)}
+            </p>
+          )}
         </div>
         <span className="shrink-0 pt-1 text-caption text-ink-40 tabular-nums">
           {product.code}

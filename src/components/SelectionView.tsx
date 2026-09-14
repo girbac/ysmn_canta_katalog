@@ -15,7 +15,13 @@ import {
   type SelectionItem,
 } from "@/store/selection";
 import { ProductMedia } from "./ProductMedia";
-import { formatDimensions, interpolate, whatsappUrl } from "@/lib/utils";
+import {
+  formatDimensions,
+  formatPrice,
+  interpolate,
+  selectionTotal,
+  whatsappUrl,
+} from "@/lib/utils";
 
 /**
  * Seçki — katalogu pasif bir vitrinden aktif bir araca çeviren ekran.
@@ -80,15 +86,28 @@ export function SelectionView({
 
   const shareUrl = `${siteUrl}/${locale}/secki?s=${encodeSelection(items)}`;
 
+  const sum = selectionTotal(
+    rows.map(({ item, product }) => ({ price: product.price, qty: item.qty })),
+  );
+
   const waMessage = [
     t.selection.whatsappIntro,
     "",
     ...rows.map(({ item, product }) => {
       const color = product.colors.find((c) => c.key === item.color) ?? product.colors[0];
       const qty = item.qty > 1 ? ` × ${item.qty}` : "";
+      const price =
+        typeof product.price === "number"
+          ? ` — ${formatPrice(product.price * item.qty, locale)}`
+          : "";
       const note = item.note?.trim() ? `\n  ${t.selection.note}: ${item.note.trim()}` : "";
-      return `• ${product.name[locale]} (${product.code}) — ${color.name[locale]}${qty}${note}`;
+      return `• ${product.name[locale]} (${product.code}) — ${color.name[locale]}${qty}${price}${note}`;
     }),
+    // Fiyatı olmayan ürün varsa toplam yanıltıcı olur; o yüzden ya tam
+    // toplam yazılır ya da hiç yazılmaz.
+    ...(sum.priced > 0 && sum.unpriced === 0
+      ? ["", `${t.selection.total}: ${formatPrice(sum.total, locale)}`]
+      : []),
     "",
     t.selection.whatsappOutro,
     "",
@@ -217,6 +236,18 @@ export function SelectionView({
                   </div>
 
                   <div className="flex items-start gap-4 sm:flex-col sm:items-end">
+                    {typeof product.price === "number" && (
+                      <div className="sm:text-right">
+                        <p className="text-body text-ink tabular-nums">
+                          {formatPrice(product.price * item.qty, locale)}
+                        </p>
+                        {item.qty > 1 && (
+                          <p className="mt-0.5 text-caption text-ink-40 tabular-nums">
+                            {formatPrice(product.price, locale)} × {item.qty}
+                          </p>
+                        )}
+                      </div>
+                    )}
                     <label className="flex items-center gap-2">
                       <span className="text-caption text-ink-40">{t.selection.quantity}</span>
                       <input
@@ -240,6 +271,25 @@ export function SelectionView({
               );
             })}
           </ul>
+
+          {/* ── Toplam ──
+              Fiyatı girilmemiş ürün varsa toplam eksiktir; bunu gizlemek
+              yerine kaç ürünün fiyatsız olduğu açıkça yazılıyor. */}
+          {sum.priced > 0 && (
+            <div className="mt-8 flex flex-col items-end gap-1">
+              <div className="flex items-baseline gap-4">
+                <span className="text-body text-ink-60">{t.selection.total}</span>
+                <span className="text-heading-sm text-ink tabular-nums">
+                  {formatPrice(sum.total, locale)}
+                </span>
+              </div>
+              {sum.unpriced > 0 && (
+                <p className="text-caption text-ink-40">
+                  {interpolate(t.selection.totalPartial, { n: sum.unpriced })}
+                </p>
+              )}
+            </div>
+          )}
 
           {/* ── Üç çıkış ── */}
           <div className="no-print mt-12 flex flex-wrap items-center gap-3">

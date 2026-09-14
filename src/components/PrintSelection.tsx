@@ -7,7 +7,7 @@ import type { Dictionary } from "@/i18n/dictionaries";
 import { materialName } from "@/data/materials";
 import { itemKey, useHydrated, useSelection } from "@/store/selection";
 import { BagSilhouette } from "./BagSilhouette";
-import { formatDimensions } from "@/lib/utils";
+import { formatDimensions, formatPrice, interpolate, selectionTotal } from "@/lib/utils";
 
 /**
  * Seçkinin A4 baskı görünümü.
@@ -37,6 +37,10 @@ export function PrintSelection({
   const rows = items
     .map((item) => ({ item, product: getProduct(item.slug) }))
     .filter((r) => r.product);
+
+  const sum = selectionTotal(
+    rows.map(({ item, product }) => ({ price: product?.price, qty: item.qty })),
+  );
 
   useEffect(() => {
     if (!hydrated || rows.length === 0) return;
@@ -104,6 +108,7 @@ export function PrintSelection({
                   <th className="pb-2 font-normal">{t.product.material}</th>
                   <th className="pb-2 font-normal">{t.product.dimensions}</th>
                   <th className="pb-2 text-right font-normal">{t.selection.quantity}</th>
+                  <th className="pb-2 text-right font-normal">{t.product.price}</th>
                 </tr>
               </thead>
               <tbody>
@@ -143,11 +148,35 @@ export function PrintSelection({
                       <td className="py-3 pr-3 tabular-nums">
                         {formatDimensions(p.dimensions, t.common.cm)}
                       </td>
-                      <td className="py-3 text-right tabular-nums">{item.qty}</td>
+                      <td className="py-3 pr-3 text-right tabular-nums">{item.qty}</td>
+                      <td className="py-3 text-right tabular-nums">
+                        {typeof p.price === "number"
+                          ? formatPrice(p.price * item.qty, locale)
+                          : "—"}
+                      </td>
                     </tr>
                   );
                 })}
               </tbody>
+              {sum.priced > 0 && (
+                <tfoot>
+                  <tr className="text-[11px] text-ink print:text-black">
+                    <td colSpan={5} className="pt-4 text-right">
+                      {t.selection.total}
+                    </td>
+                    <td className="pt-4 text-right font-whisper text-[15px] tabular-nums">
+                      {formatPrice(sum.total, locale)}
+                    </td>
+                  </tr>
+                  {sum.unpriced > 0 && (
+                    <tr className="text-[9px] text-ink-40 print:text-black/60">
+                      <td colSpan={6} className="pt-1 text-right">
+                        {interpolate(t.selection.totalPartial, { n: sum.unpriced })}
+                      </td>
+                    </tr>
+                  )}
+                </tfoot>
+              )}
             </table>
 
             <footer className="mt-10 border-t border-black/30 pt-4 text-[10px] text-ink-40 print:text-black/60">

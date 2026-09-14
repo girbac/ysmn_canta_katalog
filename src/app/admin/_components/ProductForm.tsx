@@ -153,7 +153,7 @@ export function ProductForm({ product }: { product?: Product }) {
             className="h-4 w-4 accent-[var(--ink)]" />
           &quot;Yeni&quot; etiketi göster — kartlarda rozet çıkar, koleksiyonda &quot;Önce yeniler&quot; sıralamasında öne geçer
         </label>
-        <Field label="Fiyat" hint="Boş bırakılırsa arayüzde hiç gösterilmez">
+        <Field label="Fiyat (₺)" hint="Kuruşsuz tam sayı. Kartta, ürün sayfasında, seçkide ve PDF'te görünür. Boş bırakılırsa o ürün için hiç fiyat gösterilmez.">
           <input name="fiyat" type="number" min={0} step="1"
             defaultValue={v?.price ?? ""} className={input} />
         </Field>

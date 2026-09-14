@@ -9,7 +9,7 @@ import { materialName } from "@/data/materials";
 import { ProductMedia } from "./ProductMedia";
 import { ScaleCompare } from "./ScaleCompare";
 import { SelectionButton } from "./SelectionButton";
-import { cx, formatDimensions, whatsappUrl } from "@/lib/utils";
+import { cx, formatDimensions, formatPrice, whatsappUrl } from "@/lib/utils";
 
 /**
  * Ürün detayı. Hem tam sayfada hem de ızgaradan açılan modalda
@@ -102,6 +102,11 @@ export function ProductDetail({
               {product.name[locale]}
             </h1>
             <p className="mt-2 text-body text-ink-60">{t.forms[product.form]}</p>
+            {typeof product.price === "number" && (
+              <p className="mt-5 text-heading-sm text-ink tabular-nums">
+                {formatPrice(product.price, locale)}
+              </p>
+            )}
           </div>
           <span className="shrink-0 pt-2 text-caption text-ink-40 tabular-nums">
             {product.code}
