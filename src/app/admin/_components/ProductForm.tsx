@@ -128,13 +128,13 @@ export function ProductForm({
 
       <Section title="Ölçüler" hint="Santimetre. Ürün sayfasındaki ölçek karşılaştırması bu değerlerden çiziliyor.">
         <div className="grid grid-cols-3 gap-3">
-          <Field label="Genişlik" error={errors["dimensions.w"]}>
-            <input name="en" type="number" min={1} max={200} required
-              defaultValue={v?.dimensions.w || ""} className={input} />
-          </Field>
           <Field label="Yükseklik" error={errors["dimensions.h"]}>
             <input name="yukseklik" type="number" min={1} max={200} required
               defaultValue={v?.dimensions.h || ""} className={input} />
+          </Field>
+          <Field label="En" error={errors["dimensions.w"]}>
+            <input name="en" type="number" min={1} max={200} required
+              defaultValue={v?.dimensions.w || ""} className={input} />
           </Field>
           <Field label="Derinlik" error={errors["dimensions.d"]}>
             <input name="derinlik" type="number" min={1} max={100} required

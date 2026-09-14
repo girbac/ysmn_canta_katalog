@@ -11,9 +11,15 @@ export function interpolate(template: string, values: Record<string, string | nu
   );
 }
 
-/** Ürün ölçüsünü okunur hale getirir: 36 × 30 × 13 cm */
+/**
+ * Ürün ölçüsünü okunur hale getirir: 30 × 36 × 13 cm
+ *
+ * Sıra yükseklik → en → derinlik. Alan adları (w/h/d) veride olduğu gibi
+ * kalıyor; değişen yalnızca okunuş sırası, ve yönetim formundaki alanlar
+ * da aynı sırada duruyor ki panelde girilenle sitede görünen karışmasın.
+ */
 export function formatDimensions(d: { w: number; h: number; d: number }, cm: string) {
-  return `${d.w} × ${d.h} × ${d.d} ${cm}`;
+  return `${d.h} × ${d.w} × ${d.d} ${cm}`;
 }
 
 /**

@@ -81,7 +81,7 @@
     "code": "Code",
     "material": "Material",
     "dimensions": "Dimensions",
-    "dimensionsHint": "W × H × D",
+    "dimensionsHint": "H × W × D",
     "strap": "Strap",
     "features": "Details",
     "colors": "Colours",
