@@ -275,6 +275,20 @@ body {
     background: #fff !important;
     color: #000 !important;
   }
+
+  /*
+   * Renkler olduğu gibi bassın.
+   *
+   * Tarayıcılar baskıda arka plan renklerini ve görsellerini varsayılan
+   * olarak atıyor — mürekkep tasarrufu için. Bu bir katalogda yanlış
+   * sonuç veriyordu: renk lekeleri soluyor, ürün fotoğrafının zemini
+   * kayboluyordu. Burası bir ürün belgesi; rengin doğru basılması
+   * belgenin işini görmesinin şartı.
+   */
+  * {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
   .no-print {
     display: none !important;
   }

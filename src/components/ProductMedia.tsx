@@ -25,6 +25,7 @@ export function ProductMedia({
   locale,
   sizes = "(max-width: 768px) 100vw, 33vw",
   priority = false,
+  eager = false,
   className = "",
 }: {
   product: Product;
@@ -34,6 +35,14 @@ export function ProductMedia({
   locale: Locale;
   sizes?: string;
   priority?: boolean;
+  /**
+   * Görseli görünür alana girmeyi beklemeden yükler.
+   *
+   * Baskı görünümü için gerekli: tarayıcı yazdırırken sayfanın tamamını
+   * basıyor ama tembel (lazy) görseller hiç görünür alana girmediği için
+   * yüklenmiyor ve PDF'te boş kutu kalıyordu.
+   */
+  eager?: boolean;
   className?: string;
 }) {
   const color = product.colors[colorIndex] ?? product.colors[0];
@@ -52,6 +61,8 @@ export function ProductMedia({
           fill
           sizes={sizes}
           priority={priority}
+          /* priority zaten eager demek; ikisini birden vermek geçersiz */
+          {...(!priority && eager ? { loading: "eager" as const } : {})}
           className="object-cover"
         />
       ) : (

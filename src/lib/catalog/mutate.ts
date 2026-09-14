@@ -18,6 +18,18 @@ function revalidateCatalog(slug?: string) {
     revalidatePath(`/${locale}`);
     revalidatePath(`/${locale}/koleksiyon`);
     if (slug) revalidatePath(`/${locale}/urun/${slug}`);
+
+    /**
+     * Seçki ve onun A4 baskı görünümü de katalogu okuyor.
+     *
+     * Baskı sayfası derleme anında üretiliyor (SSG) ve burada
+     * tazelenmediği için elindeki katalog derlemeden kalma oluyordu:
+     * panelden eklenen fotoğraf PDF'e hiç girmiyor, sonradan
+     * değiştirilen renk ve fiyat PDF'te ESKİ hâliyle basılıyordu.
+     * Müşteriye giden belge bu; en son tazelenmesi gereken yer burası.
+     */
+    revalidatePath(`/${locale}/secki`);
+    revalidatePath(`/${locale}/secki/yazdir`);
   }
   // Yeni ürün ekleniyorsa henüz üretilmemiş yollar da kalıbıyla işaretlenir
   revalidatePath("/[locale]/urun/[slug]", "page");

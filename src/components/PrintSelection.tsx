@@ -6,7 +6,7 @@ import type { Locale, Product } from "@/data/types";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { materialName } from "@/data/materials";
 import { itemKey, useHydrated, useSelection } from "@/store/selection";
-import { BagSilhouette } from "./BagSilhouette";
+import { ProductMedia } from "./ProductMedia";
 import { formatDimensions, formatPrice, interpolate, selectionTotal } from "@/lib/utils";
 
 /**
@@ -44,9 +44,37 @@ export function PrintSelection({
 
   useEffect(() => {
     if (!hydrated || rows.length === 0) return;
-    // Yazı tipleri yerleşsin, sonra yazdırma penceresi açılsın
-    const id = setTimeout(() => window.print(), 700);
-    return () => clearTimeout(id);
+    let iptal = false;
+
+    /**
+     * Yazdırma penceresi, sayfa gerçekten hazır olunca açılıyor.
+     *
+     * Eskiden sabit 700 ms bekleniyordu; yazı tipleri için yetiyordu ama
+     * fotoğraflar için yetmiyordu. Fotoğrafı geç yüklenen satır PDF'te
+     * boş kutu olarak çıkıyordu. Artık hem yazı tipleri hem de sayfadaki
+     * bütün görseller bitene kadar bekleniyor (hata verenler dahil —
+     * yoksa tek bozuk dosya yazdırmayı sonsuza kadar bekletirdi).
+     */
+    async function hazirOlunca() {
+      await Promise.all(
+        Array.from(document.images).map((img) =>
+          img.complete
+            ? Promise.resolve()
+            : new Promise<void>((bitti) => {
+                img.addEventListener("load", () => bitti(), { once: true });
+                img.addEventListener("error", () => bitti(), { once: true });
+              }),
+        ),
+      );
+      await document.fonts?.ready;
+      if (!iptal) window.print();
+    }
+
+    const id = setTimeout(hazirOlunca, 200);
+    return () => {
+      iptal = true;
+      clearTimeout(id);
+    };
   }, [hydrated, rows.length]);
 
   if (!hydrated) return <div className="p-16 text-sm text-ink-40">{t.common.loading}…</div>;
@@ -114,19 +142,29 @@ export function PrintSelection({
               <tbody>
                 {rows.map(({ item, product }) => {
                   const p = product!;
-                  const color = p.colors.find((c) => c.key === item.color) ?? p.colors[0];
+                  const colorIndex = Math.max(
+                    0,
+                    p.colors.findIndex((c) => c.key === item.color),
+                  );
+                  const color = p.colors[colorIndex];
                   return (
                     <tr
                       key={itemKey(item.slug, item.color)}
                       className="print-break border-b border-black/12 align-top text-[11px] text-ink print:text-black"
                     >
+                      {/* Gerçek ürün fotoğrafı — fotoğrafı olmayan renkte
+                          silüete düşer. Burası eskiden doğrudan silüet
+                          çiziyordu, yani ürünün fotoğrafı olsa bile PDF'e
+                          çizim giriyordu. Fotoğraf sınırı tek yerde
+                          (ProductMedia) kalsın diye artık o kullanılıyor. */}
                       <td className="py-3">
-                        <div className="w-[62px] bg-ground-2 print:bg-[#f2efe9]">
-                          <BagSilhouette
-                            form={p.form}
-                            hex={color.hex}
-                            idSuffix={`print-${p.slug}`}
-                            className="w-full"
+                        <div className="w-[62px]">
+                          <ProductMedia
+                            product={p}
+                            colorIndex={colorIndex}
+                            locale={locale}
+                            sizes="62px"
+                            eager
                           />
                         </div>
                       </td>
@@ -135,8 +173,21 @@ export function PrintSelection({
                         <span className="block font-whisper text-[13px] leading-tight">
                           {p.name[locale]}
                         </span>
-                        <span className="mt-0.5 block text-[10px] text-ink-40 print:text-black/60">
-                          {t.forms[p.form]} · {color.name[locale]}
+                        <span className="mt-0.5 flex items-center gap-1.5 text-[10px] text-ink-40 print:text-black/60">
+                          {t.forms[p.form]} ·
+                          {/* Renk noktası SVG, CSS arka planı değil: tarayıcının
+                              "arka plan grafikleri" seçeneği kapalıyken de basılsın.
+                              Renk PDF'te yalnızca isimle kalmıyor, gözle de görünüyor. */}
+                          <svg
+                            width="8"
+                            height="8"
+                            viewBox="0 0 8 8"
+                            aria-hidden="true"
+                            className="shrink-0"
+                          >
+                            <circle cx="4" cy="4" r="3.6" fill={color.hex} stroke="#00000033" strokeWidth="0.8" />
+                          </svg>
+                          {color.name[locale]}
                         </span>
                         {item.note?.trim() && (
                           <span className="mt-1 block text-[10px] italic text-ink-60 print:text-black/70">
