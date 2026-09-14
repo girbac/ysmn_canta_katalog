@@ -21,6 +21,7 @@ import { BagSilhouette } from "./BagSilhouette";
 export function ProductMedia({
   product,
   colorIndex = 0,
+  imageIndex = 0,
   locale,
   sizes = "(max-width: 768px) 100vw, 33vw",
   priority = false,
@@ -28,13 +29,15 @@ export function ProductMedia({
 }: {
   product: Product;
   colorIndex?: number;
+  /** Rengin kaçıncı fotoğrafı — ürün sayfasındaki galeri için */
+  imageIndex?: number;
   locale: Locale;
   sizes?: string;
   priority?: boolean;
   className?: string;
 }) {
   const color = product.colors[colorIndex] ?? product.colors[0];
-  const file = color?.images?.[0];
+  const file = color?.images?.[imageIndex] ?? color?.images?.[0];
   const alt = `${product.name[locale]} — ${color?.name[locale] ?? ""}`.trim();
 
   return (

@@ -31,7 +31,15 @@ export function ProductDetail({
 }) {
   const reduce = useReducedMotion();
   const [colorIndex, setColorIndex] = useState(0);
+  /** Seçili rengin kaçıncı fotoğrafı büyük alanda duruyor */
+  const [imageIndex, setImageIndex] = useState(0);
   const color = product.colors[colorIndex];
+
+  /** Renk değişince galeri başa döner — yeni rengin fotoğraf sayısı farklı */
+  function selectColor(i: number) {
+    setColorIndex(i);
+    setImageIndex(0);
+  }
 
   const askMessage = `${t.selection.whatsappIntro}\n\n• ${product.name[locale]} (${product.code}) — ${color.name[locale]}\n\n${t.selection.whatsappOutro}`;
 
@@ -40,7 +48,7 @@ export function ProductDetail({
       {/* ── Görsel ── */}
       <div>
         <motion.div
-          key={color.key}
+          key={`${color.key}-${imageIndex}`}
           initial={{ opacity: reduce ? 1 : 0.4 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.35 }}
@@ -48,33 +56,35 @@ export function ProductDetail({
           <ProductMedia
             product={product}
             colorIndex={colorIndex}
+            imageIndex={imageIndex}
             locale={locale}
             sizes="(max-width: 1024px) 100vw, 50vw"
             priority
           />
         </motion.div>
 
-        {product.colors.length > 1 && (
-          <div
-            /* Dar ekranda gizli: aşağıdaki isimli renk pastilleri aynı seçimi
-               yapıyor, bu şerit butonu 116 px daha aşağı itiyordu. */
-            className="mt-4 hidden grid-cols-4 gap-3 lg:grid sm:grid-cols-5"
-          >
-            {product.colors.map((c, i) => (
+        {/* Seçili rengin diğer fotoğrafları.
+            Burada eskiden renk şeridi vardı ama aşağıdaki isimli renk
+            pastilleri aynı işi yapıyordu; ikinci ve üçüncü fotoğraflar ise
+            hiçbir yerde görünmüyordu. Şerit artık galeri. */}
+        {color.images.length > 1 && (
+          <div className="mt-4 grid grid-cols-4 gap-3 sm:grid-cols-5">
+            {color.images.map((src, i) => (
               <button
-                key={c.key}
+                key={src}
                 type="button"
-                onClick={() => setColorIndex(i)}
-                aria-pressed={i === colorIndex}
-                aria-label={c.name[locale]}
+                onClick={() => setImageIndex(i)}
+                aria-pressed={i === imageIndex}
+                aria-label={`${product.name[locale]} — ${i + 1}`}
                 className={cx(
                   "rounded-tile border transition-colors",
-                  i === colorIndex ? "border-ink" : "border-transparent hover:border-line-strong",
+                  i === imageIndex ? "border-ink" : "border-transparent hover:border-line-strong",
                 )}
               >
                 <ProductMedia
                   product={product}
-                  colorIndex={i}
+                  colorIndex={colorIndex}
+                  imageIndex={i}
                   locale={locale}
                   sizes="120px"
                 />
@@ -123,7 +133,7 @@ export function ProductDetail({
               <button
                 key={c.key}
                 type="button"
-                onClick={() => setColorIndex(i)}
+                onClick={() => selectColor(i)}
                 aria-pressed={i === colorIndex}
                 title={c.name[locale]}
                 className={cx(

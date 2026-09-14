@@ -18,7 +18,7 @@ import {
   removeImage,
   saveProduct,
 } from "@/lib/catalog/mutate";
-import { colorHex, colorName, colorKeys, type ColorKey } from "@/data/colors";
+import { colorHex, colorName, colorKeys, orderColors, type ColorKey } from "@/data/colors";
 
 /** Girişten sonra yalnızca kendi sitemizdeki bir yola dönüyoruz */
 function safeNext(value: FormDataEntryValue | null): string {
@@ -115,8 +115,12 @@ function productFromForm(formData: FormData) {
     (colorKeys as readonly string[]).includes(k),
   ) as ColorKey[];
 
-  // Palet sırası korunuyor: ilk renk kartlarda kapak görseli olur
-  const ordered = colorKeys.filter((k) => selected.includes(k));
+  // Mevcut sıra korunuyor; yeni renkler palet yerine giriyor. Listeyi baştan
+  // dizmek, ilk renk kapak olduğu için ürünün kapak rengini değiştirirdi.
+  const oncekiSira = String(formData.get("renkSirasi") || "")
+    .split(",")
+    .filter(Boolean);
+  const ordered = orderColors(oncekiSira, selected);
 
   const existing = (() => {
     try {
@@ -143,16 +147,20 @@ function productFromForm(formData: FormData) {
    * değiştirilmiş olurdu. Yeni üründe ikisi de koddan türetiliyor.
    */
   const carriedSlug = String(formData.get("slug") || "").trim();
-  const carriedTr = String(formData.get("adTr") || "").trim();
-  const carriedEn = String(formData.get("adEn") || "").trim();
+  const ad = String(formData.get("adTr") || "").trim();
 
+  /**
+   * Panelde tek ad kutusu var ve o ad iki dilde de kullanılıyor.
+   *
+   * Çanta adları marka adları — çevrilmiyorlar. İki ayrı kutu istemek,
+   * aynı şeyi iki kez yazdırmaktan başka işe yaramıyordu. Ad boş
+   * bırakılırsa kodun kendisi ad oluyor; yalnızca kodla çalışmak isteyen
+   * fazladan bir şey yazmasın.
+   */
   return {
     slug: carriedSlug || slugFromCode(code),
     code,
-    name: {
-      tr: carriedTr || code,
-      en: carriedEn || code,
-    },
+    name: { tr: ad || code, en: ad || code },
     segment: String(formData.get("bolum") || ""),
     form: String(formData.get("form") || ""),
     material: String(formData.get("malzeme") || ""),

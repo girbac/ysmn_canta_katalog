@@ -36,3 +36,27 @@ export function colorHex(key: ColorKey): string {
 export function variant(key: ColorKey, images: string[] = []): ColorVariant {
   return { key, name: colorName(key), hex: colorHex(key), images };
 }
+
+/**
+ * Renk sırasını korur.
+ *
+ * Kaydetme eskiden listeyi baştan palet sırasına diziyordu. İlk renk
+ * kartlarda kapak görseli olduğu için bu, ürünün adını değiştirmek gibi
+ * alakasız bir işlemin kapak rengini değiştirmesine yol açıyordu — hatta
+ * fotoğrafı olmayan bir rengi öne alıp ürünü fotoğrafsız gösteriyordu.
+ *
+ * Artık mevcut sıra olduğu gibi kalıyor, yeni işaretlenen renkler palet
+ * sırasına göre araya giriyor.
+ */
+export function orderColors(previous: string[], selected: ColorKey[]): ColorKey[] {
+  const kalan = previous.filter((k): k is ColorKey => selected.includes(k as ColorKey));
+  const yeniler = colorKeys.filter((k) => selected.includes(k) && !previous.includes(k));
+
+  const sonuc = [...kalan];
+  for (const yeni of yeniler) {
+    const yer = sonuc.findIndex((k) => colorKeys.indexOf(k) > colorKeys.indexOf(yeni));
+    if (yer === -1) sonuc.push(yeni);
+    else sonuc.splice(yer, 0, yeni);
+  }
+  return sonuc;
+}

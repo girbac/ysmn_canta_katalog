@@ -99,13 +99,34 @@ export function ProductForm({
         >
           <input name="kod" defaultValue={v?.code} required placeholder="2098-S" className={input} />
         </Field>
+        <Field
+          label="Ürün adı"
+          error={errors["name.tr"]}
+          hint="Kartlarda ve ürün sayfasında başlık olur. Boş bırakılırsa kodun kendisi yazar."
+        >
+          <input
+            name="adTr"
+            /* Ad kodun kendisiyse kutu boş görünsün: o bir isim değil,
+               "isim girilmedi" durumunun karşılığı. */
+            defaultValue={v && v.name.tr !== v.code ? v.name.tr : ""}
+            placeholder={v?.code || "2098-S"}
+            className={input}
+          />
+        </Field>
       </Section>
 
+      {/* Adres gizli taşınıyor: aynı zamanda fotoğraf klasörü olduğu için
+          değişmesi yüklenmiş fotoğrafları koparırdı. */}
       {product && (
         <>
           <input type="hidden" name="slug" value={product.slug} />
-          <input type="hidden" name="adTr" value={product.name.tr} />
-          <input type="hidden" name="adEn" value={product.name.en} />
+          {/* Kayıtlı renk sırası: kaydetme onu koruyup yalnızca yeni
+              işaretlenenleri araya ekliyor. */}
+          <input
+            type="hidden"
+            name="renkSirasi"
+            value={product.colors.map((c) => c.key).join(",")}
+          />
         </>
       )}
 

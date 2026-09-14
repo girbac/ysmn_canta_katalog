@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import type { Product } from "@/data/types";
-import { colorKeys, type ColorKey } from "@/data/colors";
+import { orderColors, type ColorKey } from "@/data/colors";
 import { saveProductAction, type SaveState } from "../actions";
 import { ImageManager } from "./ImageManager";
 import { PRODUCT_FORM_ID, ProductForm } from "./ProductForm";
@@ -41,9 +41,10 @@ export function ProductEditor({ product }: { product?: Product }) {
     );
   }
 
-  // Palet sırası korunuyor: ilk renk kartlarda kapak görseli olur.
-  // Kullanıcının tıklama sırası değil, paletin kendi sırası geçerli.
-  const ordered = colorKeys.filter((k) => selected.includes(k));
+  // Kaydetmenin uygulayacağı sıranın aynısı: mevcut sıra korunuyor, yeni
+  // işaretlenenler palet yerine giriyor. Panelde gördüğün sıra ile kaydedilen
+  // sıra aynı olsun diye tek bir yardımcıdan geçiyor.
+  const ordered = orderColors(product?.colors.map((c) => c.key) ?? [], selected);
   const isNew = !product;
 
   return (
