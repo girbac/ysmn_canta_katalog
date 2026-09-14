@@ -9,7 +9,6 @@ import { materialName } from "@/data/materials";
 import { EditorialStrip } from "@/components/EditorialStrip";
 import { Hero } from "@/components/Hero";
 import { ModeSection } from "@/components/ModeSection";
-import { ModeShift } from "@/components/ModeShift";
 import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
 import { formatDimensions } from "@/lib/utils";
@@ -78,17 +77,16 @@ export default async function HomePage({
         </div>
       </ModeSection>
 
-      {/* ── 3 · Perde: dünya değişiyor ── */}
-      <ModeSection mode="erkek" className="bg-ground">
-        <ModeShift
-          eyebrow={t.home.modeShiftEyebrow}
-          title={t.home.modeShiftTitle}
-          lead={t.home.modeShiftLead}
-        />
-      </ModeSection>
-
-      {/* ── 4 · Erkek / Evrak — teknik ızgara ── */}
-      <ModeSection mode="erkek" id="erkek" className="cv-auto bg-ground pb-28 md:pb-36">
+      {/* ── 3 · Erkek / Evrak — teknik ızgara ──
+          Eskiden burada tam ekranlık bir "perde" bölümü vardı; kaldırıldı çünkü
+          içinde ürün yoktu ve bir ekran boyu fazladan kaydırma yaratıyordu.
+          Aydınlıktan karanlığa geçiş artık doğrudan bu bölümün kenarında
+          oluyor — `data-mode` renk geçişi kesmeyi yumuşatmaya devam ediyor. */}
+      <ModeSection
+        mode="erkek"
+        id="erkek"
+        className="cv-auto bg-ground pb-28 pt-24 md:pb-36 md:pt-32"
+      >
         <div className="mx-auto max-w-[1280px] px-5 md:px-10">
           <Reveal>
             <SectionHead
@@ -127,7 +125,7 @@ export default async function HomePage({
         </div>
       </ModeSection>
 
-      {/* ── 5 · Zanaat ── */}
+      {/* ── 4 · Zanaat ── */}
       <ModeSection mode="kadin" className="bg-ground-2 py-24 md:py-32">
         <div className="mx-auto max-w-[1280px] px-5 md:px-10">
           <Reveal>
@@ -146,7 +144,7 @@ export default async function HomePage({
         </div>
       </ModeSection>
 
-      {/* ── 6 · Seçki çağrısı ── */}
+      {/* ── 5 · Seçki çağrısı ── */}
       <ModeSection mode="kadin" className="bg-ground px-5 py-28 md:px-10 md:py-36">
         <Reveal className="mx-auto max-w-[1280px]">
           <h2 className="max-w-3xl font-whisper text-[clamp(2.2rem,5.4vw,58px)] leading-[1.06] tracking-[-0.04em] text-ink">
