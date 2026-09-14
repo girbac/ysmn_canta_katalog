@@ -11,8 +11,9 @@ import {
 } from "@/lib/admin-auth";
 import { isAdmin } from "@/lib/admin-session";
 import {
-  addImage,
+  addImages,
   deleteProduct,
+  makeCover,
   moveProduct,
   removeImage,
   saveProduct,
@@ -218,37 +219,71 @@ const ALLOWED = new Map([
 const MAX_BYTES = 6 * 1024 * 1024;
 
 export async function uploadImageAction(
-  _prev: { error?: string } | null,
+  _prev: { error?: string; added?: number } | null,
   formData: FormData,
-): Promise<{ error?: string }> {
+): Promise<{ error?: string; added?: number }> {
   await assertAdmin();
 
   const slug = String(formData.get("slug") || "");
   const colorKey = String(formData.get("renk") || "");
-  const file = formData.get("dosya");
+  // Tek seferde birkaç fotoğraf seçilebiliyor
+  const picked = formData
+    .getAll("dosya")
+    .filter((f): f is File => f instanceof File && f.size > 0);
 
-  if (!(file instanceof File) || file.size === 0) return { error: "Dosya seçilmedi." };
+  if (picked.length === 0) return { error: "Dosya seçilmedi." };
 
-  const ext = ALLOWED.get(file.type);
-  if (!ext) return { error: "Yalnızca webp, avif, jpg veya png yüklenebilir." };
-  if (file.size > MAX_BYTES) return { error: "Dosya 6 MB'tan büyük olmamalı." };
+  const stamp = Date.now().toString(36);
+  const files: Array<{ filename: string; contentType: string; body: Buffer }> = [];
+  const skipped: string[] = [];
 
-  // Dosya adı kullanıcıdan gelmiyor: renk + zaman damgasından üretiliyor.
-  // Böylece hem yol geçişi (../) riski kalmıyor hem de isimler çakışmıyor.
-  const filename = `${colorKey}-${Date.now().toString(36)}.${ext}`;
-  const body = Buffer.from(await file.arrayBuffer());
+  for (const [i, file] of picked.entries()) {
+    const ext = ALLOWED.get(file.type);
+    if (!ext) {
+      skipped.push(`${file.name} (yalnızca webp, avif, jpg, png)`);
+      continue;
+    }
+    if (file.size > MAX_BYTES) {
+      skipped.push(`${file.name} (6 MB'tan büyük)`);
+      continue;
+    }
+    // Dosya adı kullanıcıdan gelmiyor: renk + zaman damgası + sıra
+    // numarasından üretiliyor. Yol geçişi (../) riski kalmıyor; sıra
+    // numarası da aynı saniyede seçilen dosyaların birbirini ezmesini
+    // engelliyor (hepsi aynı zaman damgasını alıyor).
+    files.push({
+      filename: `${colorKey}-${stamp}-${i}.${ext}`,
+      contentType: file.type,
+      body: Buffer.from(await file.arrayBuffer()),
+    });
+  }
+
+  if (files.length === 0) {
+    return { error: `Hiçbiri yüklenemedi: ${skipped.join(", ")}` };
+  }
 
   try {
-    const result = await addImage({
-      slug,
-      colorKey,
-      filename,
-      contentType: file.type,
-      body,
-    });
-    return result.ok ? {} : { error: result.error };
+    const result = await addImages({ slug, colorKey, files });
+    if (!result.ok) return { error: result.error };
+    return skipped.length > 0
+      ? { added: result.added, error: `Atlananlar: ${skipped.join(", ")}` }
+      : { added: result.added };
   } catch (cause) {
     return { error: writeError(cause) };
+  }
+}
+
+export async function makeCoverAction(formData: FormData) {
+  await assertAdmin();
+  const slug = String(formData.get("slug") || "");
+  try {
+    await makeCover({
+      slug,
+      colorKey: String(formData.get("renk") || ""),
+      source: String(formData.get("kaynak") || ""),
+    });
+  } catch (cause) {
+    redirect(`/admin/urun/${slug}?hata=${encodeURIComponent(writeError(cause))}`);
   }
 }
 

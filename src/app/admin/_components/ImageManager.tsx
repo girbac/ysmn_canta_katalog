@@ -5,7 +5,7 @@ import { useActionState } from "react";
 import type { Product } from "@/data/types";
 import { colorHex, colorName, type ColorKey } from "@/data/colors";
 import { resolveImageSource } from "@/lib/catalog/image-source";
-import { removeImageAction, uploadImageAction } from "../actions";
+import { makeCoverAction, removeImageAction, uploadImageAction } from "../actions";
 
 /**
  * Renk varyantı başına fotoğraf yönetimi.
@@ -43,7 +43,7 @@ export function ImageManager({
       <p className="mt-2 max-w-xl text-caption text-ink-60">
         Her renk için ayrı fotoğraf yükleyin. İlk fotoğraf kartlarda ve listede
         görünen kapak görselidir; fotoğraf olmayan renkler forma göre çizilmiş
-        silüetle gösterilir. Kare (1:1), webp/avif tercih edilir, en fazla 6 MB.
+        silüetle gösterilir. Bir renge birden fazla fotoğraf seçebilirsiniz; ilki kapak olur, dilediğinizi “Kapak yap” ile öne alabilirsiniz. Dikey (3:4) çekim, webp/avif tercih edilir, dosya başına en fazla 6 MB.
       </p>
 
       {selected.length === 0 && (
@@ -96,17 +96,34 @@ export function ImageManager({
                           className="object-cover"
                         />
                       </div>
-                      <form action={removeImageAction} className="mt-1.5">
-                        <input type="hidden" name="slug" value={product.slug} />
-                        <input type="hidden" name="renk" value={key} />
-                        <input type="hidden" name="kaynak" value={source} />
-                        <button
-                          type="submit"
-                          className="text-caption text-ink-40 underline-offset-4 hover:text-ink hover:underline"
-                        >
-                          {i === 0 ? "Kapağı sil" : "Sil"}
-                        </button>
-                      </form>
+                      <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
+                        {i === 0 ? (
+                          <span className="text-caption text-ink">Kapak</span>
+                        ) : (
+                          <form action={makeCoverAction}>
+                            <input type="hidden" name="slug" value={product.slug} />
+                            <input type="hidden" name="renk" value={key} />
+                            <input type="hidden" name="kaynak" value={source} />
+                            <button
+                              type="submit"
+                              className="text-caption text-ink-60 underline-offset-4 hover:text-ink hover:underline"
+                            >
+                              Kapak yap
+                            </button>
+                          </form>
+                        )}
+                        <form action={removeImageAction}>
+                          <input type="hidden" name="slug" value={product.slug} />
+                          <input type="hidden" name="renk" value={key} />
+                          <input type="hidden" name="kaynak" value={source} />
+                          <button
+                            type="submit"
+                            className="text-caption text-ink-40 underline-offset-4 hover:text-ink hover:underline"
+                          >
+                            Sil
+                          </button>
+                        </form>
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -130,10 +147,10 @@ export function ImageManager({
 }
 
 function Uploader({ slug, colorKey }: { slug: string; colorKey: string }) {
-  const [state, action, pending] = useActionState<{ error?: string } | null, FormData>(
-    uploadImageAction,
-    null,
-  );
+  const [state, action, pending] = useActionState<
+    { error?: string; added?: number } | null,
+    FormData
+  >(uploadImageAction, null);
 
   return (
     <form action={action} className="mt-4 flex flex-wrap items-center gap-3">
@@ -143,6 +160,7 @@ function Uploader({ slug, colorKey }: { slug: string; colorKey: string }) {
         type="file"
         name="dosya"
         accept="image/webp,image/avif,image/jpeg,image/png"
+        multiple
         required
         className="text-caption text-ink-60 file:mr-3 file:rounded-card file:border file:border-line-strong file:bg-ground-2 file:px-4 file:py-2 file:text-caption file:text-ink"
       />
@@ -153,6 +171,11 @@ function Uploader({ slug, colorKey }: { slug: string; colorKey: string }) {
       >
         {pending ? "Yükleniyor…" : "Yükle"}
       </button>
+      {state?.added ? (
+        <span className="text-caption text-ink-60">
+          {state.added} fotoğraf eklendi.
+        </span>
+      ) : null}
       {state?.error && (
         <span role="alert" className="text-caption text-ink">
           {state.error}

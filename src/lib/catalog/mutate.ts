@@ -85,14 +85,20 @@ export async function deleteProduct(slug: string): Promise<void> {
   revalidateCatalog(slug);
 }
 
-/** Bir ürünün tek renk varyantına görsel ekler */
-export async function addImage(params: {
+/**
+ * Bir renk varyantına bir ya da daha fazla görsel ekler.
+ *
+ * Dosyalar tek seferde işleniyor: depo bir kez okunuyor, hepsi yüklendikten
+ * sonra bir kez yazılıyor. Dosya başına ayrı oku-yaz yapılsaydı aynı anda
+ * giden yüklemeler birbirinin sonucunu eziyordu.
+ */
+export async function addImages(params: {
   slug: string;
   colorKey: string;
-  filename: string;
-  contentType: string;
-  body: Buffer;
-}): Promise<{ ok: true } | { ok: false; error: string }> {
+  files: Array<{ filename: string; contentType: string; body: Buffer }>;
+}): Promise<{ ok: true; added: number } | { ok: false; error: string }> {
+  if (params.files.length === 0) return { ok: false, error: "Dosya seçilmedi." };
+
   const store = getStore();
   const list = await store.read();
   const index = list.findIndex((p) => p.slug === params.slug);
@@ -102,24 +108,61 @@ export async function addImage(params: {
   const colorIndex = product.colors.findIndex((c) => c.key === params.colorKey);
   if (colorIndex === -1) return { ok: false, error: "Bu üründe böyle bir renk yok." };
 
-  const source = await store.putImage({
-    slug: params.slug,
-    filename: params.filename,
-    contentType: params.contentType,
-    body: params.body,
-  });
+  const sources: string[] = [];
+  for (const file of params.files) {
+    sources.push(
+      await store.putImage({
+        slug: params.slug,
+        filename: file.filename,
+        contentType: file.contentType,
+        body: file.body,
+      }),
+    );
+  }
 
   const next: StoredProduct[] = [...list];
-  const colors = product.colors.map((c, i) =>
-    i === colorIndex
-      ? { ...c, images: c.images.includes(source) ? c.images : [...c.images, source] }
-      : c,
-  );
+  const colors = product.colors.map((c, i) => {
+    if (i !== colorIndex) return c;
+    const fresh = sources.filter((src) => !c.images.includes(src));
+    return { ...c, images: [...c.images, ...fresh] };
+  });
   next[index] = { ...product, colors };
 
   await store.write(next);
   revalidateCatalog(params.slug);
-  return { ok: true };
+  return { ok: true, added: sources.length };
+}
+
+/**
+ * Bir görseli o rengin başına alır — yani kapak yapar.
+ *
+ * Kartlarda ve listede ilk görsel gösteriliyor. Bir renge birkaç fotoğraf
+ * yüklenebildiğine göre hangisinin kapak olacağı da seçilebilmeli; yoksa
+ * tek yol istenmeyeni silmek olurdu.
+ */
+export async function makeCover(params: {
+  slug: string;
+  colorKey: string;
+  source: string;
+}): Promise<void> {
+  const store = getStore();
+  const list = await store.read();
+  const index = list.findIndex((p) => p.slug === params.slug);
+  if (index === -1) return;
+
+  const product = list[index];
+  const next: StoredProduct[] = [...list];
+  next[index] = {
+    ...product,
+    colors: product.colors.map((c) =>
+      c.key === params.colorKey && c.images.includes(params.source)
+        ? { ...c, images: [params.source, ...c.images.filter((i) => i !== params.source)] }
+        : c,
+    ),
+  };
+
+  await store.write(next);
+  revalidateCatalog(params.slug);
 }
 
 /** Bir görseli varyanttan çıkarır ve depodan siler */
