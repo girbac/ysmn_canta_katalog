@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useActionState } from "react";
 import type { Product } from "@/data/types";
-import { colorHex, colorName, type ColorKey } from "@/data/colors";
+import type { ColorDef } from "@/data/colors";
 import { resolveImageSource } from "@/lib/catalog/image-source";
 import { makeCoverAction, removeImageAction, uploadImageAction } from "../actions";
 
@@ -26,15 +26,16 @@ export function ImageManager({
 }: {
   /** Yeni üründe henüz kayıt yok */
   product?: Product;
-  /** Formda o an işaretli renkler, palet sırasında */
-  selected: ColorKey[];
+  /** Formda o an seçili renkler, kaydedilecekleri sırada */
+  selected: ColorDef[];
 }) {
   const saved = new Map((product?.colors ?? []).map((c) => [c.key, c]));
+  const secili = new Set(selected.map((c) => c.key));
 
-  // İşareti kaldırılmış ama kayıtta fotoğrafı olan renkler: kaydedilirse
+  // Seçimden çıkarılmış ama kayıtta fotoğrafı olan renkler: kaydedilirse
   // o fotoğraflar katalogdan düşecek. Sessizce olmasın.
   const droppedWithPhotos = (product?.colors ?? []).filter(
-    (c) => !selected.includes(c.key as ColorKey) && c.images.length > 0,
+    (c) => !secili.has(c.key) && c.images.length > 0,
   );
 
   return (
@@ -57,16 +58,17 @@ export function ImageManager({
           role="alert"
           className="mt-6 rounded-card border border-line-strong bg-ground-2 p-4 text-body text-ink"
         >
-          İşaretini kaldırdığınız{" "}
-          {droppedWithPhotos.map((c) => colorName(c.key as ColorKey).tr).join(", ")}{" "}
+          Seçimden çıkardığınız{" "}
+          {droppedWithPhotos.map((c) => c.name.tr).join(", ")}{" "}
           rengine ait{" "}
           {droppedWithPhotos.reduce((n, c) => n + c.images.length, 0)} fotoğraf,
-          kaydettiğinizde üründen düşecek. Vazgeçtiyseniz rengi tekrar işaretleyin.
+          kaydettiğinizde üründen düşecek. Vazgeçtiyseniz rengi tekrar seçin.
         </p>
       )}
 
       <div className="mt-6 space-y-6">
-        {selected.map((key) => {
+        {selected.map((color) => {
+          const key = color.key;
           const images = saved.get(key)?.images ?? [];
 
           return (
@@ -74,9 +76,9 @@ export function ImageManager({
               <div className="flex flex-wrap items-center gap-2.5">
                 <span
                   className="h-4 w-4 shrink-0 rounded-full border border-line"
-                  style={{ backgroundColor: colorHex(key) }}
+                  style={{ backgroundColor: color.hex }}
                 />
-                <span className="text-body text-ink">{colorName(key).tr}</span>
+                <span className="text-body text-ink">{color.tr}</span>
                 <span className="text-caption text-ink-40">
                   {images.length} fotoğraf
                 </span>
@@ -89,7 +91,7 @@ export function ImageManager({
                       <div className="relative aspect-product overflow-hidden rounded-tile bg-ground-2">
                         <Image
                           src={resolveImageSource(source, product.slug)}
-                          alt={`${product.name.tr} — ${colorName(key).tr} ${i + 1}`}
+                          alt={`${product.name.tr} — ${color.tr} ${i + 1}`}
                           fill
                           sizes="104px"
                           className="object-cover"
@@ -132,7 +134,7 @@ export function ImageManager({
                   işlemi rengi ürüne kendisi ekliyor (bkz. addImages).
                   Eskiden önce Kaydet'e basmak gerekiyordu. */}
               {product ? (
-                <Uploader slug={product.slug} colorKey={key} />
+                <Uploader slug={product.slug} color={color} />
               ) : (
                 <p className="mt-4 text-caption text-ink-40">
                   Aşağıdaki &quot;Ürünü oluştur&quot; düğmesine basın; hemen
@@ -147,7 +149,7 @@ export function ImageManager({
   );
 }
 
-function Uploader({ slug, colorKey }: { slug: string; colorKey: string }) {
+function Uploader({ slug, color }: { slug: string; color: ColorDef }) {
   const [state, action, pending] = useActionState<
     { error?: string; added?: number } | null,
     FormData
@@ -156,7 +158,13 @@ function Uploader({ slug, colorKey }: { slug: string; colorKey: string }) {
   return (
     <form action={action} className="mt-4 flex flex-wrap items-center gap-3">
       <input type="hidden" name="slug" value={slug} />
-      <input type="hidden" name="renk" value={colorKey} />
+      {/* Renk henüz kaydedilmemiş olabilir; yükleme onu ürüne kendisi
+          ekliyor. Palet dışı renkler olduğu için adı ve tonu da gitmeli —
+          sunucuda bakılacak bir liste yok. */}
+      <input type="hidden" name="renk" value={color.key} />
+      <input type="hidden" name="renkAdi" value={color.tr} />
+      <input type="hidden" name="renkAdiEn" value={color.en} />
+      <input type="hidden" name="renkHex" value={color.hex} />
       <input
         type="file"
         name="dosya"

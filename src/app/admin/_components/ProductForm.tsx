@@ -1,7 +1,8 @@
 "use client";
 
 import type { Product } from "@/data/types";
-import { colorKeys, colorHex, colorName, type ColorKey } from "@/data/colors";
+import type { ColorDef } from "@/data/colors";
+import { ColorPicker } from "./ColorPicker";
 import { materialKeys, materialName } from "@/data/materials";
 import { forms, segments, straps } from "@/lib/catalog/schema";
 import { type SaveState } from "../actions";
@@ -30,13 +31,15 @@ export function ProductForm({
   product,
   selected,
   onToggleColor,
+  onAddColor,
   action,
   state,
 }: {
   product?: Product;
-  /** Formdaki canlı renk seçimi — ProductEditor'da tutuluyor */
-  selected: ColorKey[];
-  onToggleColor: (key: ColorKey) => void;
+  /** Formdaki canlı renk seçimi, sıraya girmiş hâliyle — ProductEditor'da tutuluyor */
+  selected: ColorDef[];
+  onToggleColor: (color: ColorDef) => void;
+  onAddColor: (color: ColorDef) => void;
   /**
    * Kaydetme eylemi ve durumu da ProductEditor'da duruyor: Kaydet düğmesi
    * sayfanın en altında, fotoğraf bölümünün ardında yaşıyor ve oraya
@@ -47,6 +50,16 @@ export function ProductForm({
 }) {
   const errors = state && !state.ok ? state.errors : {};
   const isNew = !product;
+
+  /**
+   * Renk hatası dizinin kendisinden ("en az bir renk gerekli") ya da tek
+   * bir rengin alanından gelebiliyor ("colors.2.hex"). İkincisi de aynı
+   * yerde gösterilmeli, yoksa kullanıcı hiçbir yerde görünmeyen bir
+   * hatanın kaydı engellediğini sanır.
+   */
+  const colorError =
+    errors.colors ??
+    Object.entries(errors).find(([path]) => path.startsWith("colors."))?.[1];
 
   /**
    * Alan varsayılanları.
@@ -117,18 +130,11 @@ export function ProductForm({
 
       {/* Adres gizli taşınıyor: aynı zamanda fotoğraf klasörü olduğu için
           değişmesi yüklenmiş fotoğrafları koparırdı. */}
-      {product && (
-        <>
-          <input type="hidden" name="slug" value={product.slug} />
-          {/* Kayıtlı renk sırası: kaydetme onu koruyup yalnızca yeni
-              işaretlenenleri araya ekliyor. */}
-          <input
-            type="hidden"
-            name="renkSirasi"
-            value={product.colors.map((c) => c.key).join(",")}
-          />
-        </>
-      )}
+      {product && <input type="hidden" name="slug" value={product.slug} />}
+
+      {/* Renkler tek alanda, sıralı ve tam tanımlı gidiyor: ad ve ton
+          artık sunucudaki bir listede değil, seçimin kendisinde. */}
+      <input type="hidden" name="renkler" value={JSON.stringify(selected)} />
 
       <Section title="Sınıflandırma">
         <Field label="Bölüm" error={errors.segment}>
@@ -175,22 +181,9 @@ export function ProductForm({
         </div>
       </Section>
 
-      <Section title="Renkler" hint="İlk işaretli renk kartlarda kapak görseli olur. Sıra palet sırasını izler. İşaretlediğiniz her renk için aşağıda bir fotoğraf alanı açılır.">
-        {errors.colors && <Alert>{errors.colors}</Alert>}
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-          {colorKeys.map((key: ColorKey) => (
-            <label key={key}
-              className="flex cursor-pointer items-center gap-2.5 rounded-card border border-line-strong bg-ground-2 px-3 py-2.5 text-caption text-ink has-checked:border-ink">
-              <input type="checkbox" name="renkler" value={key}
-                checked={selected.includes(key)}
-                onChange={() => onToggleColor(key)}
-                className="accent-[var(--ink)]" />
-              <span className="h-4 w-4 shrink-0 rounded-full border border-line"
-                style={{ backgroundColor: colorHex(key) }} />
-              {colorName(key).tr}
-            </label>
-          ))}
-        </div>
+      <Section title="Renkler" hint="Hazır renklerden seçin ya da kendi renginizi ekleyin — palet sabit değil. Listedeki ilk renk kartlarda kapak görseli olur; sıra seçtiğiniz sıradır. Seçtiğiniz her renk için aşağıda bir fotoğraf alanı açılır.">
+        {colorError && <Alert>{colorError}</Alert>}
+        <ColorPicker selected={selected} onToggle={onToggleColor} onAdd={onAddColor} />
       </Section>
 
       <Section title="Detaylar" hint="Her satır bir madde. Türkçe ve İngilizce karşılığı dikey çizgiyle ayırın: Manyetik kapak | Magnetic flap">

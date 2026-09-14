@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { colorKeys } from "@/data/colors";
 import { materialKeys } from "@/data/materials";
 
 /**
@@ -36,8 +35,23 @@ const slug = z
   .max(60)
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Yalnızca küçük harf, rakam ve tire (ör. meridyen-tote)");
 
+/**
+ * Renk anahtarı.
+ *
+ * Eskiden kapalı bir liste (`z.enum`) idi; artık serbest. Panelde hazır
+ * paletin dışında renk tanımlanabiliyor ve her ürün rengin adını ve tonunu
+ * kendi içinde saklıyor — yani palet, kataloğun sınırı değil yalnızca bir
+ * kısayol. Biçim yine de dar tutuluyor: anahtar filtre adresinde geçiyor.
+ */
+const colorKey = z
+  .string()
+  .trim()
+  .min(2)
+  .max(40)
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Renk anahtarı yalnızca küçük harf, rakam ve tire içerebilir");
+
 const colorVariant = z.object({
-  key: z.enum(colorKeys as [string, ...string[]]),
+  key: colorKey,
   name: localized,
   hex: z.string().regex(/^#[0-9a-fA-F]{6}$/),
   /**

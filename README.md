@@ -96,8 +96,16 @@ Panel yerine dosyayı elle düzenlemek isterseniz tek kaynak
 ```
 
 Geçerli değerler: `segment` → kadin | erkek · `form` → tote | omuz | baguette |
-clutch | sirt | evrak | postaci · `material` → `src/data/materials.ts` ·
-renk anahtarları → `src/data/colors.ts`. Listedeki **sıra** katalog sırasıdır.
+clutch | sirt | evrak | postaci · `material` → `src/data/materials.ts`.
+Listedeki **sıra** katalog sırasıdır.
+
+Renkler kapalı bir liste değil: `src/data/colors.ts` yalnızca panelde tek
+tıkla seçilen **hazır renkleri** tutuyor, panelden istenen ada ve tona sahip
+yeni bir renk eklenebiliyor. Her ürün rengini kendi içinde saklıyor
+(`key` + `name` + `hex`), yani palete sonradan dokunmak kayıtlı ürünleri
+etkilemiyor. Anahtar filtre adresinde geçtiği için küçük harf, rakam ve
+tireyle sınırlı; panel Türkçe addan kendisi üretiyor ("Gül Kurusu" →
+`gul-kurusu`).
 
 `dimensions` yalnızca künye için değil: ürün sayfasındaki **ölçek
 karşılaştırması** (170 cm insan, A4, telefon) bu değerlerden çiziliyor.

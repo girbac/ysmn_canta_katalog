@@ -5,7 +5,6 @@ import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import type { Form, Locale } from "@/data/types";
 import { getCatalogViews } from "@/lib/catalog/catalog";
-import { colorName, type ColorKey } from "@/data/colors";
 import { materialKeys, materialName } from "@/data/materials";
 import {
   applyFilters,
@@ -62,7 +61,7 @@ export default async function CollectionPage({
   const t = getDictionary(locale);
 
   const sp = await searchParams;
-  const { products, usedColorKeys, colorHex } = await getCatalogViews();
+  const { products, usedColorKeys, colorHex, colorNames: colorMeta } = await getCatalogViews();
   const filters = parseFilters(sp, usedColorKeys, materialKeys);
   const list = applyFilters(products, filters, locale);
 
@@ -70,8 +69,10 @@ export default async function CollectionPage({
   // bordo seçiliyken bordosu olmayan malzeme hiç gösterilmez.
   const options = availableOptions(products, filters);
 
+  // Renk adları kataloğun kendisinden geliyor: palet dışı renkler de
+  // panelde yazıldığı adla görünsün.
   const colorNames = Object.fromEntries(
-    usedColorKeys.map((k) => [k, colorName(k as ColorKey)[locale]]),
+    usedColorKeys.map((k) => [k, colorMeta[k]?.[locale] ?? k]),
   );
   const materialNames = Object.fromEntries(
     materialKeys.map((k) => [k, materialName(k)[locale]]),

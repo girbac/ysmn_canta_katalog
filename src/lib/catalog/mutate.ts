@@ -1,7 +1,7 @@
 import "server-only";
 import { revalidatePath } from "next/cache";
 import { locales } from "@/i18n/config";
-import { colorHex, colorKeys, colorName, type ColorKey } from "@/data/colors";
+import { findColor } from "@/data/colors";
 import { getStore } from "./store";
 import { parseProduct, type StoredProduct } from "./schema";
 
@@ -108,6 +108,9 @@ export async function deleteProduct(slug: string): Promise<void> {
 export async function addImages(params: {
   slug: string;
   colorKey: string;
+  /** Renk üründe henüz yoksa buradan kuruluyor; yoksa hazır palete bakılıyor */
+  colorName?: { tr: string; en: string };
+  colorHex?: string;
   files: Array<{ filename: string; contentType: string; body: Buffer }>;
 }): Promise<{ ok: true; added: number } | { ok: false; error: string }> {
   if (params.files.length === 0) return { ok: false, error: "Dosya seçilmedi." };
@@ -129,24 +132,25 @@ export async function addImages(params: {
    */
   let colors = product.colors;
   if (!colors.some((c) => c.key === params.colorKey)) {
-    if (!(colorKeys as readonly string[]).includes(params.colorKey)) {
-      return { ok: false, error: "Bu renk palette yok." };
+    /**
+     * Rengin adı ve tonu panelden geliyor (palet dışı renkler de var);
+     * gelmediyse hazır palete düşülüyor. İkisi de yoksa renk kurulamaz.
+     */
+    const hazir = findColor(params.colorKey);
+    const ad = params.colorName ?? (hazir && { tr: hazir.tr, en: hazir.en });
+    const ton = params.colorHex ?? hazir?.hex;
+    if (!ad || !ton) {
+      return { ok: false, error: "Bu rengin adı ve tonu bilinmiyor — önce Kaydet'e basın." };
     }
-    const key = params.colorKey as ColorKey;
-    const eklenen = { key, name: colorName(key), hex: colorHex(key), images: [] };
 
     /**
-     * Yeni renk palet sırasına göre araya giriyor ama MEVCUT renklerin
-     * sırası olduğu gibi kalıyor. Tüm listeyi yeniden dizmek, ilk renk
-     * kapak görseli olduğu için ürünün kartlarda görünen rengini
-     * değiştirirdi — fotoğraf yüklemenin böyle bir yan etkisi olmamalı.
+     * Yeni renk listenin SONUNA ekleniyor; mevcut renklerin sırası
+     * olduğu gibi kalıyor. Araya sokmak ya da listeyi yeniden dizmek,
+     * ilk renk kapak görseli olduğu için ürünün kartlarda görünen
+     * rengini değiştirirdi — fotoğraf yüklemenin böyle bir yan etkisi
+     * olmamalı. Panelde de aynı kural işliyor (bkz. orderColors).
      */
-    const sira = (k: string) => colorKeys.indexOf(k as ColorKey);
-    const nereye = colors.findIndex((c) => sira(c.key) > sira(key));
-    colors =
-      nereye === -1
-        ? [...colors, eklenen]
-        : [...colors.slice(0, nereye), eklenen, ...colors.slice(nereye)];
+    colors = [...colors, { key: params.colorKey, name: ad, hex: ton, images: [] }];
   }
   const colorIndex = colors.findIndex((c) => c.key === params.colorKey);
 

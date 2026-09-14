@@ -18,7 +18,7 @@ import {
   removeImage,
   saveProduct,
 } from "@/lib/catalog/mutate";
-import { colorHex, colorName, colorKeys, orderColors, type ColorKey } from "@/data/colors";
+import type { ColorDef } from "@/data/colors";
 
 /** Girişten sonra yalnızca kendi sitemizdeki bir yola dönüyoruz */
 function safeNext(value: FormDataEntryValue | null): string {
@@ -111,16 +111,27 @@ function num(value: FormDataEntryValue | null): number {
  * veriliyor ki kullanıcı yazdıklarını kaybetmesin.
  */
 function productFromForm(formData: FormData) {
-  const selected = formData.getAll("renkler").map(String).filter((k) =>
-    (colorKeys as readonly string[]).includes(k),
-  ) as ColorKey[];
-
-  // Mevcut sıra korunuyor; yeni renkler palet yerine giriyor. Listeyi baştan
-  // dizmek, ilk renk kapak olduğu için ürünün kapak rengini değiştirirdi.
-  const oncekiSira = String(formData.get("renkSirasi") || "")
-    .split(",")
-    .filter(Boolean);
-  const ordered = orderColors(oncekiSira, selected);
+  /**
+   * Renkler artık tek bir alanda, sıralı ve tam tanımlı geliyor:
+   * [{ key, tr, en, hex }, …]
+   *
+   * Eskiden yalnızca anahtarlar gönderiliyor, ad ile ton sunucuda hazır
+   * paletten okunuyordu — yani palet dışı bir renk tanımlanamıyordu.
+   * Sıra da panelde hesaplanıyor (bkz. ProductEditor), böylece ekranda
+   * görünen sıra ile kaydedilen sıra tek yerden çıkıyor.
+   */
+  const ordered: ColorDef[] = (() => {
+    try {
+      const parsed = JSON.parse(String(formData.get("renkler") || "[]"));
+      if (!Array.isArray(parsed)) return [];
+      return parsed.filter(
+        (c): c is ColorDef =>
+          Boolean(c) && typeof c.key === "string" && typeof c.hex === "string",
+      );
+    } catch {
+      return [];
+    }
+  })();
 
   const existing = (() => {
     try {
@@ -169,11 +180,13 @@ function productFromForm(formData: FormData) {
       h: num(formData.get("yukseklik")),
       d: num(formData.get("derinlik")),
     },
-    colors: ordered.map((key) => ({
-      key,
-      name: colorName(key),
-      hex: colorHex(key),
-      images: existing[key] ?? [],
+    colors: ordered.map((c) => ({
+      key: c.key,
+      // Renk adı da ürün adı gibi tek kutuda yazılıyor; iki dilde aynı
+      // görünüyor. Hazır renklerin İngilizcesi paletten geliyor.
+      name: { tr: String(c.tr ?? ""), en: String(c.en || c.tr || "") },
+      hex: c.hex,
+      images: existing[c.key] ?? [],
     })),
     features: parseFeatures(String(formData.get("detaylar") || "")),
     ...(strap ? { strap } : {}),
@@ -271,6 +284,10 @@ export async function uploadImageAction(
 
   const slug = String(formData.get("slug") || "");
   const colorKey = String(formData.get("renk") || "");
+  // Renk henüz kaydedilmemiş olabilir; yükleme onu kendisi ekliyor ve
+  // bunun için adı ile tonunu bilmesi gerekiyor (palet dışı renkler var).
+  const colorTr = String(formData.get("renkAdi") || "").trim();
+  const colorHexRaw = String(formData.get("renkHex") || "").trim();
   // Tek seferde birkaç fotoğraf seçilebiliyor
   const picked = formData
     .getAll("dosya")
@@ -308,7 +325,13 @@ export async function uploadImageAction(
   }
 
   try {
-    const result = await addImages({ slug, colorKey, files });
+    const result = await addImages({
+      slug,
+      colorKey,
+      ...(colorTr ? { colorName: { tr: colorTr, en: String(formData.get("renkAdiEn") || "").trim() || colorTr } } : {}),
+      ...(/^#[0-9a-fA-F]{6}$/.test(colorHexRaw) ? { colorHex: colorHexRaw } : {}),
+      files,
+    });
     if (!result.ok) return { error: result.error };
     return skipped.length > 0
       ? { added: result.added, error: `Atlananlar: ${skipped.join(", ")}` }

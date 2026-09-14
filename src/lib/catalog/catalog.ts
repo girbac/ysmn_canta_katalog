@@ -1,6 +1,6 @@
 import "server-only";
 import { cache } from "react";
-import type { Product } from "@/data/types";
+import type { Localized, Product } from "@/data/types";
 import { getStore } from "./store";
 import { seedProducts } from "./seed";
 import type { StoredProduct } from "./schema";
@@ -43,16 +43,35 @@ export const getProductBySlug = cache(async (slug: string): Promise<Product | un
 /** Katalogdan türetilen, sayfaların ihtiyaç duyduğu görünümler */
 export async function getCatalogViews() {
   const products = await getCatalog();
+
+  /**
+   * Filtrenin renk künyesi ürünlerin KENDİSİNDEN toplanıyor, hazır
+   * paletten değil. Panelde palet dışı renk tanımlanabildiği için ad ve
+   * ton yalnızca ürünün içinde tam olarak biliniyor; palete bakmak
+   * kullanıcının yazdığı adı ("Gül Kurusu") anahtarın okunuşuna
+   * ("Gul Kurusu") düşürürdü. İlk karşılaşılan tanım geçerli sayılıyor.
+   */
+  const meta = new Map<string, { name: Localized; hex: string }>();
+  for (const p of products) {
+    for (const c of p.colors) {
+      if (!meta.has(c.key)) meta.set(c.key, { name: c.name, hex: c.hex });
+    }
+  }
+
   return {
     products,
     women: products.filter((p) => p.segment === "kadin"),
     men: products.filter((p) => p.segment === "erkek"),
     featured: products.filter((p) => p.isNew),
     /** Katalogda gerçekten kullanılan renkler — filtre yalnızca bunları gösterir */
-    usedColorKeys: [...new Set(products.flatMap((p) => p.colors.map((c) => c.key)))],
+    usedColorKeys: [...meta.keys()],
     /** renk anahtarı → hex (istemciye düz nesne olarak geçer) */
     colorHex: Object.fromEntries(
-      products.flatMap((p) => p.colors.map((c) => [c.key, c.hex] as const)),
+      [...meta].map(([key, v]) => [key, v.hex] as const),
     ) as Record<string, string>,
+    /** renk anahtarı → iki dilli ad */
+    colorNames: Object.fromEntries(
+      [...meta].map(([key, v]) => [key, v.name] as const),
+    ) as Record<string, Localized>,
   };
 }

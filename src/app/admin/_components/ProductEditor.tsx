@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import type { Product } from "@/data/types";
-import { orderColors, type ColorKey } from "@/data/colors";
+import { orderColors, type ColorDef } from "@/data/colors";
 import { saveProductAction, type SaveState } from "../actions";
 import { ImageManager } from "./ImageManager";
 import { PRODUCT_FORM_ID, ProductForm } from "./ProductForm";
@@ -13,10 +13,14 @@ import { PRODUCT_FORM_ID, ProductForm } from "./ProductForm";
  * Burada iki şey ortak tutuluyor, çünkü ekranın farklı yerleri onları
  * paylaşıyor:
  *
- * 1. Renk seçimi — formdaki kutucuklar ve alttaki fotoğraf alanları aynı
+ * 1. Renk seçimi — formdaki palet ve alttaki fotoğraf alanları aynı
  *    listeyi okuyor. Eskiden kutucuklar işaretsiz (uncontrolled) çalışıyor,
  *    fotoğraf bölümü ise sunucudan gelen KAYITLI ürüne bakıyordu; renk
  *    değiştirince alt taraf eski renkleri göstermeye devam ediyordu.
+ *
+ *    Seçim artık yalnızca anahtar değil, rengin tamamı ({ key, tr, en, hex }):
+ *    palet dışı renkler tanımlanabildiği için ad ve ton yalnızca burada
+ *    biliniyor, sunucuda aranacak bir liste yok.
  *
  * 2. Kaydetme eylemi ve durumu — Kaydet düğmesi artık formun içinde değil,
  *    sayfanın en altında. Form öğesinin dışında yaşadığı için ona `form`
@@ -27,24 +31,53 @@ import { PRODUCT_FORM_ID, ProductForm } from "./ProductForm";
  * iç içe form HTML'de geçersiz.
  */
 export function ProductEditor({ product }: { product?: Product }) {
-  const [selected, setSelected] = useState<ColorKey[]>(
-    () => (product?.colors.map((c) => c.key as ColorKey) ?? []),
+  const [selected, setSelected] = useState<ColorDef[]>(() =>
+    (product?.colors ?? []).map((c) => ({
+      key: c.key,
+      tr: c.name.tr,
+      en: c.name.en,
+      hex: c.hex,
+    })),
   );
   const [state, action, pending] = useActionState<SaveState | null, FormData>(
     saveProductAction,
     null,
   );
 
-  function toggle(key: ColorKey) {
+  /** Palete tıklamak seçer/kaldırır; aynı anahtar iki kez giremez */
+  function toggle(color: ColorDef) {
     setSelected((prev) =>
-      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key],
+      prev.some((c) => c.key === color.key)
+        ? prev.filter((c) => c.key !== color.key)
+        : [...prev, color],
+    );
+  }
+
+  /**
+   * Kendi rengini ekler ya da seçili bir rengin tonunu günceller.
+   *
+   * Aynı anahtar zaten seçiliyse YERİNDE değişiyor, listenin sonuna
+   * taşınmıyor: ilk renk kapak görseli olduğu için tonu düzeltmek ürünün
+   * kapak rengini değiştirmemeli.
+   */
+  function addColor(color: ColorDef) {
+    setSelected((prev) =>
+      prev.some((c) => c.key === color.key)
+        ? prev.map((c) => (c.key === color.key ? color : c))
+        : [...prev, color],
     );
   }
 
   // Kaydetmenin uygulayacağı sıranın aynısı: mevcut sıra korunuyor, yeni
-  // işaretlenenler palet yerine giriyor. Panelde gördüğün sıra ile kaydedilen
-  // sıra aynı olsun diye tek bir yardımcıdan geçiyor.
-  const ordered = orderColors(product?.colors.map((c) => c.key) ?? [], selected);
+  // seçilenler sona ekleniyor. Panelde gördüğün sıra ile kaydedilen sıra
+  // aynı olsun diye tek bir yardımcıdan geçiyor.
+  const byKey = new Map(selected.map((c) => [c.key, c]));
+  const ordered = orderColors(
+    (product?.colors ?? []).map((c) => c.key),
+    selected.map((c) => c.key),
+  )
+    .map((key) => byKey.get(key))
+    .filter((c): c is ColorDef => Boolean(c));
   const isNew = !product;
 
   return (
@@ -53,6 +86,7 @@ export function ProductEditor({ product }: { product?: Product }) {
         product={product}
         selected={ordered}
         onToggleColor={toggle}
+        onAddColor={addColor}
         action={action}
         state={state}
       />
