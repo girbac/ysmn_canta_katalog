@@ -46,11 +46,11 @@ Yereldeyken aynı değerleri `.env.local` dosyasına yazın.
 
 | Depo | Ne zaman | Nereye yazar |
 |---|---|---|
-| **Vercel Blob** | `BLOB_READ_WRITE_TOKEN` tanımlıysa | Blob: `catalog/products.json` + `products/<slug>/…` |
+| **Vercel Blob** | `BLOB_STORE_ID` ya da `BLOB_READ_WRITE_TOKEN` tanımlıysa | Blob: `catalog/products.json` + `products/<slug>/…` |
 | **Dosya sistemi** | Token yoksa (yerel geliştirme) | `src/data/products.json` + `public/products/<slug>/` |
 
 Canlıda Blob şart: sunucu dosya sistemi salt okunurdur. Vercel projesinde bir
-Blob deposu oluşturduğunuzda `BLOB_READ_WRITE_TOKEN` otomatik gelir; panel
+Blob deposunu projeye bağladığınızda gerekli değişkenler otomatik gelir; panel
 üstteki göstergeden hangi depoda olduğunu söyler ve yanlış ortamda uyarır.
 
 Depoda henüz veri yokken katalog paketle gelen tohumdan (`src/data/products.json`)

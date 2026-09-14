@@ -25,8 +25,7 @@ function notWritable(what: string, cause: unknown): Error {
   return new Error(
     `${what}: sunucunun dosya sistemi salt okunur. Bu, Vercel Blob deposunun ` +
       "bu projeye bağlı olmadığı anlamına gelir. Vercel'de projenin Storage " +
-      "bölümünden bir Blob deposu bağlayın (BLOB_READ_WRITE_TOKEN değişkeni " +
-      "otomatik eklenir), sonra yeniden yayınlayın.",
+      "bölümünden bir Blob deposu bağlayın, sonra yeniden yayınlayın.",
     { cause },
   );
 }

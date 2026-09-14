@@ -12,7 +12,7 @@ import type { CatalogStore } from "./store-types";
  * döndürdüğü tam URL katalogda saklanır; ProductMedia zaten hem tam URL
  * hem göreli dosya adı kabul ediyor.
  *
- * BLOB_READ_WRITE_TOKEN olmadan bu dosya hiç yüklenmez (bkz. store.ts).
+ * Blob bağlı değilken bu adaptör hiç seçilmez (bkz. store.ts).
  */
 
 const CATALOG_KEY = "catalog/products.json";

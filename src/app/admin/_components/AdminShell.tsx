@@ -57,7 +57,7 @@ export function AdminShell({
         >
           Bu ortamda Blob deposu bağlı değil, dosya sistemi ise salt okunur.
           Kaydetme işlemleri başarısız olacak. Vercel projesinde bir Blob deposu
-          oluşturup <code>BLOB_READ_WRITE_TOKEN</code> değişkenini tanımlayın.
+          oluşturup projeye bağlayın, sonra yeniden yayınlayın.
         </p>
       )}
 
