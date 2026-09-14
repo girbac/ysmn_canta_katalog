@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { isAdmin, isAdminConfigured } from "@/lib/admin-session";
 import { getProductBySlug } from "@/lib/catalog/catalog";
-import { getStore } from "@/lib/catalog/store";
+import { getStoreStatus } from "@/lib/catalog/store";
 import { AdminShell } from "../../_components/AdminShell";
 import { NotConfigured } from "../../_components/NotConfigured";
 import { ProductEditor } from "../../_components/ProductEditor";
@@ -19,6 +19,8 @@ export default async function EditProduct({
   if (!isAdminConfigured()) return <NotConfigured />;
   if (!(await isAdmin())) notFound();
 
+  const store = await getStoreStatus();
+
   const { slug } = await params;
   const product = await getProductBySlug(slug);
   if (!product) notFound();
@@ -27,7 +29,8 @@ export default async function EditProduct({
 
   return (
     <AdminShell
-      storeKind={getStore().kind}
+      storeKind={store.kind}
+      storeError={store.error}
       title={product.name.tr}
       back={{ href: "/admin", label: "Katalog" }}
     >

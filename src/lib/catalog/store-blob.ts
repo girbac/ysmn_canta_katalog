@@ -20,6 +20,18 @@ const CATALOG_KEY = "catalog/products.json";
 export const blobStore: CatalogStore = {
   kind: "blob",
 
+  async probe() {
+    try {
+      // En ucuz gerçek çağrı: depoya bir kez bakmak. Kimlik, depo kimliği
+      // ve erişim üçü birden burada sınanıyor.
+      await list({ limit: 1 });
+      return { ok: true as const };
+    } catch (cause) {
+      const detail = cause instanceof Error ? cause.message : String(cause);
+      return { ok: false as const, error: detail.trim() };
+    }
+  },
+
   async read() {
     try {
       const found = await list({ prefix: CATALOG_KEY, limit: 1 });

@@ -30,3 +30,19 @@ export function getStore(): CatalogStore {
 }
 
 export type { CatalogStore };
+
+/**
+ * Panelin üstünde gösterilen depo durumu.
+ *
+ * Hangi adaptörün seçildiği tek başına yetmiyor: Blob seçilmiş ama
+ * ulaşılamıyor olabilir (ör. depo kimliği var olmayan bir depoyu
+ * gösteriyorsa). O yüzden gerçekten bir çağrı yapılıyor.
+ */
+export async function getStoreStatus(): Promise<{
+  kind: CatalogStore["kind"];
+  error?: string;
+}> {
+  const store = getStore();
+  const result = await store.probe();
+  return result.ok ? { kind: store.kind } : { kind: store.kind, error: result.error };
+}

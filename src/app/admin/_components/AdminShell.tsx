@@ -5,11 +5,14 @@ import { logout } from "../actions";
 export function AdminShell({
   children,
   storeKind,
+  storeError,
   title,
   back,
 }: {
   children: React.ReactNode;
   storeKind: "fs" | "blob";
+  /** Depoya erişilemiyorsa Blob'un kendi hata mesajı */
+  storeError?: string;
   title: string;
   back?: { href: string; label: string };
 }) {
@@ -39,7 +42,11 @@ export function AdminShell({
             }
             className="rounded-card border border-line-strong px-3 py-1.5 text-caption text-ink-60"
           >
-            {storeKind === "blob" ? "Blob deposu" : "Yerel dosya"}
+            {storeKind === "blob"
+              ? storeError
+                ? "Blob — erişilemiyor"
+                : "Blob deposu"
+              : "Yerel dosya"}
           </span>
           <form action={logout}>
             <button type="submit" className="text-caption text-ink-60 hover:text-ink">
@@ -59,6 +66,28 @@ export function AdminShell({
           Kaydetme işlemleri başarısız olacak. Vercel projesinde bir Blob deposu
           oluşturup projeye bağlayın, sonra yeniden yayınlayın.
         </p>
+      )}
+
+      {/* Blob bağlı görünüyor ama ulaşılamıyor: okuma hataları tohum veriyle
+          örtüldüğü için bu, yazmaya çalışana kadar fark edilmiyordu. */}
+      {storeError && (
+        <div
+          role="alert"
+          className="mt-6 rounded-card border border-line-strong bg-ground-2 p-4"
+        >
+          <p className="text-body text-ink">
+            Blob deposuna ulaşılamıyor. Kaydetme ve fotoğraf yükleme çalışmaz.
+          </p>
+          <p className="mt-2 text-caption text-ink-60">
+            Vercel&apos;in yanıtı: <span className="text-ink">{storeError}</span>
+          </p>
+          <p className="mt-3 text-caption text-ink-60">
+            &quot;This store does not exist&quot; diyorsa projedeki depo kimliği,
+            var olmayan bir depoyu gösteriyor demektir — depo silinip yeniden
+            oluşturulduysa böyle olur. Vercel&apos;de Storage bölümünden depoyu
+            bu projeden ayırıp yeniden bağlayın, sonra yeniden yayınlayın.
+          </p>
+        </div>
       )}
 
       {children}

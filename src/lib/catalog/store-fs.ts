@@ -33,6 +33,12 @@ function notWritable(what: string, cause: unknown): Error {
 export const fsStore: CatalogStore = {
   kind: "fs",
 
+  async probe() {
+    // Yerel geliştirmede dosya sistemi yazılabilir; canlıda buraya
+    // düşülmesi zaten AdminShell'de ayrıca uyarılıyor.
+    return { ok: true as const };
+  },
+
   async read() {
     try {
       const raw = await readFile(DATA_FILE, "utf8");

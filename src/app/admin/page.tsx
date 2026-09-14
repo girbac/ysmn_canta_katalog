@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isAdmin, isAdminConfigured } from "@/lib/admin-session";
 import { getCatalog } from "@/lib/catalog/catalog";
-import { getStore } from "@/lib/catalog/store";
+import { getStoreStatus } from "@/lib/catalog/store";
 import { materialName } from "@/data/materials";
 import { ProductMedia } from "@/components/ProductMedia";
 import { AdminShell } from "./_components/AdminShell";
@@ -29,6 +29,8 @@ export default async function AdminHome({
   if (!isAdminConfigured()) return <NotConfigured />;
   if (!(await isAdmin())) notFound();
 
+  const store = await getStoreStatus();
+
   const products = await getCatalog();
   const { silindi, hata } = await searchParams;
 
@@ -37,7 +39,7 @@ export default async function AdminHome({
   ).length;
 
   return (
-    <AdminShell storeKind={getStore().kind} title="Katalog">
+    <AdminShell storeKind={store.kind} storeError={store.error} title="Katalog">
       {hata && (
         <p className="mt-6 rounded-card border border-line-strong bg-ground-2 p-4 text-body text-ink">
           {hata}
