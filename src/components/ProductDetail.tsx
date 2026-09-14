@@ -33,12 +33,48 @@ export function ProductDetail({
   const [colorIndex, setColorIndex] = useState(0);
   /** Seçili rengin kaçıncı fotoğrafı büyük alanda duruyor */
   const [imageIndex, setImageIndex] = useState(0);
+  /** Dokunmatikte büyüteç açık mı — masaüstünde hover hallediyor */
+  const [zoomAcik, setZoomAcik] = useState(false);
   const color = product.colors[colorIndex];
 
   /** Renk değişince galeri başa döner — yeni rengin fotoğraf sayısı farklı */
   function selectColor(i: number) {
     setColorIndex(i);
     setImageIndex(0);
+    setZoomAcik(false);
+  }
+
+  function selectImage(i: number) {
+    setImageIndex(i);
+    setZoomAcik(false);
+  }
+
+  /**
+   * Büyüteç: imlecin görsel içindeki yüzdelik konumu, yakınlaşmanın
+   * merkezi oluyor. Durum React'te tutulmuyor — her fare hareketinde
+   * yeniden render etmek gereksiz; doğrudan CSS değişkeni yazılıyor.
+   */
+  function zoomOdagi(e: React.MouseEvent<HTMLDivElement>) {
+    const r = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty(
+      "--zoom-x",
+      `${((e.clientX - r.left) / r.width) * 100}%`,
+    );
+    e.currentTarget.style.setProperty(
+      "--zoom-y",
+      `${((e.clientY - r.top) / r.height) * 100}%`,
+    );
+  }
+
+  /**
+   * Dokunmatikte tek dokunuş yakınlaştırıyor, ikincisi geri çıkarıyor.
+   * Masaüstünde hover zaten hallediyor, orada tıklamanın bir işi yok —
+   * ayrımı ekranın kendisi söylüyor, cihaz tahmin edilmiyor.
+   */
+  function onZoomTap(e: React.MouseEvent<HTMLDivElement>) {
+    if (window.matchMedia("(hover: hover)").matches) return;
+    zoomOdagi(e);
+    setZoomAcik((v) => !v);
   }
 
   const askMessage = `${t.selection.whatsappIntro}\n\n• ${product.name[locale]} (${product.code}) — ${color.name[locale]}\n\n${t.selection.whatsappOutro}`;
@@ -53,14 +89,20 @@ export function ProductDetail({
           animate={{ opacity: 1 }}
           transition={{ duration: 0.35 }}
         >
-          <ProductMedia
-            product={product}
-            colorIndex={colorIndex}
-            imageIndex={imageIndex}
-            locale={locale}
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            priority
-          />
+          <div
+            className={cx("zoom-alan", zoomAcik && "zoom-acik")}
+            onMouseMove={zoomOdagi}
+            onClick={onZoomTap}
+          >
+            <ProductMedia
+              product={product}
+              colorIndex={colorIndex}
+              imageIndex={imageIndex}
+              locale={locale}
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              priority
+            />
+          </div>
         </motion.div>
 
         {/* Seçili rengin diğer fotoğrafları.
@@ -73,7 +115,7 @@ export function ProductDetail({
               <button
                 key={src}
                 type="button"
-                onClick={() => setImageIndex(i)}
+                onClick={() => selectImage(i)}
                 aria-pressed={i === imageIndex}
                 aria-label={`${product.name[locale]} — ${i + 1}`}
                 className={cx(

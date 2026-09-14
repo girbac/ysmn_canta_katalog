@@ -191,6 +191,50 @@ body {
   animation: hero-rise 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* ── Ürün görselinde büyüteç ──
+   İmleç görselin üzerindeyken fotoğraf, imlecin durduğu noktadan
+   yakınlaşıyor. Konum ProductDetail'den iki CSS değişkeniyle geliyor.
+
+   Kural yalnızca `img` seçiyor: fotoğrafı olmayan ürünlerde çizilen silüet
+   bir <svg> ve onu büyütmenin anlamı yok — vektör zaten net.
+
+   Dokunmatik ekranda kapalı: orada "üzerine gelme" diye bir şey yok,
+   parmak değdiğinde takılıp kalan bir yakınlaşma olurdu. */
+.zoom-alan img {
+  transition: transform 260ms var(--ease-out-soft);
+}
+
+@media (hover: hover) {
+  .zoom-alan:hover img {
+    transform: scale(2);
+    transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
+  }
+}
+
+/* Dokunmatikte "üzerine gelme" yok: dokunulan noktadan yakınlaşıyor,
+   tekrar dokununca geri çıkıyor. */
+.zoom-alan.zoom-acik img {
+  transform: scale(2);
+  transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
+}
+
+@media (hover: none) {
+  .zoom-alan img {
+    cursor: zoom-in;
+  }
+  .zoom-alan.zoom-acik img {
+    cursor: zoom-out;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Yakınlaşma bir süs değil, işlev — kapatmıyoruz; yalnızca geçişi
+     anlıkya indiriyoruz. */
+  .zoom-alan img {
+    transition: none;
+  }
+}
+
 /* Yalnızca ekran okuyucu */
 .sr-only {
   position: absolute;
