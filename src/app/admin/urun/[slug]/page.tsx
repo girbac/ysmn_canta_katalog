@@ -15,7 +15,7 @@ export default async function EditProduct({
   searchParams,
 }: {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ kaydedildi?: string }>;
+  searchParams: Promise<{ kaydedildi?: string; hata?: string }>;
 }) {
   if (!isAdminConfigured()) return <NotConfigured />;
   if (!(await isAdmin())) notFound();
@@ -24,7 +24,7 @@ export default async function EditProduct({
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
-  const { kaydedildi } = await searchParams;
+  const { kaydedildi, hata } = await searchParams;
 
   return (
     <AdminShell
@@ -32,6 +32,12 @@ export default async function EditProduct({
       title={product.name.tr}
       back={{ href: "/admin", label: "Katalog" }}
     >
+      {hata && (
+        <p className="mt-6 rounded-card border border-line-strong bg-ground-2 p-4 text-body text-ink">
+          {hata}
+        </p>
+      )}
+
       {kaydedildi && (
         <p className="mt-6 rounded-card border border-line bg-ground-2 p-4 text-body text-ink">
           Ürün oluşturuldu. Şimdi fotoğraflarını ekleyebilirsiniz.

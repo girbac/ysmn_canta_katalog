@@ -24,13 +24,13 @@ const FORM_LABEL: Record<string, string> = {
 export default async function AdminHome({
   searchParams,
 }: {
-  searchParams: Promise<{ silindi?: string }>;
+  searchParams: Promise<{ silindi?: string; hata?: string }>;
 }) {
   if (!isAdminConfigured()) return <NotConfigured />;
   if (!(await isAdmin())) notFound();
 
   const products = await getCatalog();
-  const { silindi } = await searchParams;
+  const { silindi, hata } = await searchParams;
 
   const missingPhotos = products.filter((p) =>
     p.colors.every((c) => c.images.length === 0),
@@ -38,6 +38,12 @@ export default async function AdminHome({
 
   return (
     <AdminShell storeKind={getStore().kind} title="Katalog">
+      {hata && (
+        <p className="mt-6 rounded-card border border-line-strong bg-ground-2 p-4 text-body text-ink">
+          {hata}
+        </p>
+      )}
+
       {silindi && (
         <p className="mt-6 rounded-card border border-line bg-ground-2 p-4 text-body text-ink">
           Ürün silindi.

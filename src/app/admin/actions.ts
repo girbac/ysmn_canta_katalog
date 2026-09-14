@@ -136,6 +136,20 @@ function productFromForm(formData: FormData) {
   };
 }
 
+/**
+ * Yazma hatasını okunur bir cümleye çevirir.
+ *
+ * Sunucu eyleminden fırlayan hata, Next tarafından yutulup yerine boş bir
+ * "A server error occurred" ekranı konuyor — yani teşhis için gereken tek
+ * bilgi kayboluyor. Depo katmanı zaten ne yapılması gerektiğini söyleyen
+ * mesajlar üretiyor ("dosya sistemi salt okunur, Blob bağlayın" gibi);
+ * onları panelin içinde göstermek için yakalıyoruz.
+ */
+function writeError(cause: unknown): string {
+  const detail = cause instanceof Error ? cause.message : String(cause);
+  return detail.trim() || "Kaydetme sırasında bilinmeyen bir hata oluştu.";
+}
+
 /** Formun ham (doğrulanmamış) hali — hata durumunda geri verilir */
 export type FormValues = ReturnType<typeof productFromForm>;
 
@@ -151,7 +165,15 @@ export async function saveProductAction(
 
   const original = String(formData.get("orijinalSlug") || "") || undefined;
   const values = productFromForm(formData);
-  const result = await saveProduct(values, original);
+
+  let result: Awaited<ReturnType<typeof saveProduct>>;
+  try {
+    result = await saveProduct(values, original);
+  } catch (cause) {
+    // redirect() burada çağrılmıyor, dolayısıyla yakaladığımız her şey
+    // gerçek bir yazma hatası.
+    return { ok: false, errors: { _: writeError(cause) }, values };
+  }
 
   if (!result.ok) {
     // Girilenleri geri döndürüyoruz: 15 alanlı bir formun hata sonrası
@@ -165,14 +187,25 @@ export async function saveProductAction(
 
 export async function deleteProductAction(formData: FormData) {
   await assertAdmin();
-  await deleteProduct(String(formData.get("slug") || ""));
-  redirect("/admin?silindi=1");
+  // redirect() bilerek try'ın dışında: o da bir istisna fırlatarak
+  // çalışıyor, yakalarsak yönlendirme hiç gerçekleşmez.
+  let failure: string | null = null;
+  try {
+    await deleteProduct(String(formData.get("slug") || ""));
+  } catch (cause) {
+    failure = writeError(cause);
+  }
+  redirect(failure ? `/admin?hata=${encodeURIComponent(failure)}` : "/admin?silindi=1");
 }
 
 export async function moveProductAction(formData: FormData) {
   await assertAdmin();
   const direction = Number(formData.get("yon")) === -1 ? -1 : 1;
-  await moveProduct(String(formData.get("slug") || ""), direction);
+  try {
+    await moveProduct(String(formData.get("slug") || ""), direction);
+  } catch (cause) {
+    redirect(`/admin?hata=${encodeURIComponent(writeError(cause))}`);
+  }
 }
 
 /** Kabul edilen görsel türleri ve üst sınır */
@@ -205,15 +238,30 @@ export async function uploadImageAction(
   const filename = `${colorKey}-${Date.now().toString(36)}.${ext}`;
   const body = Buffer.from(await file.arrayBuffer());
 
-  const result = await addImage({ slug, colorKey, filename, contentType: file.type, body });
-  return result.ok ? {} : { error: result.error };
+  try {
+    const result = await addImage({
+      slug,
+      colorKey,
+      filename,
+      contentType: file.type,
+      body,
+    });
+    return result.ok ? {} : { error: result.error };
+  } catch (cause) {
+    return { error: writeError(cause) };
+  }
 }
 
 export async function removeImageAction(formData: FormData) {
   await assertAdmin();
-  await removeImage({
-    slug: String(formData.get("slug") || ""),
-    colorKey: String(formData.get("renk") || ""),
-    source: String(formData.get("kaynak") || ""),
-  });
+  const slug = String(formData.get("slug") || "");
+  try {
+    await removeImage({
+      slug,
+      colorKey: String(formData.get("renk") || ""),
+      source: String(formData.get("kaynak") || ""),
+    });
+  } catch (cause) {
+    redirect(`/admin/urun/${slug}?hata=${encodeURIComponent(writeError(cause))}`);
+  }
 }
