@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useActionState } from "react";
 import type { Product } from "@/data/types";
+import { colorHex, colorName, type ColorKey } from "@/data/colors";
 import { resolveImageSource } from "@/lib/catalog/image-source";
 import { removeImageAction, uploadImageAction } from "../actions";
 
@@ -13,8 +14,29 @@ import { removeImageAction, uploadImageAction } from "../actions";
  * çünkü dosya yüklemeyi form kaydına bağlamak hem yavaş hem kırılgan olur.
  * Dosya adı sunucuda üretiliyor (renk + zaman damgası) — kullanıcıdan
  * gelen ad hiç kullanılmıyor.
+ *
+ * Gösterilen renkler formdaki CANLI seçimden geliyor (bkz. ProductEditor),
+ * kayıtlı üründen değil. Ama yükleme yapabilmek için rengin sunucuda da
+ * kayıtlı olması şart: addImage, ürünü ve rengi depodan arıyor. Bu yüzden
+ * her renk üç durumdan birinde olabilir ve hangisinde olduğu yazıyor.
  */
-export function ImageManager({ product }: { product: Product }) {
+export function ImageManager({
+  product,
+  selected,
+}: {
+  /** Yeni üründe henüz kayıt yok */
+  product?: Product;
+  /** Formda o an işaretli renkler, palet sırasında */
+  selected: ColorKey[];
+}) {
+  const saved = new Map((product?.colors ?? []).map((c) => [c.key, c]));
+
+  // İşareti kaldırılmış ama kayıtta fotoğrafı olan renkler: kaydedilirse
+  // o fotoğraflar katalogdan düşecek. Sessizce olmasın.
+  const droppedWithPhotos = (product?.colors ?? []).filter(
+    (c) => !selected.includes(c.key as ColorKey) && c.images.length > 0,
+  );
+
   return (
     <section className="mt-10 border-t border-line pt-6">
       <p className="eyebrow text-ink-40">Fotoğraflar</p>
@@ -24,52 +46,84 @@ export function ImageManager({ product }: { product: Product }) {
         silüetle gösterilir. Kare (1:1), webp/avif tercih edilir, en fazla 6 MB.
       </p>
 
+      {selected.length === 0 && (
+        <p className="mt-6 rounded-card border border-line bg-ground-2 p-4 text-body text-ink-60">
+          Önce yukarıdan en az bir renk seçin. Fotoğraflar renk renk yükleniyor.
+        </p>
+      )}
+
+      {droppedWithPhotos.length > 0 && (
+        <p
+          role="alert"
+          className="mt-6 rounded-card border border-line-strong bg-ground-2 p-4 text-body text-ink"
+        >
+          İşaretini kaldırdığınız{" "}
+          {droppedWithPhotos.map((c) => colorName(c.key as ColorKey).tr).join(", ")}{" "}
+          rengine ait{" "}
+          {droppedWithPhotos.reduce((n, c) => n + c.images.length, 0)} fotoğraf,
+          kaydettiğinizde üründen düşecek. Vazgeçtiyseniz rengi tekrar işaretleyin.
+        </p>
+      )}
+
       <div className="mt-6 space-y-6">
-        {product.colors.map((color) => (
-          <div key={color.key} className="rounded-card border border-line p-4">
-            <div className="flex items-center gap-2.5">
-              <span
-                className="h-4 w-4 shrink-0 rounded-full border border-line"
-                style={{ backgroundColor: color.hex }}
-              />
-              <span className="text-body text-ink">{color.name.tr}</span>
-              <span className="text-caption text-ink-40">
-                {color.images.length} fotoğraf
-              </span>
+        {selected.map((key) => {
+          const color = saved.get(key);
+          const images = color?.images ?? [];
+
+          return (
+            <div key={key} className="rounded-card border border-line p-4">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <span
+                  className="h-4 w-4 shrink-0 rounded-full border border-line"
+                  style={{ backgroundColor: colorHex(key) }}
+                />
+                <span className="text-body text-ink">{colorName(key).tr}</span>
+                <span className="text-caption text-ink-40">
+                  {images.length} fotoğraf
+                </span>
+              </div>
+
+              {images.length > 0 && product && (
+                <ul className="mt-4 flex flex-wrap gap-3">
+                  {images.map((source, i) => (
+                    <li key={source} className="w-[104px]">
+                      <div className="relative aspect-square overflow-hidden rounded-tile bg-ground-2">
+                        <Image
+                          src={resolveImageSource(source, product.slug)}
+                          alt={`${product.name.tr} — ${colorName(key).tr} ${i + 1}`}
+                          fill
+                          sizes="104px"
+                          className="object-cover"
+                        />
+                      </div>
+                      <form action={removeImageAction} className="mt-1.5">
+                        <input type="hidden" name="slug" value={product.slug} />
+                        <input type="hidden" name="renk" value={key} />
+                        <input type="hidden" name="kaynak" value={source} />
+                        <button
+                          type="submit"
+                          className="text-caption text-ink-40 underline-offset-4 hover:text-ink hover:underline"
+                        >
+                          {i === 0 ? "Kapağı sil" : "Sil"}
+                        </button>
+                      </form>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {product && color ? (
+                <Uploader slug={product.slug} colorKey={key} />
+              ) : (
+                <p className="mt-4 text-caption text-ink-40">
+                  {product
+                    ? "Bu renk henüz kaydedilmedi. Kaydet'e basın, sonra fotoğraf yükleyebilirsiniz."
+                    : "Ürünü oluşturduktan sonra bu renge fotoğraf yükleyebilirsiniz."}
+                </p>
+              )}
             </div>
-
-            {color.images.length > 0 && (
-              <ul className="mt-4 flex flex-wrap gap-3">
-                {color.images.map((source, i) => (
-                  <li key={source} className="w-[104px]">
-                    <div className="relative aspect-square overflow-hidden rounded-tile bg-ground-2">
-                      <Image
-                        src={resolveImageSource(source, product.slug)}
-                        alt={`${product.name.tr} — ${color.name.tr} ${i + 1}`}
-                        fill
-                        sizes="104px"
-                        className="object-cover"
-                      />
-                    </div>
-                    <form action={removeImageAction} className="mt-1.5">
-                      <input type="hidden" name="slug" value={product.slug} />
-                      <input type="hidden" name="renk" value={color.key} />
-                      <input type="hidden" name="kaynak" value={source} />
-                      <button
-                        type="submit"
-                        className="text-caption text-ink-40 underline-offset-4 hover:text-ink hover:underline"
-                      >
-                        {i === 0 ? "Kapağı sil" : "Sil"}
-                      </button>
-                    </form>
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            <Uploader slug={product.slug} colorKey={color.key} />
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

@@ -24,7 +24,16 @@ const STRAP_LABEL: Record<string, string> = {
  * (src/lib/catalog/schema.ts), yani panelden girilen veri katalogun
  * beklediğinden asla farklı olamıyor. Hatalar alan yoluna göre dönüyor.
  */
-export function ProductForm({ product }: { product?: Product }) {
+export function ProductForm({
+  product,
+  selected,
+  onToggleColor,
+}: {
+  product?: Product;
+  /** Formdaki canlı renk seçimi — ProductEditor'da tutuluyor */
+  selected: ColorKey[];
+  onToggleColor: (key: ColorKey) => void;
+}) {
   const [state, action, pending] = useActionState<SaveState | null, FormData>(
     saveProductAction,
     null,
@@ -42,12 +51,14 @@ export function ProductForm({ product }: { product?: Product }) {
   const draft = state && !state.ok ? state.values : undefined;
   const v = draft ?? product;
 
-  const selectedColors = draft
-    ? draft.colors.map((c) => c.key)
-    : (product?.colors.map((c) => c.key) ?? []);
-
+  /**
+   * Kayıtlı görseller, seçimden bağımsız olarak tam listeden gidiyor:
+   * productFromForm yalnızca işaretli renklerin görsellerini okuyor,
+   * dolayısıyla fazladan anahtar zararsız. Bir rengin işaretini kaldırıp
+   * geri işaretlemek fotoğraflarını kaybettirmiyor.
+   */
   const existingImages = Object.fromEntries(
-    (draft?.colors ?? product?.colors ?? []).map((c) => [c.key, c.images]),
+    (product?.colors ?? []).map((c) => [c.key, c.images]),
   );
 
   const featureText = (v?.features ?? [])
@@ -125,14 +136,16 @@ export function ProductForm({ product }: { product?: Product }) {
         </div>
       </Section>
 
-      <Section title="Renkler" hint="İlk işaretli renk kartlarda kapak görseli olur. Sıra palet sırasını izler.">
+      <Section title="Renkler" hint="İlk işaretli renk kartlarda kapak görseli olur. Sıra palet sırasını izler. İşaretlediğiniz her renk için aşağıda bir fotoğraf alanı açılır.">
         {errors.colors && <Alert>{errors.colors}</Alert>}
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           {colorKeys.map((key: ColorKey) => (
             <label key={key}
               className="flex cursor-pointer items-center gap-2.5 rounded-card border border-line-strong bg-ground-2 px-3 py-2.5 text-caption text-ink has-checked:border-ink">
               <input type="checkbox" name="renkler" value={key}
-                defaultChecked={selectedColors.includes(key)} className="accent-[var(--ink)]" />
+                checked={selected.includes(key)}
+                onChange={() => onToggleColor(key)}
+                className="accent-[var(--ink)]" />
               <span className="h-4 w-4 shrink-0 rounded-full border border-line"
                 style={{ backgroundColor: colorHex(key) }} />
               {colorName(key).tr}
@@ -165,11 +178,6 @@ export function ProductForm({ product }: { product?: Product }) {
           {pending ? "Kaydediliyor…" : isNew ? "Ürünü oluştur" : "Kaydet"}
         </button>
         {state?.ok && <span className="text-caption text-ink-60">Kaydedildi.</span>}
-        {isNew && (
-          <span className="text-caption text-ink-40">
-            Fotoğrafları ürünü oluşturduktan sonra ekleyeceksiniz.
-          </span>
-        )}
       </div>
     </form>
   );

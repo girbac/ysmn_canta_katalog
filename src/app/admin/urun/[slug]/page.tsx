@@ -4,8 +4,7 @@ import { getProductBySlug } from "@/lib/catalog/catalog";
 import { getStore } from "@/lib/catalog/store";
 import { AdminShell } from "../../_components/AdminShell";
 import { NotConfigured } from "../../_components/NotConfigured";
-import { ImageManager } from "../../_components/ImageManager";
-import { ProductForm } from "../../_components/ProductForm";
+import { ProductEditor } from "../../_components/ProductEditor";
 import { deleteProductAction } from "../../actions";
 
 export const dynamic = "force-dynamic";
@@ -44,11 +43,9 @@ export default async function EditProduct({
         </p>
       )}
 
-      <ProductForm product={product} />
+      <ProductEditor product={product} />
 
       <div className="max-w-3xl">
-        <ImageManager product={product} />
-
         <section className="mt-10 border-t border-line pt-6">
           <p className="eyebrow text-ink-40">Ürünü sil</p>
           <p className="mt-2 max-w-xl text-caption text-ink-60">
