@@ -1,11 +1,10 @@
 "use client";
 
-import { useActionState } from "react";
 import type { Product } from "@/data/types";
 import { colorKeys, colorHex, colorName, type ColorKey } from "@/data/colors";
 import { materialKeys, materialName } from "@/data/materials";
 import { forms, segments, straps } from "@/lib/catalog/schema";
-import { saveProductAction, type SaveState } from "../actions";
+import { type SaveState } from "../actions";
 import { cx } from "@/lib/utils";
 
 const FORM_LABEL: Record<string, string> = {
@@ -24,20 +23,28 @@ const STRAP_LABEL: Record<string, string> = {
  * (src/lib/catalog/schema.ts), yani panelden girilen veri katalogun
  * beklediğinden asla farklı olamıyor. Hatalar alan yoluna göre dönüyor.
  */
+/** Kaydet düğmesi form öğesinin dışında; bu id ile ona bağlanıyor. */
+export const PRODUCT_FORM_ID = "urun-formu";
+
 export function ProductForm({
   product,
   selected,
   onToggleColor,
+  action,
+  state,
 }: {
   product?: Product;
   /** Formdaki canlı renk seçimi — ProductEditor'da tutuluyor */
   selected: ColorKey[];
   onToggleColor: (key: ColorKey) => void;
+  /**
+   * Kaydetme eylemi ve durumu da ProductEditor'da duruyor: Kaydet düğmesi
+   * sayfanın en altında, fotoğraf bölümünün ardında yaşıyor ve oraya
+   * "Kaydediliyor…" bilgisini taşıyabilmesi gerekiyor.
+   */
+  action: (formData: FormData) => void;
+  state: SaveState | null;
 }) {
-  const [state, action, pending] = useActionState<SaveState | null, FormData>(
-    saveProductAction,
-    null,
-  );
   const errors = state && !state.ok ? state.errors : {};
   const isNew = !product;
 
@@ -66,7 +73,7 @@ export function ProductForm({
     .join("\n");
 
   return (
-    <form action={action} className="mt-8 max-w-3xl">
+    <form id={PRODUCT_FORM_ID} action={action} className="mt-8 max-w-3xl">
       {product && <input type="hidden" name="orijinalSlug" value={product.slug} />}
       {/* Görseller ayrı akışta yönetiliyor; kaydetmede kaybolmasınlar */}
       <input type="hidden" name="mevcutGorseller" value={JSON.stringify(existingImages)} />
@@ -172,13 +179,6 @@ export function ProductForm({
         </Field>
       </Section>
 
-      <div className="sticky bottom-0 -mx-1 mt-10 flex flex-wrap items-center gap-3 border-t border-line bg-ground px-1 py-5">
-        <button type="submit" disabled={pending}
-          className="rounded-card bg-ink px-6 py-4 text-body font-medium text-ground disabled:opacity-50">
-          {pending ? "Kaydediliyor…" : isNew ? "Ürünü oluştur" : "Kaydet"}
-        </button>
-        {state?.ok && <span className="text-caption text-ink-60">Kaydedildi.</span>}
-      </div>
     </form>
   );
 }

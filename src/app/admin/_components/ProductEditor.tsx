@@ -1,27 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import type { Product } from "@/data/types";
 import { colorKeys, type ColorKey } from "@/data/colors";
+import { saveProductAction, type SaveState } from "../actions";
 import { ImageManager } from "./ImageManager";
-import { ProductForm } from "./ProductForm";
+import { PRODUCT_FORM_ID, ProductForm } from "./ProductForm";
 
 /**
  * Ürün düzenleme ekranının tamamı.
  *
- * Renk seçimi burada duruyor, çünkü iki ayrı bölüm onu paylaşıyor:
- * formdaki kutucuklar ve alttaki fotoğraf alanları. Eskiden seçim formun
- * içinde işaretsiz (uncontrolled) kutucuklardaydı ve fotoğraf bölümü
- * listesini sunucudan gelen KAYITLI üründen alıyordu; ikisi arasında bağ
- * olmadığı için renk değiştirince alt taraf eski renkleri göstermeye devam
- * ediyordu.
+ * Burada iki şey ortak tutuluyor, çünkü ekranın farklı yerleri onları
+ * paylaşıyor:
+ *
+ * 1. Renk seçimi — formdaki kutucuklar ve alttaki fotoğraf alanları aynı
+ *    listeyi okuyor. Eskiden kutucuklar işaretsiz (uncontrolled) çalışıyor,
+ *    fotoğraf bölümü ise sunucudan gelen KAYITLI ürüne bakıyordu; renk
+ *    değiştirince alt taraf eski renkleri göstermeye devam ediyordu.
+ *
+ * 2. Kaydetme eylemi ve durumu — Kaydet düğmesi artık formun içinde değil,
+ *    sayfanın en altında. Form öğesinin dışında yaşadığı için ona `form`
+ *    özniteliğiyle bağlanıyor; "Kaydediliyor…" bilgisini alabilmesi için de
+ *    durumun ikisinin de üstünde durması gerekiyor.
  *
  * Fotoğraf bölümü forma gömülemiyor: içinde kendi <form> öğeleri var ve
- * iç içe form HTML'de geçersiz. Bu yüzden ortak durum yukarı alındı.
+ * iç içe form HTML'de geçersiz.
  */
 export function ProductEditor({ product }: { product?: Product }) {
   const [selected, setSelected] = useState<ColorKey[]>(
     () => (product?.colors.map((c) => c.key as ColorKey) ?? []),
+  );
+  const [state, action, pending] = useActionState<SaveState | null, FormData>(
+    saveProductAction,
+    null,
   );
 
   function toggle(key: ColorKey) {
@@ -33,12 +44,42 @@ export function ProductEditor({ product }: { product?: Product }) {
   // Palet sırası korunuyor: ilk renk kartlarda kapak görseli olur.
   // Kullanıcının tıklama sırası değil, paletin kendi sırası geçerli.
   const ordered = colorKeys.filter((k) => selected.includes(k));
+  const isNew = !product;
 
   return (
     <>
-      <ProductForm product={product} selected={ordered} onToggleColor={toggle} />
+      <ProductForm
+        product={product}
+        selected={ordered}
+        onToggleColor={toggle}
+        action={action}
+        state={state}
+      />
+
       <div className="max-w-3xl">
         <ImageManager product={product} selected={ordered} />
+      </div>
+
+      {/* Kaydet en altta ve yapışkan: sayfa uzun olduğu için ekranın
+          alt kenarında asılı duruyor, formun ortasında kaybolmuyor.
+          Alttaki boşluk, son içeriğin çubuğun arkasında kalmaması için. */}
+      <div className="sticky bottom-0 z-10 mt-12 max-w-3xl border-t border-line bg-ground py-5">
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="submit"
+            form={PRODUCT_FORM_ID}
+            disabled={pending}
+            className="rounded-card bg-ink px-6 py-4 text-body font-medium text-ground disabled:opacity-50"
+          >
+            {pending ? "Kaydediliyor…" : isNew ? "Ürünü oluştur" : "Kaydet"}
+          </button>
+          {state?.ok && <span className="text-caption text-ink-60">Kaydedildi.</span>}
+          {state && !state.ok && (
+            <span className="text-caption text-ink">
+              Kaydedilemedi — yukarıdaki uyarılara bakın.
+            </span>
+          )}
+        </div>
       </div>
     </>
   );
