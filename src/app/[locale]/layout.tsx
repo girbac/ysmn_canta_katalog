@@ -41,6 +41,9 @@ export async function generateMetadata({
 
   return {
     metadataBase: new URL(site.url),
+    /* robots.txt'in yanında ikinci kilit: katalog hazırlanırken sayfalar
+       arama sonuçlarına düşmesin. İkisi birlikte açılacak (bkz. robots.ts). */
+    robots: { index: false, follow: false },
     title: {
       default: `${site.brand} — ${t.meta.homeTitle}`,
       template: `%s — ${site.brand}`,
