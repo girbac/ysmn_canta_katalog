@@ -95,6 +95,12 @@
   --text-display-xl--line-height: 0.8;
   --text-display-xl--letter-spacing: -0.05em;
 
+  /* ── Ürün görseli oranı ──
+     Çantalar dikey çekiliyor; kare çerçeve fotoğrafın altını ve üstünü
+     kırpıyordu. Tek yerde duruyor: ProductMedia bunu kullanıyor ve
+     katalogdaki bütün ürün görselleri oradan geçiyor. */
+  --aspect-product: 3 / 4;
+
   /* Tek imza radius: 16px. 12px yalnızca görsel karolarında. */
   --radius-tile: 12px;
   --radius-card: 16px;

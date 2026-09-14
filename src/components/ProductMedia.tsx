@@ -12,6 +12,10 @@ import { BagSilhouette } from "./BagSilhouette";
  *
  * Fotoğraflar geldiğinde başka hiçbir bileşen değişmez.
  * Dosya yerleşimi: public/products/<slug>/<dosya-adi>
+ *
+ * Çerçeve dikey (--aspect-product, bkz. globals.css): çanta fotoğrafları
+ * dikey çekiliyor ve kare çerçeve üstünü altını kırpıyordu. Fotoğrafı olmayan
+ * ürünlerde silüet kendi kare oranını koruyup ortalanıyor.
  */
 
 export function ProductMedia({
@@ -35,7 +39,7 @@ export function ProductMedia({
 
   return (
     <div
-      className={`relative isolate aspect-square w-full overflow-hidden rounded-tile bg-ground-2 ${className}`}
+      className={`relative isolate aspect-product w-full overflow-hidden rounded-tile bg-ground-2 ${className}`}
       style={{ contain: "paint" }}
     >
       {file ? (

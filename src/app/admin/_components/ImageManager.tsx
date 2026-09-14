@@ -87,7 +87,7 @@ export function ImageManager({
                 <ul className="mt-4 flex flex-wrap gap-3">
                   {images.map((source, i) => (
                     <li key={source} className="w-[104px]">
-                      <div className="relative aspect-square overflow-hidden rounded-tile bg-ground-2">
+                      <div className="relative aspect-product overflow-hidden rounded-tile bg-ground-2">
                         <Image
                           src={resolveImageSource(source, product.slug)}
                           alt={`${product.name.tr} — ${colorName(key).tr} ${i + 1}`}
