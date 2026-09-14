@@ -16,6 +16,21 @@ import type { CatalogStore } from "./store-types";
 const DATA_FILE = path.join(process.cwd(), "src", "data", "products.json");
 const IMAGE_ROOT = path.join(process.cwd(), "public", "products");
 
+/**
+ * Canlıda dosya sistemi yazılamaz: Vercel'de kod /var/task altında salt
+ * okunur çalışır. Bu adaptör oraya düşmüşse eksik olan tek şey Blob
+ * bağlantısıdır; hata mesajı da bunu söylesin, ham ENOENT/EROFS değil.
+ */
+function notWritable(what: string, cause: unknown): Error {
+  return new Error(
+    `${what}: sunucunun dosya sistemi salt okunur. Bu, Vercel Blob deposunun ` +
+      "bu projeye bağlı olmadığı anlamına gelir. Vercel'de projenin Storage " +
+      "bölümünden bir Blob deposu bağlayın (BLOB_READ_WRITE_TOKEN değişkeni " +
+      "otomatik eklenir), sonra yeniden yayınlayın.",
+    { cause },
+  );
+}
+
 export const fsStore: CatalogStore = {
   kind: "fs",
 
@@ -34,20 +49,21 @@ export const fsStore: CatalogStore = {
     try {
       await writeFile(DATA_FILE, JSON.stringify(valid, null, 2) + "\n", "utf8");
     } catch (cause) {
-      // Sunucu ortamlarında dosya sistemi salt okunurdur. Hata mesajı
-      // "EROFS" demek yerine ne yapılması gerektiğini söylesin.
-      throw new Error(
-        "Katalog dosyaya yazılamadı. Canlı ortamda dosya sistemi salt okunur; " +
-          "Vercel Blob deposu bağlayıp BLOB_READ_WRITE_TOKEN ortam değişkenini tanımlayın.",
-        { cause },
-      );
+      throw notWritable("Katalog kaydedilemedi", cause);
     }
   },
 
   async putImage({ slug, filename, body }) {
     const dir = path.join(IMAGE_ROOT, slug);
-    await mkdir(dir, { recursive: true });
-    await writeFile(path.join(dir, filename), body);
+    try {
+      await mkdir(dir, { recursive: true });
+      await writeFile(path.join(dir, filename), body);
+    } catch (cause) {
+      // Eskiden ham Node hatası dışarı sızıyordu: kullanıcı panelde
+      // "ENOENT: no such file or directory, mkdir '/var/task/public/...'"
+      // görüyordu. O mesaj doğru ama hiçbir şey anlatmıyor.
+      throw notWritable("Fotoğraf yüklenemedi", cause);
+    }
     return filename;
   },
 
