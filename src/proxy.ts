@@ -29,6 +29,21 @@ export default async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // ── Dil önekli admin adresi: /tr/admin → /admin ──
+  //
+  // Katalogda gezerken adres çubuğunda hep bir dil öneki duruyor; insan
+  // sonuna "admin" ekleyince /tr/admin oluyordu ve düz 404 alıyordu —
+  // hiçbir ipucu vermeden. Yönetim paneli tek dilli ve dil önekinin
+  // dışında yaşıyor, o yüzden öneki atıp doğru adrese yolluyoruz.
+  const localizedAdmin = pathname.match(
+    new RegExp(`^/(?:${locales.join("|")})(/admin(?:/.*)?)$`),
+  );
+  if (localizedAdmin) {
+    const url = request.nextUrl.clone();
+    url.pathname = localizedAdmin[1];
+    return NextResponse.redirect(url);
+  }
+
   // ── Admin ──
   if (pathname === "/admin" || pathname.startsWith("/admin/")) {
     const config = getAdminConfig();
