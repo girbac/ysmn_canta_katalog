@@ -108,9 +108,11 @@ export function ProductDetail({
               </p>
             )}
           </div>
-          <span className="shrink-0 pt-2 text-caption text-ink-40 tabular-nums">
-            {product.code}
-          </span>
+          {product.name[locale] !== product.code && (
+            <span className="shrink-0 pt-2 text-caption text-ink-40 tabular-nums">
+              {product.code}
+            </span>
+          )}
         </div>
 
         {/* Renk seçimi */}

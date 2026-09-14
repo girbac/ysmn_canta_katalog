@@ -147,7 +147,10 @@ export function ScaleCompare({
 
           <figcaption className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-caption">
             <span className="text-ink">
-              {product.code} · {bag.w} × {bag.h} {labels.cm}
+              {/* Sıra künyedekiyle aynı: yükseklik × en. Aşağıdaki A4 ve
+                  telefon kendi bilinen ölçüleriyle yazılıyor (21 × 29,7 gibi),
+                  onlar ürün künyesi değil, karşılaştırma nesnesi. */}
+              {product.code} · {bag.h} × {bag.w} {labels.cm}
             </span>
             <span className="text-ink-40">
               {labels.a4} · {A4.w} × {A4.h} {labels.cm}

@@ -203,7 +203,11 @@ export function SelectionView({
                           {product.name[locale]}
                         </Link>
                       </h2>
-                      <span className="text-caption text-ink-40 tabular-nums">{product.code}</span>
+                      {product.name[locale] !== product.code && (
+                        <span className="text-caption text-ink-40 tabular-nums">
+                          {product.code}
+                        </span>
+                      )}
                     </div>
 
                     <p className="mt-1 text-caption text-ink-60">

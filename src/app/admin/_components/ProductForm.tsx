@@ -80,23 +80,34 @@ export function ProductForm({
 
       {errors._ && <Alert>{errors._}</Alert>}
 
+      {/* Kimlik: tek yazılan şey katalog kodu.
+          Mevcut ürünün adresi ve adı gizli alanlarda taşınıyor — adres aynı
+          zamanda fotoğraf klasörü olduğu için değişmesi yüklenmiş
+          fotoğrafları koparırdı. Yeni üründe ikisi de koddan üretiliyor. */}
       <Section title="Kimlik">
-        <Field label="Adres (slug)" error={errors.slug} hint={isNew ? "Örn. meridyen-tote — sonradan değiştirmemek en iyisi" : "Ürünün adresi ve fotoğraf klasörü"}>
-          <input name="slug" defaultValue={v?.slug} required
-            pattern="[a-z0-9]+(-[a-z0-9]+)*"
-            title="Küçük harf, rakam ve tire"
-            placeholder="meridyen-tote" className={input} />
-        </Field>
-        <Field label="Katalog kodu" error={errors.code}>
-          <input name="kod" defaultValue={v?.code} required placeholder="YSM-1001" className={input} />
-        </Field>
-        <Field label="Ad (Türkçe)" error={errors["name.tr"]}>
-          <input name="adTr" defaultValue={v?.name.tr} required className={input} />
-        </Field>
-        <Field label="Ad (İngilizce)" error={errors["name.en"]}>
-          <input name="adEn" defaultValue={v?.name.en} required className={input} />
+        <Field
+          label="Katalog kodu"
+          /* Adres ayrı bir kutu olmadığı için ona ait hata da burada
+             gösteriliyor; yoksa kullanıcı görünmeyen bir alanın hatasını
+             okurdu. */
+          error={errors.code ?? errors.slug ?? errors["name.tr"] ?? errors["name.en"]}
+          hint={
+            isNew
+              ? "Ürünün adresi bu koddan üretilir (ör. 2098-S → 2098-s)"
+              : "Ürünün adresi ve fotoğraf klasörü değişmez"
+          }
+        >
+          <input name="kod" defaultValue={v?.code} required placeholder="2098-S" className={input} />
         </Field>
       </Section>
+
+      {product && (
+        <>
+          <input type="hidden" name="slug" value={product.slug} />
+          <input type="hidden" name="adTr" value={product.name.tr} />
+          <input type="hidden" name="adEn" value={product.name.en} />
+        </>
+      )}
 
       <Section title="Sınıflandırma">
         <Field label="Bölüm" error={errors.segment}>

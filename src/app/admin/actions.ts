@@ -77,6 +77,29 @@ function parseFeatures(raw: string): Array<{ tr: string; en: string }> {
     });
 }
 
+/**
+ * Katalog kodundan ürün adresi üretir: "2098-S" → "2098-s"
+ *
+ * Adres hem ürünün internet adresi hem fotoğraf klasörü adı. Panelde ayrı
+ * bir kutu olarak sorulmuyor — tek yazılan şey katalog kodu — ama şema
+ * ASCII küçük harf istiyor, dolayısıyla burada çevriliyor. Türkçe harfler
+ * karşılıklarına iniyor ki "Çanta-Ş" gibi bir kod da geçerli bir adres versin.
+ */
+const TR_ASCII: Record<string, string> = {
+  ç: "c", ğ: "g", ı: "i", i: "i", ö: "o", ş: "s", ü: "u",
+  Ç: "c", Ğ: "g", I: "i", İ: "i", Ö: "o", Ş: "s", Ü: "u",
+};
+
+function slugFromCode(code: string): string {
+  return code
+    .split("")
+    .map((ch) => TR_ASCII[ch] ?? ch)
+    .join("")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 function num(value: FormDataEntryValue | null): number {
   return Number(String(value ?? "").replace(",", "."));
 }
@@ -109,12 +132,26 @@ function productFromForm(formData: FormData) {
   const strap = String(formData.get("aski") || "");
   const priceRaw = String(formData.get("fiyat") || "").trim();
 
+  const code = String(formData.get("kod") || "").trim();
+
+  /**
+   * Adres ve ad artık panelde sorulmuyor; tek yazılan şey katalog kodu.
+   *
+   * Mevcut bir ürün düzenleniyorsa kendi adresi ve adı gizli alanlarda
+   * taşınıyor ve olduğu gibi korunuyor — adres fotoğraf klasörü olduğu için
+   * değişmesi yüklenmiş fotoğrafları koparırdı, ad da sessizce kodla
+   * değiştirilmiş olurdu. Yeni üründe ikisi de koddan türetiliyor.
+   */
+  const carriedSlug = String(formData.get("slug") || "").trim();
+  const carriedTr = String(formData.get("adTr") || "").trim();
+  const carriedEn = String(formData.get("adEn") || "").trim();
+
   return {
-    slug: String(formData.get("slug") || "").trim(),
-    code: String(formData.get("kod") || "").trim(),
+    slug: carriedSlug || slugFromCode(code),
+    code,
     name: {
-      tr: String(formData.get("adTr") || "").trim(),
-      en: String(formData.get("adEn") || "").trim(),
+      tr: carriedTr || code,
+      en: carriedEn || code,
     },
     segment: String(formData.get("bolum") || ""),
     form: String(formData.get("form") || ""),

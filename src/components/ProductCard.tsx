@@ -125,9 +125,13 @@ export function ProductCard({
             </p>
           )}
         </div>
-        <span className="shrink-0 pt-1 text-caption text-ink-40 tabular-nums">
-          {product.code}
-        </span>
+        {/* Ad koddan üretilmişse (panelde yalnızca kod giriliyor) kodu
+            ikinci kez yazmak gereksiz tekrar olur. */}
+        {product.name[locale] !== product.code && (
+          <span className="shrink-0 pt-1 text-caption text-ink-40 tabular-nums">
+            {product.code}
+          </span>
+        )}
       </div>
 
       {/* Renk pastilleri — üzerine gelince kartın görseli o renge döner */}
