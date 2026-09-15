@@ -50,6 +50,17 @@
           "krem-mu2uaqa4-0.webp",
           "krem-mu2ub32p-0.webp"
         ]
+      },
+      {
+        "key": "vizon",
+        "name": {
+          "tr": "Vizon",
+          "en": "Taupe"
+        },
+        "hex": "#8C7B6B",
+        "images": [
+          "vizon-mu2ubj3l-0.webp"
+        ]
       }
     ],
     "features": [
