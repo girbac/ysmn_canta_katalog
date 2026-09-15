@@ -1,13 +1,13 @@
 [
   {
     "slug": "meridyen-tote",
-    "code": "YSM-1001",
+    "code": "2098-S",
     "name": {
-      "tr": "Meridyen Tote",
-      "en": "Meridyen Tote"
+      "tr": "Hakiki Süet Deri Kadın Omuz Çantası",
+      "en": "Hakiki Süet Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
-    "form": "tote",
+    "form": "omuz",
     "material": "deri",
     "dimensions": {
       "w": 36,
@@ -90,7 +90,7 @@
         "en": "Protective feet"
       }
     ],
-    "strap": "sabit",
+    "strap": "ayarlanabilir",
     "isNew": true
   },
   {
