@@ -72,6 +72,12 @@ export const blobStore: CatalogStore = {
     );
   },
 
+  async readRaw() {
+    const found = await get(CATALOG_KEY, { access: "public", useCache: false });
+    if (!found || found.statusCode !== 200) return null;
+    return await new Response(found.stream).text();
+  },
+
   /** Yedek sürümler — en yenisi başta */
   async listBackups() {
     const { blobs } = await list({ prefix: HISTORY_PREFIX });

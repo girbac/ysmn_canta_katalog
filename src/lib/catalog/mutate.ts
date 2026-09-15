@@ -4,7 +4,7 @@ import { locales } from "@/i18n/config";
 import { findColor } from "@/data/colors";
 import { getStore } from "./store";
 import { parseProduct, type StoredProduct } from "./schema";
-import { rebuildFromImages } from "./recover";
+import { rebuildFromImages, salvageRaw } from "./recover";
 
 /**
  * Katalog yazma işlemleri.
@@ -336,12 +336,14 @@ export async function setCatalogOrder(slugs: string[]): Promise<void> {
  * mevcut hâli yedekliyor, yani yanlış bir geri yükleme de geri alınabilir.
  */
 export async function restoreCatalog(
-  kaynak: { tur: "yedek"; key: string } | { tur: "fotograf" },
+  kaynak: { tur: "yedek"; key: string } | { tur: "fotograf" } | { tur: "ham" },
 ): Promise<number> {
   const store = getStore();
 
   const liste: StoredProduct[] =
-    kaynak.tur === "yedek"
+    kaynak.tur === "ham"
+      ? salvageRaw((await store.readRaw()) ?? "").saglam
+      : kaynak.tur === "yedek"
       ? await store.readBackup(kaynak.key)
       : rebuildFromImages(await store.listImages()).map((urun) => {
           // "kurtarildi" yalnızca ekranda işaretlemek için; şemada yeri yok

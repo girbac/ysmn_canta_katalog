@@ -25,6 +25,17 @@ export type CatalogStore = {
    * geçici bir okuma hatası yüzünden bütün ürünlerin üzerine demo veri
    * yazıldı. Yedek, bu sınıftaki kazaları geri alınabilir kılıyor.
    */
+  /**
+   * Katalogu ŞEMADAN GEÇİRMEDEN, olduğu gibi okur.
+   *
+   * read() şemaya uymayan bir dosyada hata veriyor ve o hâlde katalog
+   * tamamen erişilemez görünüyor — oysa veri yerinde duruyor, yalnızca tek
+   * bir alan bozuk olabilir. Kurtarma ekranı ham metni okuyup ürünleri tek
+   * tek doğruluyor: sağlam olanlar kurtarılıyor, bozuk olanlar adıyla
+   * gösteriliyor. Ad ve fiyat gibi yalnızca bu dosyada duran bilgiler
+   * böylece kaybolmuyor.
+   */
+  readRaw(): Promise<string | null>;
   listBackups(): Promise<Array<{ key: string; at: string }>>;
   readBackup(key: string): Promise<StoredProduct[]>;
   /**

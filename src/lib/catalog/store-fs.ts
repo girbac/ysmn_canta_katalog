@@ -74,6 +74,14 @@ export const fsStore: CatalogStore = {
     }
   },
 
+  async readRaw() {
+    try {
+      return await readFile(DATA_FILE, "utf8");
+    } catch {
+      return null;
+    }
+  },
+
   async listBackups() {
     let dosyalar: string[];
     try {

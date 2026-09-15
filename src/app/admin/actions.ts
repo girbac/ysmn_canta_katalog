@@ -332,14 +332,28 @@ export async function restoreCatalogAction(
   const kaynak = String(formData.get("kaynak") || "");
   const yedek = String(formData.get("yedek") || "");
 
+  let adet = 0;
   try {
-    const adet = await restoreCatalog(
-      kaynak === "yedek" ? { tur: "yedek", key: yedek } : { tur: "fotograf" },
+    adet = await restoreCatalog(
+      kaynak === "yedek"
+        ? { tur: "yedek", key: yedek }
+        : kaynak === "ham"
+        ? { tur: "ham" }
+        : { tur: "fotograf" },
     );
-    return { ok: true, adet };
   } catch (cause) {
     return { ok: false, error: writeError(cause) };
   }
+
+  /**
+   * Başarıda kataloğa gidiliyor.
+   *
+   * Geri yükleme kurtarma ekranını kendi altından çekiyor: sayfa
+   * tazelenince "okunamıyor" bölümü kayboluyor ve onunla birlikte başarı
+   * mesajı da gidiyordu — kullanıcı bir şey olup olmadığını göremiyordu.
+   * redirect() bilerek try'ın dışında: o da istisna fırlatarak çalışıyor.
+   */
+  redirect(`/admin?geriYuklendi=${adet}`);
 }
 
 /** Kabul edilen görsel türleri ve üst sınır */

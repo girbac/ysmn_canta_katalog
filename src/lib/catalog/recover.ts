@@ -1,5 +1,5 @@
 import "server-only";
-import type { StoredProduct } from "./schema";
+import { productSchema, type StoredProduct } from "./schema";
 import { findColor, FALLBACK_HEX } from "@/data/colors";
 
 /**
@@ -118,4 +118,56 @@ export function rebuildFromImages(
   }
 
   return sonuc.sort((a, b) => a.slug.localeCompare(b.slug, "tr"));
+}
+
+
+/**
+ * Ham katalog metnini ürün ürün kurtarır.
+ *
+ * read() bütün dosyayı tek seferde doğruluyor: tek bir üründeki tek bir
+ * bozuk alan, kırk ürünün tamamını erişilemez kılıyor. Oysa dosya
+ * yerinde duruyor ve içindeki ad, fiyat, ölçü gibi bilgiler başka hiçbir
+ * yerde yok — fotoğraflardan kurtarma onları geri getiremiyor.
+ *
+ * Burada her ürün ayrı ayrı doğrulanıyor: sağlamlar kurtarılıyor,
+ * bozuklar sebebiyle birlikte gösteriliyor.
+ */
+export function salvageRaw(raw: string): {
+  saglam: StoredProduct[];
+  bozuk: Array<{ ad: string; sebep: string }>;
+  okunamadi?: string;
+} {
+  let ham: unknown;
+  try {
+    ham = JSON.parse(raw);
+  } catch (cause) {
+    return { saglam: [], bozuk: [], okunamadi: `Dosya JSON olarak okunamadı: ${(cause as Error).message}` };
+  }
+  if (!Array.isArray(ham)) {
+    return { saglam: [], bozuk: [], okunamadi: "Dosyanın içeriği ürün listesi değil." };
+  }
+
+  const saglam: StoredProduct[] = [];
+  const bozuk: Array<{ ad: string; sebep: string }> = [];
+
+  for (const [i, aday] of ham.entries()) {
+    const sonuc = productSchema.safeParse(aday);
+    if (sonuc.success) {
+      saglam.push(sonuc.data);
+      continue;
+    }
+    const kimlik =
+      (aday as { name?: { tr?: string }; slug?: string })?.name?.tr ??
+      (aday as { slug?: string })?.slug ??
+      `${i + 1}. sıradaki ürün`;
+    bozuk.push({
+      ad: String(kimlik),
+      sebep: sonuc.error.issues
+        .slice(0, 3)
+        .map((k) => `${k.path.join(".") || "kayıt"}: ${k.message}`)
+        .join(" · "),
+    });
+  }
+
+  return { saglam, bozuk };
 }

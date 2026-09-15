@@ -24,7 +24,7 @@ const FORM_LABEL: Record<string, string> = {
 export default async function AdminHome({
   searchParams,
 }: {
-  searchParams: Promise<{ silindi?: string; hata?: string }>;
+  searchParams: Promise<{ silindi?: string; hata?: string; geriYuklendi?: string }>;
 }) {
   if (!isAdminConfigured()) return <NotConfigured />;
   if (!(await isAdmin())) notFound();
@@ -32,7 +32,7 @@ export default async function AdminHome({
   const store = await getStoreStatus();
 
   const okuma = await getCatalogForAdmin();
-  const { silindi, hata } = await searchParams;
+  const { silindi, hata, geriYuklendi } = await searchParams;
 
   /**
    * Depo okunamıyorsa liste HİÇ gösterilmiyor.
@@ -71,6 +71,17 @@ export default async function AdminHome({
       {hata && (
         <p className="mt-6 rounded-card border border-line-strong bg-ground-2 p-4 text-body text-ink">
           {hata}
+        </p>
+      )}
+
+      {geriYuklendi && (
+        <p className="mt-6 rounded-card border border-line-strong bg-ground-2 p-4 text-body text-ink">
+          {geriYuklendi} ürün geri yüklendi. Adları, fiyatları ve fotoğrafları
+          kontrol edin; eksik kalan bir şey varsa{" "}
+          <Link href="/admin/kurtarma" className="underline underline-offset-4">
+            kurtarma ekranında
+          </Link>{" "}
+          başka bir kaynak da olabilir.
         </p>
       )}
 

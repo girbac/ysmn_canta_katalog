@@ -15,7 +15,7 @@ export function RestoreForm({
   etiket,
   uyari,
 }: {
-  kaynak: "yedek" | "fotograf";
+  kaynak: "yedek" | "fotograf" | "ham";
   yedek?: string;
   etiket: string;
   uyari?: string;

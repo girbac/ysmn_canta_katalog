@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isAdmin, isAdminConfigured } from "@/lib/admin-session";
 import { getStore, getStoreStatus } from "@/lib/catalog/store";
-import { rebuildFromImages } from "@/lib/catalog/recover";
+import { rebuildFromImages, salvageRaw } from "@/lib/catalog/recover";
 import { AdminShell } from "../_components/AdminShell";
 import { NotConfigured } from "../_components/NotConfigured";
 import { RestoreForm } from "../_components/RestoreForm";
@@ -29,9 +29,13 @@ export default async function KurtarmaSayfasi() {
 
   /* Üç bağımsız soru; biri patlarsa diğerleri yine görünsün. Kurtarma
      ekranının kendisi de arızaya dayanıklı olmalı. */
-  const [suanki, yedekler, gorseller] = await Promise.all([
+  const [suanki, ham, yedekler, gorseller] = await Promise.all([
     store.read().then(
       (l) => ({ ok: true as const, adet: l.length }),
+      (e: unknown) => ({ ok: false as const, hata: (e as Error).message }),
+    ),
+    store.readRaw().then(
+      (t) => ({ ok: true as const, metin: t }),
       (e: unknown) => ({ ok: false as const, hata: (e as Error).message }),
     ),
     store.listBackups().then(
@@ -45,6 +49,9 @@ export default async function KurtarmaSayfasi() {
   ]);
 
   const kurtarilabilir = gorseller.ok ? rebuildFromImages(gorseller.liste) : [];
+  /* Dosya yerinde ama şemadan geçmiyorsa ürünler tek tek kurtarılabilir —
+     ad ve fiyat gibi yalnızca burada duran bilgiler böyle geri gelir. */
+  const kurtarma = ham.ok && ham.metin ? salvageRaw(ham.metin) : null;
 
   return (
     <AdminShell
@@ -72,6 +79,60 @@ export default async function KurtarmaSayfasi() {
           </p>
         )}
       </Bolum>
+
+      {/* ── Katalog dosyasından kurtarma ──
+          Sıralaması bilinçli: en çok bilgiyi bu yol geri getiriyor, o yüzden
+          fotoğraflardan kurtarmadan önce duruyor. */}
+      {suanki.ok === false && (
+        <Bolum
+          baslik="Katalog dosyasından kurtarma"
+          aciklama="Katalog dosyası okunamadığında bile içindeki ürünler tek tek kurtarılabilir. En çok bilgiyi bu yol geri getirir: ad, fiyat, ölçü, malzeme — hepsi yalnızca bu dosyada duruyor."
+        >
+          {!ham.ok ? (
+            <p role="alert" className="text-body text-ink">
+              Dosyaya hiç ulaşılamadı: {ham.hata}
+            </p>
+          ) : !ham.metin ? (
+            <p className="text-body text-ink-60">
+              Depoda katalog dosyası yok. Aşağıdaki fotoğraflardan kurtarmayı deneyin.
+            </p>
+          ) : kurtarma?.okunamadi ? (
+            <p role="alert" className="text-body text-ink">{kurtarma.okunamadi}</p>
+          ) : (
+            <>
+              <p className="text-body text-ink">
+                Dosyada{" "}
+                <strong className="font-medium">
+                  {kurtarma!.saglam.length} sağlam ürün
+                </strong>{" "}
+                bulundu
+                {kurtarma!.bozuk.length > 0 && `, ${kurtarma!.bozuk.length} ürün okunamadı`}.
+              </p>
+
+              {kurtarma!.bozuk.length > 0 && (
+                <ul className="mt-4 divide-y divide-[var(--line)] border-y border-line">
+                  {kurtarma!.bozuk.map((b, i) => (
+                    <li key={i} className="py-3">
+                      <span className="text-body text-ink">{b.ad}</span>
+                      <span className="mt-1 block text-caption text-ink-60">{b.sebep}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {kurtarma!.saglam.length > 0 && (
+                <div className="mt-6">
+                  <RestoreForm
+                    kaynak="ham"
+                    etiket={`${kurtarma!.saglam.length} ürünü geri yükle`}
+                    uyari="Adlar, fiyatlar ve ölçüler dahil her şey geri gelir."
+                  />
+                </div>
+              )}
+            </>
+          )}
+        </Bolum>
+      )}
 
       {/* ── Yedekler ── */}
       <Bolum
