@@ -91,7 +91,8 @@
       }
     ],
     "strap": "ayarlanabilir",
-    "isNew": true
+    "isNew": true,
+    "price": 4500
   },
   {
     "slug": "liman-tote",
