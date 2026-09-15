@@ -71,15 +71,19 @@ export function ProductForm({
   const draft = state && !state.ok ? state.values : undefined;
   const v = draft ?? product;
 
-  /**
-   * Kayıtlı görseller, seçimden bağımsız olarak tam listeden gidiyor:
-   * productFromForm yalnızca işaretli renklerin görsellerini okuyor,
-   * dolayısıyla fazladan anahtar zararsız. Bir rengin işaretini kaldırıp
-   * geri işaretlemek fotoğraflarını kaybettirmiyor.
+  /*
+   * Fotoğraflar forma HİÇ girmiyor.
+   *
+   * Eskiden sayfa açıldığı andaki fotoğraf listesi gizli bir alanda
+   * taşınıyor ve Kaydet onu geri yazıyordu. Yani sayfa açıldıktan SONRA
+   * yüklenen her fotoğrafı Kaydet siliyordu — ikinci bir sekmeden, geri
+   * tuşuyla açılmış eski bir sayfadan ya da yükleme sonrası tazeleme
+   * gecikirse aynı sekmeden. Fotoğraf yükleyip kaydeden herkes
+   * fotoğraflarını kaybediyor, tekrar yüklüyor, yine kaybediyordu.
+   *
+   * Artık fotoğrafların tek sahibi depo: kaydetme sırasında her rengin
+   * görselleri depodaki hâliyle korunuyor (bkz. saveProduct).
    */
-  const existingImages = Object.fromEntries(
-    (product?.colors ?? []).map((c) => [c.key, c.images]),
-  );
 
   const featureText = (v?.features ?? [])
     .map((f) => (f.tr === f.en ? f.tr : `${f.tr} | ${f.en}`))
@@ -88,8 +92,6 @@ export function ProductForm({
   return (
     <form id={PRODUCT_FORM_ID} action={action} className="mt-8 max-w-3xl">
       {product && <input type="hidden" name="orijinalSlug" value={product.slug} />}
-      {/* Görseller ayrı akışta yönetiliyor; kaydetmede kaybolmasınlar */}
-      <input type="hidden" name="mevcutGorseller" value={JSON.stringify(existingImages)} />
 
       {errors._ && <Alert>{errors._}</Alert>}
 

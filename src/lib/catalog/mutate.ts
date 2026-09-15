@@ -65,7 +65,6 @@ export async function saveProduct(
   const parsed = parseProduct(input);
   if (!parsed.ok) return parsed;
 
-  const product = parsed.product;
   const store = getStore();
   const list = await store.read();
 
@@ -74,6 +73,32 @@ export async function saveProduct(
   if (originalSlug && index === -1) {
     return { ok: false, errors: { _: "Düzenlenecek ürün bulunamadı." } };
   }
+
+  /**
+   * Fotoğraflar formdan DEĞİL, depodan geliyor.
+   *
+   * Form eskiden sayfa açıldığı andaki fotoğraf listesini gizli bir alanda
+   * taşıyıp Kaydet'te geri yazıyordu. Sayfa açıldıktan sonra yüklenen her
+   * fotoğrafı bu sessizce siliyordu: ikinci bir sekme, geri tuşuyla dönülen
+   * eski bir sayfa ya da yükleme sonrası tazelemenin gecikmesi yetiyordu.
+   * Kullanıcı fotoğrafı tekrar yüklüyor, yine kaydediyor, yine kaybediyordu.
+   *
+   * Artık kaydetme fotoğraflara hiç karışmıyor: her rengin görselleri
+   * yazmadan hemen önce okunan depodaki hâliyle korunuyor. Fotoğraf eklemek
+   * ve silmek kendi akışında (bkz. addImages, removeImage). Seçimden
+   * çıkarılan rengin görselleri ise bilerek düşüyor — panel bunu önceden
+   * uyarıyor.
+   */
+  const onceki = new Map(
+    (index === -1 ? [] : list[index].colors).map((c) => [c.key, c.images]),
+  );
+  const product: StoredProduct = {
+    ...parsed.product,
+    colors: parsed.product.colors.map((c) => ({
+      ...c,
+      images: onceki.get(c.key) ?? c.images,
+    })),
+  };
 
   const clash = list.findIndex((p) => p.slug === product.slug);
   if (clash !== -1 && clash !== index) {

@@ -133,17 +133,6 @@ function productFromForm(formData: FormData) {
     }
   })();
 
-  const existing = (() => {
-    try {
-      return JSON.parse(String(formData.get("mevcutGorseller") || "{}")) as Record<
-        string,
-        string[]
-      >;
-    } catch {
-      return {};
-    }
-  })();
-
   const strap = String(formData.get("aski") || "");
   const priceRaw = String(formData.get("fiyat") || "").trim();
 
@@ -186,7 +175,9 @@ function productFromForm(formData: FormData) {
       // görünüyor. Hazır renklerin İngilizcesi paletten geliyor.
       name: { tr: String(c.tr ?? ""), en: String(c.en || c.tr || "") },
       hex: c.hex,
-      images: existing[c.key] ?? [],
+      // Fotoğraflar formdan gelmiyor; kaydetme sırasında depodakiler
+      // korunuyor (bkz. saveProduct).
+      images: [],
     })),
     features: parseFeatures(String(formData.get("detaylar") || "")),
     ...(strap ? { strap } : {}),
