@@ -15,6 +15,7 @@ import {
   deleteProduct,
   makeCover,
   removeImage,
+  restoreCatalog,
   saveProduct,
   setCatalogOrder,
 } from "@/lib/catalog/mutate";
@@ -312,6 +313,33 @@ export async function saveOrderAction(
     return { ok: false, error: writeError(cause) };
   }
   return { ok: true };
+}
+
+export type RestoreState = { ok: true; adet: number } | { ok: false; error: string };
+
+/**
+ * Katalogu bir yedekten ya da fotoğraflardan geri yükler.
+ *
+ * İki kaynak da tek bir yerden geçiyor ki geri yükleme her hâlükârda
+ * önce mevcut hâli yedekleyip sonra yazsın (bkz. store.write).
+ */
+export async function restoreCatalogAction(
+  _prev: RestoreState | null,
+  formData: FormData,
+): Promise<RestoreState> {
+  await assertAdmin();
+
+  const kaynak = String(formData.get("kaynak") || "");
+  const yedek = String(formData.get("yedek") || "");
+
+  try {
+    const adet = await restoreCatalog(
+      kaynak === "yedek" ? { tur: "yedek", key: yedek } : { tur: "fotograf" },
+    );
+    return { ok: true, adet };
+  } catch (cause) {
+    return { ok: false, error: writeError(cause) };
+  }
 }
 
 /** Kabul edilen görsel türleri ve üst sınır */

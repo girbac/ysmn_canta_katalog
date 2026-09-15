@@ -4,6 +4,7 @@ import { locales } from "@/i18n/config";
 import { findColor } from "@/data/colors";
 import { getStore } from "./store";
 import { parseProduct, type StoredProduct } from "./schema";
+import { rebuildFromImages } from "./recover";
 
 /**
  * Katalog yazma işlemleri.
@@ -323,4 +324,37 @@ export async function setCatalogOrder(slugs: string[]): Promise<void> {
 
   await store.write(next);
   revalidateCatalog();
+}
+
+/**
+ * Katalogu geri yükler.
+ *
+ * İki kaynak var: daha önce alınmış bir yedek (tam veri) ya da depodaki
+ * fotoğraflar (ürün iskeletleri — ad, fiyat, ölçü geri gelmiyor).
+ *
+ * Geri yükleme de sıradan bir yazmadır: store.write üzerine yazmadan önce
+ * mevcut hâli yedekliyor, yani yanlış bir geri yükleme de geri alınabilir.
+ */
+export async function restoreCatalog(
+  kaynak: { tur: "yedek"; key: string } | { tur: "fotograf" },
+): Promise<number> {
+  const store = getStore();
+
+  const liste: StoredProduct[] =
+    kaynak.tur === "yedek"
+      ? await store.readBackup(kaynak.key)
+      : rebuildFromImages(await store.listImages()).map((urun) => {
+          // "kurtarildi" yalnızca ekranda işaretlemek için; şemada yeri yok
+          const { ...temiz } = urun as StoredProduct & { kurtarildi?: true };
+          delete temiz.kurtarildi;
+          return temiz as StoredProduct;
+        });
+
+  if (liste.length === 0) {
+    throw new Error("Geri yüklenecek ürün bulunamadı — katalog değiştirilmedi.");
+  }
+
+  await store.write(liste);
+  revalidateCatalog();
+  return liste.length;
 }

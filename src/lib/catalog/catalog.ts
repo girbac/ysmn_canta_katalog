@@ -75,3 +75,23 @@ export async function getCatalogViews() {
     ) as Record<string, Localized>,
   };
 }
+
+/**
+ * Panelin katalog okuması — tohum veriye DÜŞMEZ.
+ *
+ * getCatalog(), depoya ulaşılamadığında pakete gömülü demo veriyle devam
+ * ediyor: genel site hiçbir koşulda boş görünmesin diye. Panelde ise bu
+ * tehlikeli. Kullanıcı 41 demo ürünü kendi katalogu sanıp üzerinde işlem
+ * yapıyor, oysa ortada okunamayan bir depo var. Panel gerçeği göstermeli:
+ * veri okunamıyorsa liste değil hata çıkar.
+ */
+export async function getCatalogForAdmin(): Promise<
+  { ok: true; products: Product[] } | { ok: false; error: string }
+> {
+  try {
+    return { ok: true, products: withOrder(await getStore().read()) };
+  } catch (cause) {
+    const detay = cause instanceof Error ? cause.message : String(cause);
+    return { ok: false, error: detay.trim() || "Katalog okunamadı." };
+  }
+}

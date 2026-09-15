@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isAdmin, isAdminConfigured } from "@/lib/admin-session";
-import { getCatalog } from "@/lib/catalog/catalog";
+import { getCatalogForAdmin } from "@/lib/catalog/catalog";
 import { getStoreStatus } from "@/lib/catalog/store";
 import { materialName } from "@/data/materials";
 import { ProductMedia } from "@/components/ProductMedia";
@@ -31,8 +31,36 @@ export default async function AdminHome({
 
   const store = await getStoreStatus();
 
-  const products = await getCatalog();
+  const okuma = await getCatalogForAdmin();
   const { silindi, hata } = await searchParams;
+
+  /**
+   * Depo okunamıyorsa liste HİÇ gösterilmiyor.
+   *
+   * Eskiden bu durumda pakete gömülü 41 demo ürün çıkıyordu; kullanıcı
+   * onları kendi katalogu sanıp üzerinde işlem yapabiliyordu. Panelin
+   * gerçeği söylemesi, boş görünmesinden daha önemli.
+   */
+  if (!okuma.ok) {
+    return (
+      <AdminShell storeKind={store.kind} storeError={store.error} title="Katalog">
+        <p role="alert" className="mt-8 rounded-card border border-line-strong bg-ground-2 p-5 text-body text-ink">
+          Katalog şu an okunamıyor, bu yüzden liste gösterilmiyor — ekranda
+          olmayan bir veriyle işlem yapmayın. Hiçbir şey silinmedi.
+          <span className="mt-3 block text-caption text-ink-60">{okuma.error}</span>
+        </p>
+        <p className="mt-6 text-caption text-ink-60">
+          Birkaç saniye sonra sayfayı yenileyin. Sürerse{" "}
+          <Link href="/admin/kurtarma" className="underline underline-offset-4">
+            kurtarma ekranından
+          </Link>{" "}
+          deponun durumunu ve yedekleri görebilirsiniz.
+        </p>
+      </AdminShell>
+    );
+  }
+
+  const products = okuma.products;
 
   const missingPhotos = products.filter((p) =>
     p.colors.every((c) => c.images.length === 0),
@@ -59,12 +87,20 @@ export default async function AdminHome({
             <> · <span className="text-ink">{missingPhotos} ürünün hiç fotoğrafı yok</span></>
           )}
         </p>
-        <Link
-          href="/admin/urun/yeni"
-          className="rounded-card bg-ink px-6 py-3 text-body font-medium text-ground"
-        >
-          Yeni ürün
-        </Link>
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            href="/admin/kurtarma"
+            className="rounded-card border border-line-strong px-4 py-3 text-caption font-medium text-ink"
+          >
+            Kurtarma
+          </Link>
+          <Link
+            href="/admin/urun/yeni"
+            className="rounded-card bg-ink px-6 py-3 text-body font-medium text-ground"
+          >
+            Yeni ürün
+          </Link>
+        </div>
       </div>
 
       {/* Sıralama burada anlatılıyor: tutamaç ve oklar kendi başlarına

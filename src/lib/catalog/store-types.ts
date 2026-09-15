@@ -19,6 +19,22 @@ export type CatalogStore = {
   }): Promise<string>;
   deleteImage(source: string, slug: string): Promise<void>;
   /**
+   * Yedek sürümler (en yeni başta) ve bir yedeği okuma.
+   *
+   * Katalog tek bir dosya ve her kaydetme onu baştan yazıyor. Bir kez,
+   * geçici bir okuma hatası yüzünden bütün ürünlerin üzerine demo veri
+   * yazıldı. Yedek, bu sınıftaki kazaları geri alınabilir kılıyor.
+   */
+  listBackups(): Promise<Array<{ key: string; at: string }>>;
+  readBackup(key: string): Promise<StoredProduct[]>;
+  /**
+   * Depodaki ürün görselleri.
+   *
+   * Fotoğraflar katalogdan ayrı nesneler; katalog kaybolsa bile duruyorlar.
+   * Kurtarma ekranı ürünleri bunlardan yeniden kuruyor.
+   */
+  listImages(): Promise<Array<{ slug: string; filename: string; source: string }>>;
+  /**
    * Depo gerçekten erişilebilir mi?
    *
    * read() okuma hatalarını yutup tohum veriyle devam ediyor — genel site

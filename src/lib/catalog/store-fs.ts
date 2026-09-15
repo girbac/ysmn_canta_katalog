@@ -1,5 +1,5 @@
 import "server-only";
-import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { catalogSchema } from "./schema";
 import { seedProducts } from "./seed";
@@ -15,6 +15,7 @@ import type { CatalogStore } from "./store-types";
 
 const DATA_FILE = path.join(process.cwd(), "src", "data", "products.json");
 const IMAGE_ROOT = path.join(process.cwd(), "public", "products");
+const HISTORY_DIR = path.join(process.cwd(), "src", "data", "yedek");
 
 /**
  * Canlıda dosya sistemi yazılamaz: Vercel'de kod /var/task altında salt
@@ -55,11 +56,66 @@ export const fsStore: CatalogStore = {
 
   async write(products) {
     const valid = catalogSchema.parse(products);
+
+    // Üzerine yazmadan önce mevcut hâli yedekle (bkz. store-types)
+    try {
+      const eski = await readFile(DATA_FILE, "utf8");
+      await mkdir(HISTORY_DIR, { recursive: true });
+      const damga = new Date().toISOString().replace(/[:.]/g, "-");
+      await writeFile(path.join(HISTORY_DIR, `${damga}.json`), eski, "utf8");
+    } catch {
+      // Yedek bir güvence, kapı değil: alınamazsa kaydetme yine sürüyor
+    }
+
     try {
       await writeFile(DATA_FILE, JSON.stringify(valid, null, 2) + "\n", "utf8");
     } catch (cause) {
       throw notWritable("Katalog kaydedilemedi", cause);
     }
+  },
+
+  async listBackups() {
+    let dosyalar: string[];
+    try {
+      dosyalar = await readdir(HISTORY_DIR);
+    } catch {
+      return [];
+    }
+    return dosyalar
+      .filter((d) => d.endsWith(".json"))
+      .map((d) => ({ key: d, at: d.replace(/\.json$/, "") }))
+      .sort((a, b) => b.at.localeCompare(a.at));
+  },
+
+  async readBackup(key) {
+    // Yol geçişi olmasın: yalnızca yedek klasöründeki düz dosya adları
+    if (key.includes("/") || key.includes("..")) throw new Error("Geçersiz yedek.");
+    const raw = await readFile(path.join(HISTORY_DIR, key), "utf8");
+    return catalogSchema.parse(JSON.parse(raw));
+  },
+
+  async listImages() {
+    let klasorler: string[];
+    try {
+      klasorler = await readdir(IMAGE_ROOT);
+    } catch {
+      return [];
+    }
+    const bulunan: Array<{ slug: string; filename: string; source: string }> = [];
+    for (const slug of klasorler) {
+      const yol = path.join(IMAGE_ROOT, slug);
+      try {
+        if (!(await stat(yol)).isDirectory()) continue;
+        for (const filename of await readdir(yol)) {
+          if (/\.(webp|avif|jpe?g|png)$/i.test(filename)) {
+            bulunan.push({ slug, filename, source: filename });
+          }
+        }
+      } catch {
+        // Okunamayan klasörü atla
+      }
+    }
+    return bulunan;
   },
 
   async putImage({ slug, filename, body }) {
