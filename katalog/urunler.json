@@ -2049,6 +2049,17 @@
         "images": [
           "lacivert-mu2u1k8h-0.webp"
         ]
+      },
+      {
+        "key": "kahverengi",
+        "name": {
+          "tr": "Kahverengi",
+          "en": "Brown"
+        },
+        "hex": "#6B4423",
+        "images": [
+          "kahverengi-mu2u1nxv-0.webp"
+        ]
       }
     ],
     "features": [
