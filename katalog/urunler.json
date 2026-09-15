@@ -1918,6 +1918,17 @@
         "images": [
           "siyah-mu2tuj0o-0.webp"
         ]
+      },
+      {
+        "key": "bordo",
+        "name": {
+          "tr": "Bordo",
+          "en": "Burgundy"
+        },
+        "hex": "#5C1F2B",
+        "images": [
+          "bordo-mu2tun3o-0.webp"
+        ]
       }
     ],
     "features": [
