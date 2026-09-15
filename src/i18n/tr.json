@@ -45,17 +45,7 @@
     ],
     "ctaTitle": "Beğendiklerinizi biriktirin.",
     "ctaLead": "Gezerken beğendiğiniz çantaları seçkinize ekleyin. Sonunda tek tıkla WhatsApp'tan bize gönderin ya da PDF olarak indirin.",
-    "ctaButton": "Koleksiyonu gez",
-    "strips": [
-      {
-        "q": "Bir çantanın ömrü, en zayıf dikişi kadardır. Biz o dikişi elle atıyoruz.",
-        "c": "Eyer dikişi · çift iğne"
-      },
-      {
-        "q": "Deri yaşayan bir malzeme. İlk gün ile beşinci yıl arasındaki fark, kusur değil kayıt.",
-        "c": "Bitkisel tabaklama"
-      }
-    ]
+    "ctaButton": "Koleksiyonu gez"
   },
   "collection": {
     "title": "Koleksiyon",

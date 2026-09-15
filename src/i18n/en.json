@@ -45,17 +45,7 @@
     ],
     "ctaTitle": "Keep what you like.",
     "ctaLead": "Add bags to your selection as you browse. When you're done, send it to us on WhatsApp in one tap or download it as a PDF.",
-    "ctaButton": "Browse the collection",
-    "strips": [
-      {
-        "q": "A bag lasts as long as its weakest seam. We sew that seam by hand.",
-        "c": "Saddle stitch · two needles"
-      },
-      {
-        "q": "Leather is a living material. The difference between day one and year five isn't a flaw — it's a record.",
-        "c": "Vegetable tanned"
-      }
-    ]
+    "ctaButton": "Browse the collection"
   },
   "collection": {
     "title": "Collection",

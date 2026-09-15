@@ -6,7 +6,6 @@ import { site } from "@/config/site";
 import type { Form, Locale, Product } from "@/data/types";
 import { getCatalogViews } from "@/lib/catalog/catalog";
 import { materialName } from "@/data/materials";
-import { EditorialStrip } from "@/components/EditorialStrip";
 import { Hero } from "@/components/Hero";
 import { ModeSection } from "@/components/ModeSection";
 import { ProductCard } from "@/components/ProductCard";
@@ -79,12 +78,10 @@ export default async function HomePage({
             />
           </Reveal>
 
+          {/* Izgarayı ikiye bölen editoryal alıntı şeridi kaldırıldı;
+              kartlar tek akışta gidiyor. */}
           <div className="mt-16 grid grid-cols-2 gap-x-4 gap-y-14 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4 lg:gap-x-8">
-            <Grid products={womenPreview.slice(0, 4)} locale={locale} labels={cardLabels} />
-
-            <EditorialStrip quote={t.home.strips[0].q} caption={t.home.strips[0].c} />
-
-            <Grid products={womenPreview.slice(4)} locale={locale} labels={cardLabels} />
+            <Grid products={womenPreview} locale={locale} labels={cardLabels} />
           </div>
         </div>
       </ModeSection>
