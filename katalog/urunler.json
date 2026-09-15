@@ -311,6 +311,17 @@
           "haki-mu2vdgln-0.webp",
           "haki-mu2vdmre-0.webp"
         ]
+      },
+      {
+        "key": "kahverengi",
+        "name": {
+          "tr": "Kahverengi",
+          "en": "Brown"
+        },
+        "hex": "#6B4423",
+        "images": [
+          "kahverengi-mu2ve0hm-0.webp"
+        ]
       }
     ],
     "features": [
