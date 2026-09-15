@@ -1936,29 +1936,20 @@
   },
   {
     "slug": "mimar-evrak",
-    "code": "YSM-8003",
+    "code": "2040-D",
     "name": {
-      "tr": "Mimar Evrak Çantası",
-      "en": "Mimar Briefcase"
+      "tr": "Hakiki Deri Unisex Sırt Çantası",
+      "en": "Hakiki Deri Unisex Sırt Çantası"
     },
     "segment": "erkek",
-    "form": "evrak",
-    "material": "saffiano",
+    "form": "sirt",
+    "material": "deri",
     "dimensions": {
-      "w": 39,
-      "h": 29,
-      "d": 9
+      "w": 31,
+      "h": 38,
+      "d": 19
     },
     "colors": [
-      {
-        "key": "antrasit",
-        "name": {
-          "tr": "Antrasit",
-          "en": "Charcoal"
-        },
-        "hex": "#35373B",
-        "images": []
-      },
       {
         "key": "siyah",
         "name": {
@@ -2018,7 +2009,8 @@
         "en": "Document sleeve"
       }
     ],
-    "strap": "ayarlanabilir"
+    "strap": "ayarlanabilir",
+    "price": 4500
   },
   {
     "slug": "borsa-evrak",
