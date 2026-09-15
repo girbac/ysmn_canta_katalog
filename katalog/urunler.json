@@ -285,6 +285,17 @@
           "vizon-mu2vbkz8-0.webp",
           "vizon-mu2vbroe-0.webp"
         ]
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": [
+          "taba-mu2vcemv-0.webp"
+        ]
       }
     ],
     "features": [
