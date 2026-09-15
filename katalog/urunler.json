@@ -298,6 +298,17 @@
           "taba-mu2vcllf-0.webp",
           "taba-mu2vcqx4-0.webp"
         ]
+      },
+      {
+        "key": "haki",
+        "name": {
+          "tr": "Haki",
+          "en": "Khaki"
+        },
+        "hex": "#6B6A45",
+        "images": [
+          "haki-mu2vd7x9-0.webp"
+        ]
       }
     ],
     "features": [
