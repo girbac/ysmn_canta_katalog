@@ -2060,6 +2060,17 @@
         "images": [
           "kahverengi-mu2u1nxv-0.webp"
         ]
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": [
+          "taba-mu2u1rg7-0.webp"
+        ]
       }
     ],
     "features": [
