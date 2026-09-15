@@ -1980,6 +1980,17 @@
         "images": [
           "lacivert-mu2txxj2-0.webp"
         ]
+      },
+      {
+        "key": "kahve",
+        "name": {
+          "tr": "Koyu Kahve",
+          "en": "Espresso"
+        },
+        "hex": "#40301F",
+        "images": [
+          "kahve-mu2ty0qm-0.webp"
+        ]
       }
     ],
     "features": [
