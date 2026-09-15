@@ -14,10 +14,9 @@ import {
   addImages,
   deleteProduct,
   makeCover,
-  moveProduct,
-  moveProductTo,
   removeImage,
   saveProduct,
+  setCatalogOrder,
 } from "@/lib/catalog/mutate";
 import type { ColorDef } from "@/data/colors";
 
@@ -289,37 +288,30 @@ export async function deleteProductAction(formData: FormData) {
   redirect(failure ? `/admin?hata=${encodeURIComponent(failure)}` : "/admin?silindi=1");
 }
 
-export async function moveProductAction(formData: FormData) {
-  await assertAdmin();
-  const direction = Number(formData.get("yon")) === -1 ? -1 : 1;
-  try {
-    await moveProduct(String(formData.get("slug") || ""), direction);
-  } catch (cause) {
-    redirect(`/admin?hata=${encodeURIComponent(writeError(cause))}`);
-  }
-}
+export type OrderState = { ok: true } | { ok: false; error: string };
 
 /**
- * Ürünü yazılan sıraya taşır.
+ * Katalog sırasını kaydeder.
  *
- * Sayı okunamazsa hiçbir şey yapılmıyor: boş bir kutuyla gönderilen form
- * ürünü listenin başına fırlatmamalı.
+ * Sıralama panelde anında yapılıyor (bkz. CatalogOrder); buraya yalnızca
+ * son hâli geliyor. Eskiden her ok tıklaması ayrı bir yazmaydı: canlıda
+ * her tıklama saniyeler sürdüğü için liste elle dizilemiyordu.
  */
-export async function moveProductToAction(formData: FormData) {
+export async function saveOrderAction(
+  _prev: OrderState | null,
+  formData: FormData,
+): Promise<OrderState> {
   await assertAdmin();
-  const hedef = num(formData.get("sira"));
-  let failure: string | null = null;
 
-  if (Number.isFinite(hedef)) {
-    // redirect() bilerek try'ın dışında: o da istisna fırlatarak çalışıyor.
-    try {
-      await moveProductTo(String(formData.get("slug") || ""), hedef);
-    } catch (cause) {
-      failure = writeError(cause);
-    }
+  const slugs = String(formData.get("sira") || "").split(",").filter(Boolean);
+  if (slugs.length === 0) return { ok: false, error: "Kaydedilecek bir sıra gelmedi." };
+
+  try {
+    await setCatalogOrder(slugs);
+  } catch (cause) {
+    return { ok: false, error: writeError(cause) };
   }
-
-  if (failure) redirect(`/admin?hata=${encodeURIComponent(failure)}`);
+  return { ok: true };
 }
 
 /** Kabul edilen görsel türleri ve üst sınır */

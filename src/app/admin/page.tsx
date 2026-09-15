@@ -7,7 +7,7 @@ import { materialName } from "@/data/materials";
 import { ProductMedia } from "@/components/ProductMedia";
 import { AdminShell } from "./_components/AdminShell";
 import { NotConfigured } from "./_components/NotConfigured";
-import { moveProductAction, moveProductToAction } from "./actions";
+import { CatalogOrder } from "./_components/CatalogOrder";
 
 export const dynamic = "force-dynamic";
 
@@ -67,120 +67,71 @@ export default async function AdminHome({
         </Link>
       </div>
 
-      {/* Sıralama burada anlatılıyor: numara kutusu kendi başına ne işe
-          yaradığını söylemiyor, oklar da öyle. */}
+      {/* Sıralama burada anlatılıyor: tutamaç ve oklar kendi başlarına
+          ne işe yaradıklarını söylemiyor. */}
       <p className="mt-4 max-w-2xl text-caption text-ink-60">
-        Satır sonundaki numara ürünün katalogdaki sırasıdır — sitede bu düzende
-        görünürler. Kutuya yeni bir satır numarası yazıp Enter&apos;a basın, ürün
-        oraya taşınsın; oklar bir satır yukarı/aşağı alır.
+        Soldaki tutamaçtan (⠿) tutup sürükleyerek ürünleri dilediğiniz sıraya
+        dizin; oklar bir satır taşır, ⤒ başa alır. Sitedeki düzen bu listedir.
+        Dizdikten sonra alttaki <strong className="font-medium text-ink">Sırayı kaydet</strong>{" "}
+        düğmesine basın.
       </p>
 
-      <ul className="mt-8 divide-y divide-[var(--line)] border-y border-line">
-        {products.map((p, i) => {
+      {/*
+        Sıralama istemcide (CatalogOrder), satırın içeriği ise burada —
+        sunucuda — üretiliyor: ProductMedia ve malzeme adları oraya hazır
+        birer parça olarak gidiyor, istemci yalnızca sıralarını değiştiriyor.
+
+        key, sunucudan gelen sıradan türüyor: kaydetmeden sonra (ya da bir
+        ürün silindiğinde) liste yenilenip istemci durumu sunucudakiyle
+        yeniden hizalansın.
+      */}
+      <CatalogOrder
+        key={products.map((p) => p.slug).join(",")}
+        items={products.map((p) => {
           const photos = p.colors.reduce((n, c) => n + c.images.length, 0);
-          return (
-            <li key={p.slug} className="flex flex-wrap items-center gap-4 py-4">
-              <Link href={`/admin/urun/${p.slug}`} className="w-[72px] shrink-0">
-                <ProductMedia product={p} locale="tr" sizes="72px" />
-              </Link>
-
-              <div className="min-w-0 flex-1">
-                <Link
-                  href={`/admin/urun/${p.slug}`}
-                  className="text-subheading text-ink hover:text-ink-60"
-                >
-                  {p.name.tr}
+          return {
+            slug: p.slug,
+            ad: p.name.tr,
+            icerik: (
+              <>
+                <Link href={`/admin/urun/${p.slug}`} className="w-[64px] shrink-0">
+                  <ProductMedia product={p} locale="tr" sizes="64px" />
                 </Link>
-                <p className="text-caption text-ink-60">
-                  {p.code} · {p.segment === "kadin" ? "Kadın" : "Erkek"} ·{" "}
-                  {FORM_LABEL[p.form]} · {materialName(p.material).tr} ·{" "}
-                  {p.colors.length} renk
-                  {p.isNew && <> · <span className="text-ink">Yeni</span></>}
-                </p>
-              </div>
 
-              <span
-                className={
-                  photos === 0
-                    ? "shrink-0 rounded-card border border-line-strong px-3 py-1.5 text-caption text-ink"
-                    : "shrink-0 text-caption text-ink-40"
-                }
-              >
-                {photos === 0 ? "Fotoğraf yok" : `${photos} fotoğraf`}
-              </span>
+                {/* basis-40: dar ekranda ad ve künye için en az 10rem
+                    isteniyor, sığmayan "fotoğraf" rozeti alt satıra
+                    iniyor. Yoksa ürün adı üç kelimelik bir sütuna
+                    sıkışıyordu. */}
+                <div className="min-w-0 flex-1 basis-40">
+                  <Link
+                    href={`/admin/urun/${p.slug}`}
+                    className="text-subheading text-ink hover:text-ink-60"
+                  >
+                    {p.name.tr}
+                  </Link>
+                  <p className="text-caption text-ink-60">
+                    {p.code} · {p.segment === "kadin" ? "Kadın" : "Erkek"} ·{" "}
+                    {FORM_LABEL[p.form]} · {materialName(p.material).tr} ·{" "}
+                    {p.colors.length} renk
+                    {p.isNew && <> · <span className="text-ink">Yeni</span></>}
+                  </p>
+                </div>
 
-              {/* Katalog sırası — kartların görünme düzeni */}
-              <div className="flex shrink-0 items-center gap-1">
-                {/* Doğrudan sıraya taşı.
-                    Oklarla bir satır taşımak kırk ürünlük katalogda
-                    yetmiyordu; hedef satırı yazmak tek hamlede götürüyor.
-
-                    key'de sıra numarası var: form sunucuda üretiliyor ve
-                    defaultValue, bileşen zaten ekrandayken değişse bile
-                    kutuyu güncellemiyor. Taşımadan sonra kutularda eski
-                    numaralar kalırdı; anahtar değişince kutu yenileniyor. */}
-                <form
-                  action={moveProductToAction}
-                  /* noValidate: min/max kutunun oklarına yol göstersin diye
-                     duruyor ama sınır dışı bir sayı formu ENGELLEMEMELİ.
-                     Kırk bir ürünlük listede "999" yazmak "en sona koy"
-                     demektir; sunucu zaten uçlara çekiyor. Tarayıcının
-                     sessizce göndermemesi, kullanıcıya hiçbir şey olmamış
-                     gibi görünüyordu. */
-                  noValidate
-                  className="mr-1.5 flex items-center gap-1"
+                <span
+                  className={
+                    photos === 0
+                      ? "shrink-0 rounded-card border border-line-strong px-3 py-1.5 text-caption text-ink"
+                      : "shrink-0 text-caption text-ink-40"
+                  }
                 >
-                  <input type="hidden" name="slug" value={p.slug} />
-                  <label htmlFor={`sira-${p.slug}`} className="sr-only">
-                    {p.name.tr} — kaçıncı sıraya taşınsın
-                  </label>
-                  <input
-                    key={`${p.slug}-${i}`}
-                    id={`sira-${p.slug}`}
-                    name="sira"
-                    type="number"
-                    min={1}
-                    max={products.length}
-                    defaultValue={i + 1}
-                    className="h-9 w-14 rounded-card border border-line-strong bg-ground-2 text-center text-caption tabular-nums text-ink focus:border-ink focus:outline-none"
-                  />
-                  <button
-                    type="submit"
-                    aria-label={`${p.name.tr} — yazılan sıraya taşı`}
-                    className="grid h-9 w-9 place-items-center rounded-card border border-line-strong text-ink"
-                  >
-                    →
-                  </button>
-                </form>
-                <form action={moveProductAction}>
-                  <input type="hidden" name="slug" value={p.slug} />
-                  <input type="hidden" name="yon" value="-1" />
-                  <button
-                    type="submit"
-                    disabled={i === 0}
-                    aria-label={`${p.name.tr} — yukarı taşı`}
-                    className="grid h-9 w-9 place-items-center rounded-card border border-line-strong text-ink disabled:opacity-30"
-                  >
-                    ↑
-                  </button>
-                </form>
-                <form action={moveProductAction}>
-                  <input type="hidden" name="slug" value={p.slug} />
-                  <input type="hidden" name="yon" value="1" />
-                  <button
-                    type="submit"
-                    disabled={i === products.length - 1}
-                    aria-label={`${p.name.tr} — aşağı taşı`}
-                    className="grid h-9 w-9 place-items-center rounded-card border border-line-strong text-ink disabled:opacity-30"
-                  >
-                    ↓
-                  </button>
-                </form>
-              </div>
-            </li>
-          );
+                  {photos === 0 ? "Fotoğraf yok" : `${photos} fotoğraf`}
+                </span>
+              </>
+            ),
+          };
         })}
-      </ul>
+      />
+
     </AdminShell>
   );
 }

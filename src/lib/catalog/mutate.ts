@@ -293,45 +293,33 @@ export async function removeImage(params: {
   revalidateCatalog(params.slug);
 }
 
-/** Katalog sırasını değiştirir (ürünü listede yukarı/aşağı taşır) */
 /**
- * Ürünü doğrudan istenen sıraya taşır (1'den başlayan satır numarası).
+ * Katalog sırasını topluca yazar.
  *
- * Oklarla bir satır taşımak kırk ürünlük bir katalogda işe yaramıyor:
- * en alttaki parçayı başa almak kırk tıklama demek. Burada hedef satır
- * yazılıyor ve ürün oraya GİRİYOR — yer değiştirme değil, araya sokma:
- * 40. sıradaki ürün 1'e yazılınca diğerleri birer satır aşağı kayıyor,
- * insanın listeyi elle dizerken yaptığı hareketin aynısı.
+ * Eskiden her taşıma ayrı bir yazma işlemiydi: bir satır yukarı almak,
+ * katalogun tamamını okuyup tamamını geri yazmak demekti. Canlıda (Blob)
+ * bu saniyeler sürüyor ve kırk bir ürünlük bir listeyi elle dizmek
+ * imkânsız hâle geliyordu. Sıralama artık panelde anında yapılıyor,
+ * depoya tek seferde geliyor.
+ *
+ * Gelen listede olmayan ürünler kaybolmuyor, sona ekleniyor (başka bir
+ * sekmede yeni ürün eklenmiş olabilir); tanınmayan anahtarlar yok
+ * sayılıyor. Yani eksik ya da bayat bir sıra listesi katalogu budamıyor.
  */
-export async function moveProductTo(slug: string, position: number): Promise<void> {
+export async function setCatalogOrder(slugs: string[]): Promise<void> {
   const store = getStore();
   const list = await store.read();
-  const from = list.findIndex((p) => p.slug === slug);
-  if (from === -1) return;
 
-  // Liste dışına düşen numaralar uçlara çekiliyor; hata vermenin âlemi yok
-  const to = Math.min(Math.max(Math.round(position) - 1, 0), list.length - 1);
-  if (to === from) return;
-
-  const next = [...list];
-  const [tasinan] = next.splice(from, 1);
-  next.splice(to, 0, tasinan);
-
-  await store.write(next);
-  revalidateCatalog();
-}
-
-export async function moveProduct(slug: string, direction: -1 | 1): Promise<void> {
-  const store = getStore();
-  const list = await store.read();
-  const from = list.findIndex((p) => p.slug === slug);
-  if (from === -1) return;
-
-  const to = from + direction;
-  if (to < 0 || to >= list.length) return;
-
-  const next = [...list];
-  [next[from], next[to]] = [next[to], next[from]];
+  const kalanlar = new Map(list.map((p) => [p.slug, p]));
+  const next: StoredProduct[] = [];
+  for (const slug of slugs) {
+    const urun = kalanlar.get(slug);
+    if (urun) {
+      next.push(urun);
+      kalanlar.delete(slug);
+    }
+  }
+  next.push(...kalanlar.values());
 
   await store.write(next);
   revalidateCatalog();
