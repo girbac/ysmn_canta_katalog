@@ -1907,6 +1907,17 @@
         },
         "hex": "#35373B",
         "images": []
+      },
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": [
+          "siyah-mu2tuj0o-0.webp"
+        ]
       }
     ],
     "features": [
