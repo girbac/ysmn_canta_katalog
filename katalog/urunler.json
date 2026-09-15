@@ -324,6 +324,17 @@
           "kahverengi-mu2ve9yj-0.webp",
           "kahverengi-mu2vefuh-0.webp"
         ]
+      },
+      {
+        "key": "bej",
+        "name": {
+          "tr": "Bej",
+          "en": "Beige"
+        },
+        "hex": "#C9B79C",
+        "images": [
+          "bej-mu2vfxzi-0.webp"
+        ]
       }
     ],
     "features": [
