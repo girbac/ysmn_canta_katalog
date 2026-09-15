@@ -15,6 +15,7 @@ import {
   deleteProduct,
   makeCover,
   moveProduct,
+  moveProductTo,
   removeImage,
   saveProduct,
 } from "@/lib/catalog/mutate";
@@ -296,6 +297,29 @@ export async function moveProductAction(formData: FormData) {
   } catch (cause) {
     redirect(`/admin?hata=${encodeURIComponent(writeError(cause))}`);
   }
+}
+
+/**
+ * Ürünü yazılan sıraya taşır.
+ *
+ * Sayı okunamazsa hiçbir şey yapılmıyor: boş bir kutuyla gönderilen form
+ * ürünü listenin başına fırlatmamalı.
+ */
+export async function moveProductToAction(formData: FormData) {
+  await assertAdmin();
+  const hedef = num(formData.get("sira"));
+  let failure: string | null = null;
+
+  if (Number.isFinite(hedef)) {
+    // redirect() bilerek try'ın dışında: o da istisna fırlatarak çalışıyor.
+    try {
+      await moveProductTo(String(formData.get("slug") || ""), hedef);
+    } catch (cause) {
+      failure = writeError(cause);
+    }
+  }
+
+  if (failure) redirect(`/admin?hata=${encodeURIComponent(failure)}`);
 }
 
 /** Kabul edilen görsel türleri ve üst sınır */

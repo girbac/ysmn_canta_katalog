@@ -294,6 +294,33 @@ export async function removeImage(params: {
 }
 
 /** Katalog sırasını değiştirir (ürünü listede yukarı/aşağı taşır) */
+/**
+ * Ürünü doğrudan istenen sıraya taşır (1'den başlayan satır numarası).
+ *
+ * Oklarla bir satır taşımak kırk ürünlük bir katalogda işe yaramıyor:
+ * en alttaki parçayı başa almak kırk tıklama demek. Burada hedef satır
+ * yazılıyor ve ürün oraya GİRİYOR — yer değiştirme değil, araya sokma:
+ * 40. sıradaki ürün 1'e yazılınca diğerleri birer satır aşağı kayıyor,
+ * insanın listeyi elle dizerken yaptığı hareketin aynısı.
+ */
+export async function moveProductTo(slug: string, position: number): Promise<void> {
+  const store = getStore();
+  const list = await store.read();
+  const from = list.findIndex((p) => p.slug === slug);
+  if (from === -1) return;
+
+  // Liste dışına düşen numaralar uçlara çekiliyor; hata vermenin âlemi yok
+  const to = Math.min(Math.max(Math.round(position) - 1, 0), list.length - 1);
+  if (to === from) return;
+
+  const next = [...list];
+  const [tasinan] = next.splice(from, 1);
+  next.splice(to, 0, tasinan);
+
+  await store.write(next);
+  revalidateCatalog();
+}
+
 export async function moveProduct(slug: string, direction: -1 | 1): Promise<void> {
   const store = getStore();
   const list = await store.read();

@@ -7,7 +7,7 @@ import { materialName } from "@/data/materials";
 import { ProductMedia } from "@/components/ProductMedia";
 import { AdminShell } from "./_components/AdminShell";
 import { NotConfigured } from "./_components/NotConfigured";
-import { moveProductAction } from "./actions";
+import { moveProductAction, moveProductToAction } from "./actions";
 
 export const dynamic = "force-dynamic";
 
@@ -67,6 +67,14 @@ export default async function AdminHome({
         </Link>
       </div>
 
+      {/* Sıralama burada anlatılıyor: numara kutusu kendi başına ne işe
+          yaradığını söylemiyor, oklar da öyle. */}
+      <p className="mt-4 max-w-2xl text-caption text-ink-60">
+        Satır sonundaki numara ürünün katalogdaki sırasıdır — sitede bu düzende
+        görünürler. Kutuya yeni bir satır numarası yazıp Enter&apos;a basın, ürün
+        oraya taşınsın; oklar bir satır yukarı/aşağı alır.
+      </p>
+
       <ul className="mt-8 divide-y divide-[var(--line)] border-y border-line">
         {products.map((p, i) => {
           const photos = p.colors.reduce((n, c) => n + c.images.length, 0);
@@ -103,6 +111,47 @@ export default async function AdminHome({
 
               {/* Katalog sırası — kartların görünme düzeni */}
               <div className="flex shrink-0 items-center gap-1">
+                {/* Doğrudan sıraya taşı.
+                    Oklarla bir satır taşımak kırk ürünlük katalogda
+                    yetmiyordu; hedef satırı yazmak tek hamlede götürüyor.
+
+                    key'de sıra numarası var: form sunucuda üretiliyor ve
+                    defaultValue, bileşen zaten ekrandayken değişse bile
+                    kutuyu güncellemiyor. Taşımadan sonra kutularda eski
+                    numaralar kalırdı; anahtar değişince kutu yenileniyor. */}
+                <form
+                  action={moveProductToAction}
+                  /* noValidate: min/max kutunun oklarına yol göstersin diye
+                     duruyor ama sınır dışı bir sayı formu ENGELLEMEMELİ.
+                     Kırk bir ürünlük listede "999" yazmak "en sona koy"
+                     demektir; sunucu zaten uçlara çekiyor. Tarayıcının
+                     sessizce göndermemesi, kullanıcıya hiçbir şey olmamış
+                     gibi görünüyordu. */
+                  noValidate
+                  className="mr-1.5 flex items-center gap-1"
+                >
+                  <input type="hidden" name="slug" value={p.slug} />
+                  <label htmlFor={`sira-${p.slug}`} className="sr-only">
+                    {p.name.tr} — kaçıncı sıraya taşınsın
+                  </label>
+                  <input
+                    key={`${p.slug}-${i}`}
+                    id={`sira-${p.slug}`}
+                    name="sira"
+                    type="number"
+                    min={1}
+                    max={products.length}
+                    defaultValue={i + 1}
+                    className="h-9 w-14 rounded-card border border-line-strong bg-ground-2 text-center text-caption tabular-nums text-ink focus:border-ink focus:outline-none"
+                  />
+                  <button
+                    type="submit"
+                    aria-label={`${p.name.tr} — yazılan sıraya taşı`}
+                    className="grid h-9 w-9 place-items-center rounded-card border border-line-strong text-ink"
+                  >
+                    →
+                  </button>
+                </form>
                 <form action={moveProductAction}>
                   <input type="hidden" name="slug" value={p.slug} />
                   <input type="hidden" name="yon" value="-1" />
