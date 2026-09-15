@@ -1848,6 +1848,17 @@
         "images": [
           "taba-mu2tr7fo-0.webp"
         ]
+      },
+      {
+        "key": "kahverengi",
+        "name": {
+          "tr": "Kahverengi",
+          "en": "Brown"
+        },
+        "hex": "#6B4423",
+        "images": [
+          "kahverengi-mu2trds2-0.webp"
+        ]
       }
     ],
     "features": [
