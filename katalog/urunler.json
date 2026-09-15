@@ -1804,29 +1804,20 @@
   },
   {
     "slug": "kanun-evrak",
-    "code": "YSM-8001",
+    "code": "2040-D",
     "name": {
-      "tr": "Kanun Evrak Çantası",
-      "en": "Kanun Briefcase"
+      "tr": "Hakiki Deri Unisex Sırt Çantası",
+      "en": "Hakiki Deri Unisex Sırt Çantası"
     },
     "segment": "erkek",
-    "form": "evrak",
-    "material": "tokluk",
+    "form": "sirt",
+    "material": "deri",
     "dimensions": {
-      "w": 40,
-      "h": 30,
-      "d": 10
+      "w": 31,
+      "h": 38,
+      "d": 19
     },
     "colors": [
-      {
-        "key": "siyah",
-        "name": {
-          "tr": "Siyah",
-          "en": "Black"
-        },
-        "hex": "#14110F",
-        "images": []
-      },
       {
         "key": "kahve",
         "name": {
@@ -1880,7 +1871,8 @@
       }
     ],
     "strap": "ayarlanabilir",
-    "isNew": true
+    "isNew": true,
+    "price": 4500
   },
   {
     "slug": "meclis-evrak",
