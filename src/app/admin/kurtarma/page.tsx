@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { isAdmin, isAdminConfigured } from "@/lib/admin-session";
 import { getStore, getStoreStatus } from "@/lib/catalog/store";
 import { rebuildFromImages, salvageRaw } from "@/lib/catalog/recover";
+import { gitTanim } from "@/lib/catalog/store-git";
 import { AdminShell } from "../_components/AdminShell";
 import { NotConfigured } from "../_components/NotConfigured";
 import { RestoreForm } from "../_components/RestoreForm";
@@ -26,6 +27,7 @@ export default async function KurtarmaSayfasi() {
 
   const store = getStore();
   const durum = await getStoreStatus();
+  const tanim = gitTanim();
 
   /* Üç bağımsız soru; biri patlarsa diğerleri yine görünsün. Kurtarma
      ekranının kendisi de arızaya dayanıklı olmalı. */
@@ -67,6 +69,35 @@ export default async function KurtarmaSayfasi() {
         gösterir. Buradan bir şey yazılması için düğmeye basmanız gerekir; her
         geri yükleme de önce mevcut hâli yedekler.
       </p>
+
+      {/* ── Bağlantı ──
+          "Depo bağlı değil" tek başına çıkmaz sokak; neyin eksik olduğu
+          burada tek tek yazıyor. */}
+      <Bolum
+        baslik="Depo bağlantısı"
+        aciklama="Katalog ve fotoğraflar GitHub deposunda saklanıyor."
+      >
+        <dl className="grid gap-2 text-body">
+          <Satir
+            etiket="GITHUB_TOKEN"
+            deger={tanim.anahtar ? "tanımlı" : "TANIMLI DEĞİL — kaydetme çalışmaz"}
+            iyi={tanim.anahtar}
+          />
+          <Satir etiket="Depo" deger={`${tanim.owner}/${tanim.repo}`} iyi />
+          <Satir etiket="Dal" deger={tanim.branch} iyi />
+          {/* Anahtar yokken depo GitHub değil, yerel dosya sistemidir; onun
+              "çalışıyor" demesi burada yanıltıcı olurdu. */}
+          <Satir
+            etiket="Erişim"
+            deger={
+              durum.kind !== "git"
+                ? "GitHub bağlı değil — yerel dosya sistemi kullanılıyor"
+                : (durum.error ?? "çalışıyor")
+            }
+            iyi={durum.kind === "git" && !durum.error}
+          />
+        </dl>
+      </Bolum>
 
       {/* ── Şu an depoda ne var ── */}
       <Bolum baslik="Şu anki katalog">
@@ -219,6 +250,23 @@ export default async function KurtarmaSayfasi() {
         </Link>
       </p>
     </AdminShell>
+  );
+}
+
+function Satir({
+  etiket,
+  deger,
+  iyi,
+}: {
+  etiket: string;
+  deger: string;
+  iyi: boolean;
+}) {
+  return (
+    <div className="flex flex-wrap items-baseline gap-x-3 border-b border-line pb-2">
+      <dt className="w-32 shrink-0 text-caption text-ink-40">{etiket}</dt>
+      <dd className={iyi ? "text-ink-60" : "font-medium text-ink"}>{deger}</dd>
+    </div>
   );
 }
 

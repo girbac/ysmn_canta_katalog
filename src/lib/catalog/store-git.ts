@@ -43,22 +43,55 @@ export const KATALOG_ETIKET = "katalog";
 type Ayar = { owner: string; repo: string; branch: string; token: string };
 
 /**
- * Ayarlar ortamdan geliyor.
+ * Sitenin yaşadığı depo.
  *
- * Vercel depo bilgisini kendisi enjekte ediyor (VERCEL_GIT_*), dolayısıyla
- * kullanıcının elle girmesi gereken tek şey bir erişim anahtarı.
+ * Vercel bu bilgiyi VERCEL_GIT_* değişkenleriyle veriyor ama bunlar çalışma
+ * anında HER ZAMAN görünmüyor (projede "System Environment Variables"
+ * kapalıysa gelmiyorlar). Yalnızca onlara güvenmek, anahtar doğru
+ * girilmiş olsa bile "depo bağlı değil" uyarısına yol açıyordu.
+ *
+ * Bu yüzden değerler burada da yazılı: kurulumda girilmesi gereken tek şey
+ * anahtar. Depo taşınırsa GITHUB_OWNER / GITHUB_REPO / GITHUB_BRANCH ile
+ * üzerine yazılır.
  */
+const VARSAYILAN = {
+  owner: "girbac",
+  repo: "ysmn_canta_katalog",
+  branch: "claude/serene-archimedes-8wy3ve",
+} as const;
+
 export function gitAyar(): Ayar | null {
   const token = process.env.GITHUB_TOKEN;
   if (!token) return null;
 
-  const owner = process.env.GITHUB_OWNER || process.env.VERCEL_GIT_REPO_OWNER;
-  const repo = process.env.GITHUB_REPO || process.env.VERCEL_GIT_REPO_SLUG;
-  const branch =
-    process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || "main";
+  return {
+    owner: process.env.GITHUB_OWNER || process.env.VERCEL_GIT_REPO_OWNER || VARSAYILAN.owner,
+    repo: process.env.GITHUB_REPO || process.env.VERCEL_GIT_REPO_SLUG || VARSAYILAN.repo,
+    branch:
+      process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || VARSAYILAN.branch,
+    token,
+  };
+}
 
-  if (!owner || !repo) return null;
-  return { owner, repo, branch, token };
+/**
+ * Bağlantının neresi eksik?
+ *
+ * "Depo bağlı değil" tek başına bir çıkmaz: kullanıcı neyi düzelteceğini
+ * bilmiyor. Bu, panelin somut konuşabilmesi için.
+ */
+export function gitTanim(): {
+  anahtar: boolean;
+  owner: string;
+  repo: string;
+  branch: string;
+} {
+  const ayar = gitAyar();
+  return {
+    anahtar: Boolean(process.env.GITHUB_TOKEN),
+    owner: ayar?.owner ?? VARSAYILAN.owner,
+    repo: ayar?.repo ?? VARSAYILAN.repo,
+    branch: ayar?.branch ?? VARSAYILAN.branch,
+  };
 }
 
 function ayarZorunlu(): Ayar {
@@ -174,11 +207,27 @@ export const gitStore: CatalogStore = {
       };
     }
     try {
-      const cevap = await istek(ayar, `/repos/${ayar.owner}/${ayar.repo}`);
+      const cevap = await istek(ayar, `/repos/${ayar.owner}/${ayar.repo}`, { taze: true });
       if (!cevap.ok) {
+        const nerede = `${ayar.owner}/${ayar.repo} (${ayar.branch})`;
+        if (cevap.status === 401) {
+          return {
+            ok: false as const,
+            error: `GitHub anahtarı kabul edilmedi (401). Anahtar yanlış ya da süresi dolmuş: ${nerede}`,
+          };
+        }
+        if (cevap.status === 404) {
+          return {
+            ok: false as const,
+            error:
+              `${nerede} deposu anahtarla görünmüyor (404). Anahtarı üretirken ` +
+              `bu depoyu seçtiğinizden ve "Repository permissions → Contents → ` +
+              `Read and write" iznini verdiğinizden emin olun.`,
+          };
+        }
         return {
           ok: false as const,
-          error: `GitHub deposuna ulaşılamıyor (${cevap.status}). Anahtarın bu depoya "Contents: read and write" izni olmalı.`,
+          error: `GitHub deposuna ulaşılamıyor (${cevap.status}): ${nerede}`,
         };
       }
       return { ok: true as const };

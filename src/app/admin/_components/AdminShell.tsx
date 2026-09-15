@@ -62,9 +62,16 @@ export function AdminShell({
           role="alert"
           className="mt-6 rounded-card border border-line-strong bg-ground-2 p-4 text-body text-ink"
         >
-          Bu ortamda GitHub deposu bağlı değil, sunucunun dosya sistemi ise salt
-          okunur. Kaydetme işlemleri başarısız olacak. Vercel&apos;de Settings →
-          Environment Variables altına GITHUB_TOKEN ekleyip yeniden yayınlayın.
+          <strong className="font-medium">GITHUB_TOKEN tanımlı değil.</strong>{" "}
+          Katalog ve fotoğraflar GitHub deposunda saklanıyor; anahtar olmadan
+          kaydetme çalışmaz (sunucunun dosya sistemi salt okunur).
+          <span className="mt-3 block text-caption text-ink-60">
+            Vercel → projeniz → Settings → Environment Variables → Name:{" "}
+            <code>GITHUB_TOKEN</code>. Anahtarı GitHub&apos;da Settings → Developer
+            settings → Personal access tokens → Fine-grained tokens altından
+            üretin; yalnızca bu depoyu seçip Repository permissions → Contents →
+            Read and write iznini verin. Ekledikten sonra Deployments → Redeploy.
+          </span>
         </p>
       )}
 
