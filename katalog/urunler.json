@@ -212,6 +212,17 @@
           "kahverengi-mu2uzdqf-0.webp",
           "kahverengi-mu2uzn38-0.webp"
         ]
+      },
+      {
+        "key": "kirmizi",
+        "name": {
+          "tr": "Kırmızı",
+          "en": "Red"
+        },
+        "hex": "#A81E27",
+        "images": [
+          "kirmizi-mu2v09aa-0.webp"
+        ]
       }
     ],
     "features": [
