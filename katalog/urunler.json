@@ -1991,6 +1991,17 @@
         "images": [
           "kahve-mu2ty9dh-0.webp"
         ]
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": [
+          "taba-mu2tyc7m-0.webp"
+        ]
       }
     ],
     "features": [
