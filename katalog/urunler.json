@@ -344,7 +344,8 @@
         "en": "Detachable shoulder strap"
       }
     ],
-    "strap": "sabit"
+    "strap": "sabit",
+    "price": 4500
   },
   {
     "slug": "defne-tote",
