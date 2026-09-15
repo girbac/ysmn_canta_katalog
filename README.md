@@ -41,20 +41,59 @@ Yereldeyken aynı değerleri `.env.local` dosyasına yazın.
 
 ### Katalog nerede duruyor?
 
-İki depo adaptörü var, ikisi de aynı arayüzü konuşuyor
-(`src/lib/catalog/store.ts`):
+**Bu projenin deposu kendi GitHub deposudur.** Katalog ve bütün fotoğraflar
+oraya yazılır:
 
 | Depo | Ne zaman | Nereye yazar |
 |---|---|---|
-| **Vercel Blob** | `BLOB_STORE_ID` ya da `BLOB_READ_WRITE_TOKEN` tanımlıysa | Blob: `catalog/products.json` + `products/<slug>/…` |
-| **Dosya sistemi** | Token yoksa (yerel geliştirme) | `src/data/products.json` + `public/products/<slug>/` |
+| **GitHub deposu** | `GITHUB_TOKEN` tanımlıysa | `katalog/urunler.json` + `katalog/fotograflar/<adres>/…` |
+| **Dosya sistemi** | Token yoksa (yerel geliştirme) | `src/data/products.json` + `public/products/<adres>/` |
 
-Canlıda Blob şart: sunucu dosya sistemi salt okunurdur. Vercel projesinde bir
-Blob deposunu projeye bağladığınızda gerekli değişkenler otomatik gelir; panel
-üstteki göstergeden hangi depoda olduğunu söyler ve yanlış ortamda uyarır.
+Canlıda GitHub şart: sunucunun dosya sistemi salt okunurdur.
 
-Depoda henüz veri yokken katalog paketle gelen tohumdan (`src/data/products.json`)
-okunur — ilk dağıtımda site hiç boş görünmez.
+#### Kurulum (tek değişken)
+
+Vercel → projeniz → **Settings → Environment Variables**:
+
+```
+GITHUB_TOKEN=github_pat_...
+```
+
+Anahtarı GitHub'da **Settings → Developer settings → Personal access tokens →
+Fine-grained tokens** altından üretin. Yalnızca bu depoyu seçin ve tek bir izin
+verin: **Repository permissions → Contents → Read and write**.
+
+Depo adı ve dal Vercel tarafından zaten sağlanıyor (`VERCEL_GIT_*`), elle
+girmeniz gerekmez. Gerekirse `GITHUB_OWNER`, `GITHUB_REPO`, `GITHUB_BRANCH` ile
+üzerine yazabilirsiniz.
+
+#### Neden GitHub?
+
+Önceki depo Vercel Blob'du ve bu seçim bir veri kaybına yol açtı: Hobby planının
+kotası doldu, depo erişimi **bir aylığına** kapandı, okumalar başarısız oldu ve
+zincirin sonunda katalogun üzerine demo veri yazıldı. Ders şu: kotası olan,
+kapanabilen bir depo katalogun asıl yeri olamaz.
+
+GitHub deposunun karşıladıkları:
+
+- Ayrı bir servis, ayrı bir kota, ayrı bir fatura yok — depo zaten var.
+- **Her değişiklik bir commit.** Geçmiş kendiliğinden tutuluyor; "yedek alma"
+  diye ayrı bir iş yok, panelin Kurtarma ekranı bu geçmişi listeliyor ve
+  herhangi bir hâle geri dönülebiliyor.
+- Yazmalar dosyanın `sha`'sıyla yapılıyor: arada başka bir yerden yazıldıysa
+  GitHub reddediyor. İki kaydetmenin birbirini ezmesi mümkün değil.
+- Fotoğraflar `/foto/<adres>/<dosya>` yolundan servis ediliyor, yani yüklendiği
+  anda görünüyor — yeni bir yayın beklenmiyor. Veri commit'leri `[skip ci]`
+  taşıdığı için siteyi yeniden derlemiyor.
+
+Fotoğraflar yüklenmeden önce **tarayıcıda** küçültülüp webp'ye çevriliyor
+(uzun kenar 1600 px). Telefondan çekildiği gibi seçebilirsiniz; boyutla
+uğraşmak gerekmiyor.
+
+Depoda henüz veri yokken katalog paketle gelen tohumdan
+(`src/data/products.json`) okunur — ilk dağıtımda site hiç boş görünmez. Okuma
+**hatası** ise asla tohuma düşmez: hata yukarı çıkar, panel durumu söyler ve
+hiçbir şey yazılmaz. Veri kaybının sebebi tam olarak bu ayrımın yapılmamasıydı.
 
 ### Nasıl çalışır
 

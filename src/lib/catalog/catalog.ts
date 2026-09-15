@@ -89,7 +89,8 @@ export async function getCatalogForAdmin(): Promise<
   { ok: true; products: Product[] } | { ok: false; error: string }
 > {
   try {
-    return { ok: true, products: withOrder(await getStore().read()) };
+    // Taze: panel, önbellekte kalmış bir listeyle işlem yaptırmamalı
+    return { ok: true, products: withOrder(await getStore().read(true)) };
   } catch (cause) {
     const detay = cause instanceof Error ? cause.message : String(cause);
     return { ok: false, error: detay.trim() || "Katalog okunamadı." };

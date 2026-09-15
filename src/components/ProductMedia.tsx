@@ -46,7 +46,9 @@ export function ProductMedia({
   className?: string;
 }) {
   const color = product.colors[colorIndex] ?? product.colors[0];
-  const file = color?.images?.[imageIndex] ?? color?.images?.[0];
+  const ham = color?.images?.[imageIndex] ?? color?.images?.[0];
+  // Çözümlenemeyen kaynak (ör. silinmiş depodan kalma tam adres) boş döner
+  const file = ham && resolveImageSource(ham, product.slug) ? ham : undefined;
   const alt = `${product.name[locale]} — ${color?.name[locale] ?? ""}`.trim();
 
   return (

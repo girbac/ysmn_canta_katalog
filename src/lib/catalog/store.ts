@@ -1,32 +1,23 @@
 import "server-only";
 import type { CatalogStore } from "./store-types";
-import { blobStore } from "./store-blob";
+import { gitStore, gitAyar } from "./store-git";
 import { fsStore } from "./store-fs";
 
 /**
  * Hangi depo kullanılacak?
  *
- * Vercel Blob bağlıysa Blob, değilse dosya sistemi. Bu sayede panelin
- * tamamı yayına çıkmadan önce yerelde uçtan uca çalıştırılıp test
- * edilebiliyor; canlıya geçişte değişen tek şey bu bağlantı oluyor.
+ * GitHub anahtarı varsa GitHub deposu, yoksa yerel dosya sistemi. İkincisi
+ * yalnızca geliştirme için: canlıda sunucunun dosya sistemi salt okunur.
  *
- * İKİ ayrı kimlik yolu var ve ikisine de bakmak şart:
- *
- *  - BLOB_READ_WRITE_TOKEN — statik token (eski bağlantı biçimi, ayrıca
- *    `vercel env pull` ile yerelde kullanılabiliyor).
- *  - BLOB_STORE_ID — Vercel'in bugünkü Blob bağlantısının kurduğu yol.
- *    Statik token vermiyor; kimlik doğrulama çalışma anında enjekte
- *    edilen VERCEL_OIDC_TOKEN ile yapılıyor. (Bkz. @vercel/blob içindeki
- *    kimlik çözümü: önce OIDC + storeId, sonra read-write token.)
- *
- * Yalnızca token'a bakmak, depo doğru biçimde bağlanmış projelerde bile
- * dosya sistemine düşmeye ve canlıda "salt okunur" hatasına yol açıyordu.
+ * Buradan Vercel Blob KALDIRILDI. Sebebi ders niteliğinde: Hobby planının
+ * kotası dolunca depo erişimi bir aylığına kapandı, okumalar başarısız
+ * oldu ve zincirin sonunda kullanıcının bütün ürünleri silindi. Kotası
+ * olan, kapanabilen bir depo katalogun asıl yeri olamaz. GitHub deposu
+ * zaten projenin kendi evi: ayrı bir kota yok, her değişiklik bir commit,
+ * geçmiş kendiliğinden duruyor.
  */
 export function getStore(): CatalogStore {
-  const hasBlob = Boolean(
-    process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID,
-  );
-  return hasBlob ? blobStore : fsStore;
+  return gitAyar() ? gitStore : fsStore;
 }
 
 export type { CatalogStore };

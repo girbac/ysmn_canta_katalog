@@ -19,14 +19,14 @@ const HISTORY_DIR = path.join(process.cwd(), "src", "data", "yedek");
 
 /**
  * Canlıda dosya sistemi yazılamaz: Vercel'de kod /var/task altında salt
- * okunur çalışır. Bu adaptör oraya düşmüşse eksik olan tek şey Blob
- * bağlantısıdır; hata mesajı da bunu söylesin, ham ENOENT/EROFS değil.
+ * okunur çalışır. Bu adaptör oraya düşmüşse eksik olan tek şey GitHub
+ * anahtarıdır; hata mesajı da bunu söylesin, ham ENOENT/EROFS değil.
  */
 function notWritable(what: string, cause: unknown): Error {
   return new Error(
-    `${what}: sunucunun dosya sistemi salt okunur. Bu, Vercel Blob deposunun ` +
-      "bu projeye bağlı olmadığı anlamına gelir. Vercel'de projenin Storage " +
-      "bölümünden bir Blob deposu bağlayın, sonra yeniden yayınlayın.",
+    `${what}: sunucunun dosya sistemi salt okunur. Bu, GitHub deposunun ` +
+      "bağlı olmadığı anlamına gelir. Vercel'de Settings → Environment " +
+      "Variables altına GITHUB_TOKEN ekleyin, sonra yeniden yayınlayın.",
     { cause },
   );
 }

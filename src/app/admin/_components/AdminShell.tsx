@@ -10,8 +10,8 @@ export function AdminShell({
   back,
 }: {
   children: React.ReactNode;
-  storeKind: "fs" | "blob";
-  /** Depoya erişilemiyorsa Blob'un kendi hata mesajı */
+  storeKind: "fs" | "git";
+  /** Depoya erişilemiyorsa deponun kendi hata mesajı */
   storeError?: string;
   title: string;
   back?: { href: string; label: string };
@@ -36,16 +36,16 @@ export function AdminShell({
           </Link>
           <span
             title={
-              storeKind === "blob"
-                ? "Değişiklikler Vercel Blob deposuna yazılıyor"
+              storeKind === "git"
+                ? "Katalog ve fotoğraflar GitHub deposunda saklanıyor"
                 : "Değişiklikler proje dosyasına yazılıyor (yerel geliştirme)"
             }
             className="rounded-card border border-line-strong px-3 py-1.5 text-caption text-ink-60"
           >
-            {storeKind === "blob"
+            {storeKind === "git"
               ? storeError
-                ? "Blob — erişilemiyor"
-                : "Blob deposu"
+                ? "GitHub — erişilemiyor"
+                : "GitHub deposu"
               : "Yerel dosya"}
           </span>
           <form action={logout}>
@@ -62,21 +62,22 @@ export function AdminShell({
           role="alert"
           className="mt-6 rounded-card border border-line-strong bg-ground-2 p-4 text-body text-ink"
         >
-          Bu ortamda Blob deposu bağlı değil, dosya sistemi ise salt okunur.
-          Kaydetme işlemleri başarısız olacak. Vercel projesinde bir Blob deposu
-          oluşturup projeye bağlayın, sonra yeniden yayınlayın.
+          Bu ortamda GitHub deposu bağlı değil, sunucunun dosya sistemi ise salt
+          okunur. Kaydetme işlemleri başarısız olacak. Vercel&apos;de Settings →
+          Environment Variables altına GITHUB_TOKEN ekleyip yeniden yayınlayın.
         </p>
       )}
 
-      {/* Blob bağlı görünüyor ama ulaşılamıyor: okuma hataları tohum veriyle
-          örtüldüğü için bu, yazmaya çalışana kadar fark edilmiyordu. */}
+      {/* Depo bağlı görünüyor ama ulaşılamıyor. Bu durum eskiden okuma
+          hataları tohum veriyle örtüldüğü için yazmaya çalışana kadar fark
+          edilmiyordu — ve bir kez bütün ürünlerin silinmesine yol açtı. */}
       {storeError && (
         <div
           role="alert"
           className="mt-6 rounded-card border border-line-strong bg-ground-2 p-4"
         >
           <p className="text-body text-ink">
-            Blob deposuna ulaşılamıyor. Kaydetme ve fotoğraf yükleme çalışmaz.
+            Depoya ulaşılamıyor. Kaydetme ve fotoğraf yükleme çalışmaz.
           </p>
           <p className="mt-2 text-caption text-ink-60">
             Vercel&apos;in yanıtı: <span className="text-ink">{storeError}</span>

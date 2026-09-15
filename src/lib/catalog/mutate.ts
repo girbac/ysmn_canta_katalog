@@ -1,8 +1,9 @@
 import "server-only";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { locales } from "@/i18n/config";
 import { findColor } from "@/data/colors";
 import { getStore } from "./store";
+import { KATALOG_ETIKET } from "./store-git";
 import { parseProduct, type StoredProduct } from "./schema";
 import { rebuildFromImages, salvageRaw } from "./recover";
 
@@ -15,6 +16,14 @@ import { rebuildFromImages, salvageRaw } from "./recover";
 
 /** Ürün listesini etkileyen tüm genel yollar */
 function revalidateCatalog(slug?: string) {
+  /**
+   * Katalog okuması etiketli önbellekte duruyor (bkz. store-git). Yazdıktan
+   * sonra etiketi tazelemezsek sayfalar eski veriyi göstermeye devam eder.
+   * updateTag, sunucu eylemleri için olan biçim: bir sonraki istek bayat
+   * içerik almıyor, doğrudan yeniyi bekliyor.
+   */
+  updateTag(KATALOG_ETIKET);
+
   for (const locale of locales) {
     revalidatePath(`/${locale}`);
     revalidatePath(`/${locale}/koleksiyon`);
@@ -67,7 +76,7 @@ export async function saveProduct(
   if (!parsed.ok) return parsed;
 
   const store = getStore();
-  const list = await store.read();
+  const list = await store.read(true);
 
   const index = originalSlug ? list.findIndex((p) => p.slug === originalSlug) : -1;
 
@@ -119,7 +128,7 @@ export async function saveProduct(
 
 export async function deleteProduct(slug: string): Promise<void> {
   const store = getStore();
-  const list = await store.read();
+  const list = await store.read(true);
   const product = list.find((p) => p.slug === slug);
 
   await store.write(list.filter((p) => p.slug !== slug));
@@ -164,7 +173,7 @@ export async function addImages(params: {
 
   // Ürün gerçekten var mı? Megabaytlarca dosyayı boşuna yüklememek için
   // önden bakılıyor; asıl okuma aşağıda, yazmadan hemen önce.
-  if (!(await store.read()).some((p) => p.slug === params.slug)) {
+  if (!(await store.read(true)).some((p) => p.slug === params.slug)) {
     return { ok: false, error: "Ürün bulunamadı." };
   }
 
@@ -182,7 +191,7 @@ export async function addImages(params: {
   }
 
   // Katalog artık okunuyor — ve hemen aşağıda yazılıyor.
-  const list = await store.read();
+  const list = await store.read(true);
   const index = list.findIndex((p) => p.slug === params.slug);
   if (index === -1) return { ok: false, error: "Ürün bulunamadı." };
 
@@ -248,7 +257,7 @@ export async function makeCover(params: {
   source: string;
 }): Promise<void> {
   const store = getStore();
-  const list = await store.read();
+  const list = await store.read(true);
   const index = list.findIndex((p) => p.slug === params.slug);
   if (index === -1) return;
 
@@ -274,7 +283,7 @@ export async function removeImage(params: {
   source: string;
 }): Promise<void> {
   const store = getStore();
-  const list = await store.read();
+  const list = await store.read(true);
   const index = list.findIndex((p) => p.slug === params.slug);
   if (index === -1) return;
 
@@ -298,7 +307,7 @@ export async function removeImage(params: {
  * Katalog sırasını topluca yazar.
  *
  * Eskiden her taşıma ayrı bir yazma işlemiydi: bir satır yukarı almak,
- * katalogun tamamını okuyup tamamını geri yazmak demekti. Canlıda (Blob)
+ * katalogun tamamını okuyup tamamını geri yazmak demekti. Canlıda uzak depoda
  * bu saniyeler sürüyor ve kırk bir ürünlük bir listeyi elle dizmek
  * imkânsız hâle geliyordu. Sıralama artık panelde anında yapılıyor,
  * depoya tek seferde geliyor.
@@ -309,7 +318,7 @@ export async function removeImage(params: {
  */
 export async function setCatalogOrder(slugs: string[]): Promise<void> {
   const store = getStore();
-  const list = await store.read();
+  const list = await store.read(true);
 
   const kalanlar = new Map(list.map((p) => [p.slug, p]));
   const next: StoredProduct[] = [];

@@ -3,12 +3,19 @@ import type { StoredProduct } from "./schema";
 /**
  * Katalog deposunun sözleşmesi.
  *
- * Adaptörler (dosya sistemi / Vercel Blob) bu arayüzü uyguluyor;
+ * Adaptörler (dosya sistemi / GitHub deposu) bu arayüzü uyguluyor;
  * `store.ts` hangisinin kullanılacağını seçiyor. Tip bu ayrı dosyada
  * duruyor ki adaptörler ile seçici arasında döngüsel import olmasın.
  */
 export type CatalogStore = {
-  read(): Promise<StoredProduct[]>;
+  /**
+   * `taze`: önbelleği atlayarak oku.
+   *
+   * Yazma yolları önce okuyup sonra tamamını yazıyor, dolayısıyla bayat
+   * okuma veri kaybı demek — onlar taze okur. Render okumaları önbellekli
+   * kalır; yoksa statik sayfalar statiklikten çıkıp hata verir.
+   */
+  read(taze?: boolean): Promise<StoredProduct[]>;
   write(products: StoredProduct[]): Promise<void>;
   /** Görseli kaydeder ve katalogda saklanacak kaynağı döner */
   putImage(params: {
@@ -55,5 +62,5 @@ export type CatalogStore = {
    */
   probe(): Promise<{ ok: true } | { ok: false; error: string }>;
   /** Arayüzde hangi depoda olduğumuzu göstermek için */
-  readonly kind: "fs" | "blob";
+  readonly kind: "fs" | "git";
 };

@@ -233,7 +233,7 @@ function productFromForm(formData: FormData) {
  * Sunucu eyleminden fırlayan hata, Next tarafından yutulup yerine boş bir
  * "A server error occurred" ekranı konuyor — yani teşhis için gereken tek
  * bilgi kayboluyor. Depo katmanı zaten ne yapılması gerektiğini söyleyen
- * mesajlar üretiyor ("dosya sistemi salt okunur, Blob bağlayın" gibi);
+ * mesajlar üretiyor ("dosya sistemi salt okunur, depoyu bağlayın" gibi);
  * onları panelin içinde göstermek için yakalıyoruz.
  */
 function writeError(cause: unknown): string {
@@ -363,7 +363,14 @@ const ALLOWED = new Map([
   ["image/jpeg", "jpg"],
   ["image/png", "png"],
 ]);
-const MAX_BYTES = 6 * 1024 * 1024;
+/**
+ * Sunucuya ulaşan dosya sınırı.
+ *
+ * Fotoğraflar tarayıcıda küçültülüp webp'ye çevrildikten sonra geliyor
+ * (bkz. foto-kucult.ts), yani buraya normalde birkaç yüz kilobayt ulaşıyor.
+ * Bu sınır, küçültme herhangi bir sebeple atlandığında devreye giren ağ.
+ */
+const MAX_BYTES = 4 * 1024 * 1024;
 
 export async function uploadImageAction(
   _prev: { error?: string; added?: number } | null,
@@ -395,7 +402,7 @@ export async function uploadImageAction(
       continue;
     }
     if (file.size > MAX_BYTES) {
-      skipped.push(`${file.name} (6 MB'tan büyük)`);
+      skipped.push(`${file.name} (çok büyük — yeniden deneyin)`);
       continue;
     }
     // Dosya adı kullanıcıdan gelmiyor: renk + zaman damgası + sıra

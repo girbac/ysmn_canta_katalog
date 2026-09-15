@@ -58,7 +58,7 @@ const colorVariant = z.object({
    * Görsel kaynağı. Üç biçim kabul edilir:
    *  - "taba-1.webp"              → public/products/<slug>/ altından
    *  - "/products/x/taba-1.webp"  → köke göre
-   *  - "https://.../taba-1.webp"  → uzak depo (Vercel Blob)
+   *  - "https://.../taba-1.webp"  → tam adres (eski kayıtlar)
    */
   images: z.array(z.string().trim().min(1)).default([]),
 });

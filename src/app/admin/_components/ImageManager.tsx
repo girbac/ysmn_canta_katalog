@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useActionState } from "react";
+import { useActionState, useRef, useState, useTransition } from "react";
 import type { Product } from "@/data/types";
 import type { ColorDef } from "@/data/colors";
 import { resolveImageSource } from "@/lib/catalog/image-source";
 import { makeCoverAction, removeImageAction, uploadImageAction } from "../actions";
+import { fotoKucult } from "./foto-kucult";
 
 /**
  * Renk varyantı başına fotoğraf yönetimi.
@@ -44,7 +45,7 @@ export function ImageManager({
       <p className="mt-2 max-w-xl text-caption text-ink-60">
         Her renk için ayrı fotoğraf yükleyin. İlk fotoğraf kartlarda ve listede
         görünen kapak görselidir; fotoğraf olmayan renkler forma göre çizilmiş
-        silüetle gösterilir. Bir renge birden fazla fotoğraf seçebilirsiniz; ilki kapak olur, dilediğinizi “Kapak yap” ile öne alabilirsiniz. Dikey (3:4) çekim, webp/avif tercih edilir, dosya başına en fazla 6 MB.
+        silüetle gösterilir. Bir renge birden fazla fotoğraf seçebilirsiniz; ilki kapak olur, dilediğinizi “Kapak yap” ile öne alabilirsiniz. Dikey (3:4) çekim iyi sonuç verir. Boyutla uğraşmayın: fotoğraflar yüklenirken kendiliğinden küçültülüp webp&apos;ye çevriliyor, telefondan çektiğiniz gibi seçebilirsiniz.
       </p>
 
       {selected.length === 0 && (
@@ -155,8 +156,44 @@ function Uploader({ slug, color }: { slug: string; color: ColorDef }) {
     FormData
   >(uploadImageAction, null);
 
+  const formRef = useRef<HTMLFormElement>(null);
+  const [hazirlaniyor, setHazirlaniyor] = useState(0);
+  const [, gecis] = useTransition();
+
+  /**
+   * Gönderim ele alınıyor çünkü dosyalar yola çıkmadan önce küçültülüyor.
+   *
+   * Sunucuya gidebilecek gövde birkaç megabaytla sınırlı; telefon
+   * fotoğrafları bunu tek başına aşıyor ve yükleme anlaşılmaz bir hatayla
+   * düşüyordu. Küçültme tarayıcıda yapılınca hem sınır sorun olmaktan
+   * çıkıyor hem de mobil veriyle yükleme hızlanıyor.
+   */
+  async function gonder(olay: React.FormEvent<HTMLFormElement>) {
+    olay.preventDefault();
+    const form = olay.currentTarget;
+    const kutu = form.querySelector<HTMLInputElement>('input[type="file"]');
+    const secilen = Array.from(kutu?.files ?? []);
+    if (secilen.length === 0) return;
+
+    const veri = new FormData();
+    veri.set("slug", slug);
+    veri.set("renk", color.key);
+    veri.set("renkAdi", color.tr);
+    veri.set("renkAdiEn", color.en);
+    veri.set("renkHex", color.hex);
+
+    for (const [i, dosya] of secilen.entries()) {
+      setHazirlaniyor(i + 1);
+      veri.append("dosya", await fotoKucult(dosya));
+    }
+    setHazirlaniyor(0);
+    if (kutu) kutu.value = "";
+
+    gecis(() => action(veri));
+  }
+
   return (
-    <form action={action} className="mt-4 flex flex-wrap items-center gap-3">
+    <form ref={formRef} onSubmit={gonder} className="mt-4 flex flex-wrap items-center gap-3">
       <input type="hidden" name="slug" value={slug} />
       {/* Renk henüz kaydedilmemiş olabilir; yükleme onu ürüne kendisi
           ekliyor. Palet dışı renkler olduğu için adı ve tonu da gitmeli —
@@ -175,10 +212,14 @@ function Uploader({ slug, color }: { slug: string; color: ColorDef }) {
       />
       <button
         type="submit"
-        disabled={pending}
+        disabled={pending || hazirlaniyor > 0}
         className="rounded-card border border-line-strong bg-ground-2 px-4 py-2 text-caption font-medium text-ink disabled:opacity-50"
       >
-        {pending ? "Yükleniyor…" : "Yükle"}
+        {hazirlaniyor > 0
+          ? `Hazırlanıyor (${hazirlaniyor})…`
+          : pending
+          ? "Yükleniyor…"
+          : "Yükle"}
       </button>
       {state?.added ? (
         <span className="text-caption text-ink-60">

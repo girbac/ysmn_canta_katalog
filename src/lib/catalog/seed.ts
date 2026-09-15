@@ -4,7 +4,7 @@ import raw from "@/data/products.json";
 /**
  * Paketle gelen tohum katalog.
  *
- * Depoda henüz veri yokken (ilk dağıtım, boş Blob) katalog buradan
+ * Depoda henüz veri yokken (ilk dağıtım) katalog buradan
  * okunuyor ki site hiçbir zaman boş görünmesin. İlk admin kaydından
  * sonra depo devralıyor.
  */

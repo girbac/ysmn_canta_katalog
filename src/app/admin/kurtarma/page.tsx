@@ -30,7 +30,8 @@ export default async function KurtarmaSayfasi() {
   /* Üç bağımsız soru; biri patlarsa diğerleri yine görünsün. Kurtarma
      ekranının kendisi de arızaya dayanıklı olmalı. */
   const [suanki, ham, yedekler, gorseller] = await Promise.all([
-    store.read().then(
+    // Taze: kurtarma ekranı önbelleği değil, deponun o anki hâlini göstermeli
+    store.read(true).then(
       (l) => ({ ok: true as const, adet: l.length }),
       (e: unknown) => ({ ok: false as const, hata: (e as Error).message }),
     ),
