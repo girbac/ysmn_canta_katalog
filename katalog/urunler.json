@@ -96,38 +96,20 @@
   },
   {
     "slug": "liman-tote",
-    "code": "YSM-1002",
+    "code": "2098-D",
     "name": {
-      "tr": "Liman Tote",
-      "en": "Liman Tote"
+      "tr": "Hakiki Süet Deri Kadın Omuz Çantası",
+      "en": "Hakiki Süet Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
-    "form": "tote",
-    "material": "tokluk",
+    "form": "omuz",
+    "material": "deri",
     "dimensions": {
-      "w": 38,
-      "h": 32,
-      "d": 15
+      "w": 23,
+      "h": 15,
+      "d": 6
     },
     "colors": [
-      {
-        "key": "konyak",
-        "name": {
-          "tr": "Konyak",
-          "en": "Cognac"
-        },
-        "hex": "#8B4A2B",
-        "images": []
-      },
-      {
-        "key": "zeytin",
-        "name": {
-          "tr": "Zeytin",
-          "en": "Olive"
-        },
-        "hex": "#4A4F35",
-        "images": []
-      },
       {
         "key": "siyah",
         "name": {
@@ -155,7 +137,8 @@
         "en": "Hand-stitched detail"
       }
     ],
-    "strap": "sabit"
+    "strap": "ayarlanabilir",
+    "price": 4500
   },
   {
     "slug": "sahil-shopper",
