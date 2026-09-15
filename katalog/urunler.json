@@ -1876,38 +1876,20 @@
   },
   {
     "slug": "meclis-evrak",
-    "code": "YSM-8002",
+    "code": "2040-D",
     "name": {
-      "tr": "Meclis Evrak Çantası",
-      "en": "Meclis Briefcase"
+      "tr": "Hakiki Deri Unisex Sırt Çantası",
+      "en": "Hakiki Deri Unisex Sırt Çantası"
     },
     "segment": "erkek",
-    "form": "evrak",
+    "form": "sirt",
     "material": "deri",
     "dimensions": {
-      "w": 41,
-      "h": 31,
-      "d": 11
+      "w": 31,
+      "h": 38,
+      "d": 19
     },
     "colors": [
-      {
-        "key": "kahve",
-        "name": {
-          "tr": "Koyu Kahve",
-          "en": "Espresso"
-        },
-        "hex": "#40301F",
-        "images": []
-      },
-      {
-        "key": "antrasit",
-        "name": {
-          "tr": "Antrasit",
-          "en": "Charcoal"
-        },
-        "hex": "#35373B",
-        "images": []
-      },
       {
         "key": "siyah",
         "name": {
@@ -1949,7 +1931,8 @@
         "en": "Protective feet"
       }
     ],
-    "strap": "ayarlanabilir"
+    "strap": "ayarlanabilir",
+    "price": 4500
   },
   {
     "slug": "mimar-evrak",
