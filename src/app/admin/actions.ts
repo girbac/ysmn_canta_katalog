@@ -100,8 +100,37 @@ function slugFromCode(code: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
+/**
+ * Kutuya yazılmış sayıyı okur — Türkçe yazıldığı hâliyle.
+ *
+ * "1.500" Türkçede bin beş yüz demek; JavaScript'in Number()'ı onu 1.5
+ * okuyor, tarayıcının number kutusu ise hiç kabul etmiyordu. Sonuç:
+ * fiyatı alışıldığı gibi yazan kullanıcı Kaydet'e basıyor ve hiçbir şey
+ * olmuyordu — hata bile görünmüyordu.
+ *
+ * Kural basit: üçerli gruplar hâlinde tekrarlanan ayıraç binliktir
+ * ("1.500" ve "1,500" → 1500), tek başına duran ayıraç ondalıktır
+ * ("1500,50" → 1500.5). İkisi birden varsa sondaki ondalıktır
+ * ("1.500,50" → 1500.5). Para birimi ve boşluklar atılıyor.
+ */
 function num(value: FormDataEntryValue | null): number {
-  return Number(String(value ?? "").replace(",", "."));
+  const ham = String(value ?? "").trim().replace(/[^\d.,-]/g, "");
+  if (!ham) return NaN;
+
+  const nokta = ham.lastIndexOf(".");
+  const virgul = ham.lastIndexOf(",");
+
+  if (nokta !== -1 && virgul !== -1) {
+    const ondalik = nokta > virgul ? "." : ",";
+    const binlik = ondalik === "." ? "," : ".";
+    return Number(ham.split(binlik).join("").replace(ondalik, "."));
+  }
+
+  const ayirac = nokta !== -1 ? "." : virgul !== -1 ? "," : "";
+  if (!ayirac) return Number(ham);
+
+  const binlikGibi = new RegExp(`^-?\\d{1,3}(\\${ayirac}\\d{3})+$`).test(ham);
+  return Number(binlikGibi ? ham.split(ayirac).join("") : ham.replace(ayirac, "."));
 }
 
 /**
@@ -134,6 +163,8 @@ function productFromForm(formData: FormData) {
   })();
 
   const strap = String(formData.get("aski") || "");
+  // Boş fiyat "fiyat yok" demek; dolu ama okunamayan fiyat ise hata —
+  // sessizce yok saymak, girilen fiyatı buharlaştırmak olurdu.
   const priceRaw = String(formData.get("fiyat") || "").trim();
 
   const code = String(formData.get("kod") || "").trim();
@@ -179,10 +210,19 @@ function productFromForm(formData: FormData) {
       // korunuyor (bkz. saveProduct).
       images: [],
     })),
+    /**
+     * Fiyatın YAZILDIĞI hâli de geri dönüyor.
+     *
+     * Hata durumunda form bu değerleri geri basıyor; sayıya çevrilmiş hâli
+     * okunamadıysa NaN oluyor ve kutuda "NaN" yazıyordu — kullanıcının
+     * yazdığı metin de kaybolmuş oluyordu. Şema bu alanı tanımadığı için
+     * doğrulamada sessizce düşüyor, katalog verisine karışmıyor.
+     */
+    priceRaw,
     features: parseFeatures(String(formData.get("detaylar") || "")),
     ...(strap ? { strap } : {}),
     ...(formData.get("yeni") ? { isNew: true } : {}),
-    ...(priceRaw ? { price: Number(priceRaw) } : {}),
+    ...(priceRaw ? { price: num(priceRaw) } : {}),
   };
 }
 

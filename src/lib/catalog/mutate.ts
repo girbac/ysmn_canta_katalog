@@ -138,9 +138,16 @@ export async function deleteProduct(slug: string): Promise<void> {
 /**
  * Bir renk varyantına bir ya da daha fazla görsel ekler.
  *
- * Dosyalar tek seferde işleniyor: depo bir kez okunuyor, hepsi yüklendikten
- * sonra bir kez yazılıyor. Dosya başına ayrı oku-yaz yapılsaydı aynı anda
- * giden yüklemeler birbirinin sonucunu eziyordu.
+ * Dosyalar tek seferde işleniyor: hepsi yüklendikten sonra katalog bir kez
+ * yazılıyor. Dosya başına ayrı oku-yaz yapılsaydı aynı anda giden
+ * yüklemeler birbirinin sonucunu eziyordu.
+ *
+ * SIRA ÖNEMLİ: önce dosyalar yükleniyor, katalog EN SON okunup hemen
+ * yazılıyor. Eskiden katalog en başta okunuyordu; fotoğraflar yüklenirken
+ * geçen sürede (canlıda her dosya ayrı bir ağ yüklemesi, saniyeler sürüyor)
+ * kullanıcı Kaydet'e basarsa, yükleme sonunda o eski katalogu geri yazıyor
+ * ve az önce kaydedilen fiyat, isim, ölçü ne varsa siliniyordu. Artık okuma
+ * ile yazma arasında yavaş hiçbir iş yok.
  */
 export async function addImages(params: {
   slug: string;
@@ -153,6 +160,27 @@ export async function addImages(params: {
   if (params.files.length === 0) return { ok: false, error: "Dosya seçilmedi." };
 
   const store = getStore();
+
+  // Ürün gerçekten var mı? Megabaytlarca dosyayı boşuna yüklememek için
+  // önden bakılıyor; asıl okuma aşağıda, yazmadan hemen önce.
+  if (!(await store.read()).some((p) => p.slug === params.slug)) {
+    return { ok: false, error: "Ürün bulunamadı." };
+  }
+
+  // Yavaş kısım: dosyaların kendisi.
+  const sources: string[] = [];
+  for (const file of params.files) {
+    sources.push(
+      await store.putImage({
+        slug: params.slug,
+        filename: file.filename,
+        contentType: file.contentType,
+        body: file.body,
+      }),
+    );
+  }
+
+  // Katalog artık okunuyor — ve hemen aşağıda yazılıyor.
   const list = await store.read();
   const index = list.findIndex((p) => p.slug === params.slug);
   if (index === -1) return { ok: false, error: "Ürün bulunamadı." };
@@ -190,18 +218,6 @@ export async function addImages(params: {
     colors = [...colors, { key: params.colorKey, name: ad, hex: ton, images: [] }];
   }
   const colorIndex = colors.findIndex((c) => c.key === params.colorKey);
-
-  const sources: string[] = [];
-  for (const file of params.files) {
-    sources.push(
-      await store.putImage({
-        slug: params.slug,
-        filename: file.filename,
-        contentType: file.contentType,
-        body: file.body,
-      }),
-    );
-  }
 
   const next: StoredProduct[] = [...list];
   next[index] = {

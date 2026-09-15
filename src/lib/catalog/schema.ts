@@ -63,23 +63,35 @@ const colorVariant = z.object({
   images: z.array(z.string().trim().min(1)).default([]),
 });
 
+/**
+ * Ölçü kutusu. Mesajlar Türkçe, çünkü bu şema aynı zamanda panelin
+ * doğrulayıcısı: kullanıcının okuyacağı metin buradan çıkıyor. Zod'un
+ * varsayılan İngilizce cümleleri ("Invalid input: expected number,
+ * received NaN") panelde hiçbir şey anlatmıyordu.
+ */
+const olcu = (enFazla: number) =>
+  z
+    .number({ error: "Ölçüyü rakamla yazın (ör. 30)" })
+    .int("Ölçü tam sayı olmalı")
+    .min(1, "Ölçü en az 1 cm olmalı")
+    .max(enFazla, `Ölçü en fazla ${enFazla} cm olabilir`);
+
 export const productSchema = z.object({
   slug,
-  code: z.string().trim().min(1).max(40),
+  code: z.string().trim().min(1, "Katalog kodu zorunlu").max(40, "Katalog kodu en fazla 40 karakter"),
   name: localized,
   segment: z.enum(segments),
   form: z.enum(forms),
   material: z.enum(materialKeys as [string, ...string[]]),
-  dimensions: z.object({
-    w: z.number().int().min(1).max(200),
-    h: z.number().int().min(1).max(200),
-    d: z.number().int().min(1).max(100),
-  }),
+  dimensions: z.object({ w: olcu(200), h: olcu(200), d: olcu(100) }),
   colors: z.array(colorVariant).min(1, "En az bir renk gerekli"),
   features: z.array(localized).default([]),
   strap: z.enum(straps).optional(),
   isNew: z.boolean().optional(),
-  price: z.number().min(0).optional(),
+  price: z
+    .number({ error: "Fiyatı rakamla yazın (ör. 1500)" })
+    .min(0, "Fiyat eksi olamaz")
+    .optional(),
 });
 
 export const catalogSchema = z.array(productSchema);

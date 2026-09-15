@@ -90,7 +90,20 @@ export function ProductForm({
     .join("\n");
 
   return (
-    <form id={PRODUCT_FORM_ID} action={action} className="mt-8 max-w-3xl">
+    /*
+     * noValidate bilinçli.
+     *
+     * Tarayıcının kendi doğrulaması, geçersiz bir kutu bulduğunda formu
+     * hiç göndermiyor ve uyarıyı o kutunun yanında küçük bir baloncukla
+     * gösteriyor. Kaydet düğmesi sayfanın en altında yapışkan durduğu,
+     * kutu ise metrelerce yukarıda kaldığı için kullanıcının gördüğü tek
+     * şey şuydu: "Kaydet'e bastım, hiçbir şey olmadı."
+     *
+     * Doğrulama artık tek yerde — şemada. Hatalar Türkçe, kendi
+     * kutularının altında ve kaydetme çubuğunda özetli çıkıyor;
+     * ProductEditor da ilk hataya kaydırıyor.
+     */
+    <form id={PRODUCT_FORM_ID} action={action} noValidate className="mt-8 max-w-3xl">
       {product && <input type="hidden" name="orijinalSlug" value={product.slug} />}
 
       {errors._ && <Alert>{errors._}</Alert>}
@@ -200,9 +213,24 @@ export function ProductForm({
             className="h-4 w-4 accent-[var(--ink)]" />
           &quot;Yeni&quot; etiketi göster — kartlarda rozet çıkar, koleksiyonda &quot;Önce yeniler&quot; sıralamasında öne geçer
         </label>
-        <Field label="Fiyat (₺)" hint="Kuruşsuz tam sayı. Kartta, ürün sayfasında, seçkide ve PDF'te görünür. Boş bırakılırsa o ürün için hiç fiyat gösterilmez.">
-          <input name="fiyat" type="number" min={0} step="1"
-            defaultValue={v?.price ?? ""} className={input} />
+        <Field
+          label="Fiyat (₺)"
+          error={errors.price}
+          hint="Nasıl yazarsanız yazın: 1500, 1.500, 1.500,50 — hepsi anlaşılır. Kartta, ürün sayfasında, seçkide ve PDF'te görünür. Boş bırakılırsa o ürün için hiç fiyat gösterilmez."
+        >
+          {/* Sayı kutusu değil: number kutusu "1.500" yazımını geçersiz
+              sayıp formu hiç göndermiyordu. Yazılan metin olduğu gibi
+              alınıp sunucuda okunuyor (bkz. actions.ts → num). */}
+          <input
+            name="fiyat"
+            type="text"
+            inputMode="decimal"
+            /* Hatadan sonra yazılan metin aynen geri gelir; okunamayan bir
+               fiyat sayıya çevrilince NaN oluyor ve kutuda "NaN" yazıyordu. */
+            defaultValue={draft ? draft.priceRaw : (product?.price ?? "")}
+            placeholder="1500"
+            className={input}
+          />
         </Field>
       </Section>
 

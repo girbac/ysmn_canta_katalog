@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import type { Product } from "@/data/types";
 import { orderColors, type ColorDef } from "@/data/colors";
 import { saveProductAction, type SaveState } from "../actions";
@@ -43,6 +43,24 @@ export function ProductEditor({ product }: { product?: Product }) {
     saveProductAction,
     null,
   );
+
+  /**
+   * Kaydetme hata verdiyse ilk hatanın yanına git.
+   *
+   * Form uzun, Kaydet ise en altta yapışkan duruyor. Hata mesajı ekranın
+   * dışında kaldığında kullanıcı neyin yanlış olduğunu göremiyor, aynı
+   * şeyi tekrar deneyip duruyordu.
+   */
+  useEffect(() => {
+    if (!state || state.ok) return;
+    // Yalnızca FORMUN içindeki hatalar: sayfanın başındaki depo uyarısı da
+    // bir uyarı ve onu hedef almak kullanıcıyı en tepeye, alakasız bir
+    // kutunun yanına götürüyordu.
+    document
+      .getElementById(PRODUCT_FORM_ID)
+      ?.querySelector('[role="alert"]')
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [state]);
 
   /** Palete tıklamak seçer/kaldırır; aynı anahtar iki kez giremez */
   function toggle(color: ColorDef) {
