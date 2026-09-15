@@ -2014,18 +2014,18 @@
   },
   {
     "slug": "borsa-evrak",
-    "code": "YSM-8004",
+    "code": "2018-D",
     "name": {
-      "tr": "Borsa Evrak Çantası",
-      "en": "Borsa Briefcase"
+      "tr": "Hakiki Deri Seyahat Çantası",
+      "en": "Hakiki Deri Seyahat Çantası"
     },
     "segment": "erkek",
-    "form": "evrak",
-    "material": "saffiano",
+    "form": "postaci",
+    "material": "deri",
     "dimensions": {
-      "w": 42,
-      "h": 31,
-      "d": 12
+      "w": 50,
+      "h": 32,
+      "d": 25
     },
     "colors": [
       {
