@@ -237,14 +237,14 @@
   },
   {
     "slug": "asma-tote",
-    "code": "2098-S",
+    "code": "2097-S",
     "name": {
       "tr": "Hakiki Deri Kadın Omuz Çantası",
       "en": "Hakiki Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
-    "form": "omuz",
-    "material": "suet",
+    "form": "tote",
+    "material": "deri",
     "dimensions": {
       "w": 34,
       "h": 29,
