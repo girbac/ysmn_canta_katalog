@@ -237,29 +237,20 @@
   },
   {
     "slug": "asma-tote",
-    "code": "YSM-1004",
+    "code": "2098-S",
     "name": {
-      "tr": "Asma Tote",
-      "en": "Asma Tote"
+      "tr": "Hakiki Deri Kadın Omuz Çantası",
+      "en": "Hakiki Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
-    "form": "tote",
-    "material": "deri",
+    "form": "omuz",
+    "material": "suet",
     "dimensions": {
       "w": 34,
       "h": 29,
       "d": 12
     },
     "colors": [
-      {
-        "key": "bordo",
-        "name": {
-          "tr": "Bordo",
-          "en": "Burgundy"
-        },
-        "hex": "#5C1F2B",
-        "images": []
-      },
       {
         "key": "siyah",
         "name": {
