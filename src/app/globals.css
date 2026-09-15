@@ -28,18 +28,32 @@
 }
 
 [data-mode="erkek"] {
-  --ground: #0d0d0d;
+  /* Taban artık siyah değil, orta gri. Siyah zemin evrak tarafını
+     kapalı bir odaya çeviriyordu; gri aynı "diğer dünya" hissini
+     veriyor ama sayfa nefes alıyor. */
+  --ground: #5c5a57;
   /* Kart yüzeyi: siyah deri (#14110F) zeminden ayrışsın diye
      tabandan belirgin şekilde yükseltildi — Cosmos'ta derinlik
      gölgeyle değil yalnızca yüzey kontrastıyla anlatılıyor. */
-  --ground-2: #232221;
-  --ground-3: #232221;
-  --ink: #f7f5f3;
-  --ink-60: #9a9796;
-  --ink-40: #6e6a69;
-  --accent: #f7f5f3;
-  --line: rgb(247 245 243 / 0.14);
-  --line-strong: rgb(247 245 243 / 0.2);
+  --ground-2: #656260;
+  --ground-3: #656260;
+  /*
+   * Yazı tonları zeminle birlikte açıldı.
+   *
+   * Eski griler (#9a9796, #6e6a69) siyah üstünde okunuyordu; orta gri
+   * üstünde ikincil metin 2.4:1'e düşüyor, yani neredeyse kayboluyordu.
+   * Bu değerler yeni zemine göre yeniden seçildi.
+   *
+   * Orta gride kullanılabilir aralık daraldığı için kart yüzeyi de
+   * ölçüldü ve biraz kısıldı: hem yazılar (ikincil metin 4.5:1) hem de
+   * siyah derinin zeminden ayrışması (3.1:1) aynı anda ayakta kalsın.
+   */
+  --ink: #faf9f8;
+  --ink-60: #e0ddda;
+  --ink-40: #c2bfbc;
+  --accent: #faf9f8;
+  --line: rgb(250 249 248 / 0.22);
+  --line-strong: rgb(250 249 248 / 0.32);
 }
 
 @theme inline {
