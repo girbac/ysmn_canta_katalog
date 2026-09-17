@@ -38,8 +38,8 @@ function revalidateCatalog(slug?: string) {
      * değiştirilen renk ve fiyat PDF'te ESKİ hâliyle basılıyordu.
      * Müşteriye giden belge bu; en son tazelenmesi gereken yer burası.
      */
-    revalidatePath(`/${locale}/secki`);
-    revalidatePath(`/${locale}/secki/yazdir`);
+    revalidatePath(`/${locale}/sepet`);
+    revalidatePath(`/${locale}/sepet/yazdir`);
   }
   // Yeni ürün ekleniyorsa henüz üretilmemiş yollar da kalıbıyla işaretlenir
   revalidatePath("/[locale]/urun/[slug]", "page");

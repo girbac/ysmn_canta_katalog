@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type { Locale } from "@/data/types";
 import { useHydrated, useSelection } from "@/store/selection";
 import { interpolate } from "@/lib/utils";
 
 /**
- * Sağ altta biriken seçki. Boşken hiç görünmez; ilk ürün eklendiğinde
+ * Sağ altta biriken sepet. Boşken hiç görünmez; ilk ürün eklendiğinde
  * yumuşakça belirir. Katalogu pasif bir vitrinden aktif bir araca çeviren şey bu.
  */
 export function SelectionDock({
@@ -20,7 +21,11 @@ export function SelectionDock({
   const hydrated = useHydrated();
   const count = useSelection((s) => s.items.length);
   const reduce = useReducedMotion();
-  const visible = hydrated && count > 0;
+  /* Sepetin kendi sayfasındayken bu düğme hem gereksiz hem de telefonda
+     satırların fiyatını örtüyor. */
+  const pathname = usePathname();
+  const sepetteyiz = pathname === `/${locale}/sepet`;
+  const visible = hydrated && count > 0 && !sepetteyiz;
 
   return (
     <AnimatePresence>
@@ -33,7 +38,7 @@ export function SelectionDock({
           className="no-print fixed bottom-5 right-5 z-40"
         >
           <Link
-            href={`/${locale}/secki`}
+            href={`/${locale}/sepet`}
             className="flex items-center gap-3 rounded-card bg-ink py-4 pl-6 pr-4 text-ground transition-transform duration-300 hover:scale-[1.02]"
           >
             <span className="text-body font-medium">{labels.dockLabel}</span>

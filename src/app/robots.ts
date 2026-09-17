@@ -24,8 +24,8 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: [
         // Seçki kişiye özel ve paylaşım bağlantılı
-        "/tr/secki",
-        "/en/secki",
+        "/tr/sepet",
+        "/en/sepet",
         // Yönetim paneli
         "/admin",
       ],

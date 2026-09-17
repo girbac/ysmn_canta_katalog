@@ -50,6 +50,20 @@ export function ProductDetail({
   }
 
   /**
+   * Bir sonraki / bir önceki fotoğraf.
+   *
+   * Uçlarda başa ve sona sarıyor: iki fotoğraflı bir üründe okun "artık
+   * çalışmaması" için bir sebep yok, dönmesi daha doğal.
+   */
+  const fotoSayisi = color.images.length;
+  function gezin(yon: -1 | 1, olay: React.MouseEvent) {
+    // Büyüteç bu alanın tıklamasını dinliyor; ok ona ait değil
+    olay.stopPropagation();
+    if (fotoSayisi < 2) return;
+    selectImage((imageIndex + yon + fotoSayisi) % fotoSayisi);
+  }
+
+  /**
    * Büyüteç: imlecin görsel içindeki yüzdelik konumu, yakınlaşmanın
    * merkezi oluyor. Durum React'te tutulmuyor — her fare hareketinde
    * yeniden render etmek gereksiz; doğrudan CSS değişkeni yazılıyor.
@@ -90,7 +104,7 @@ export function ProductDetail({
           transition={{ duration: 0.35 }}
         >
           <div
-            className={cx("zoom-alan", zoomAcik && "zoom-acik")}
+            className={cx("group/foto relative", "zoom-alan", zoomAcik && "zoom-acik")}
             onMouseMove={zoomOdagi}
             onClick={onZoomTap}
           >
@@ -102,6 +116,33 @@ export function ProductDetail({
               sizes="(max-width: 1024px) 100vw, 50vw"
               priority
             />
+
+            {/*
+              Sağ/sol okları.
+              Diğer fotoğrafa geçmek için sayfayı aşağı kaydırıp küçük
+              karelere ulaşmak gerekiyordu; asıl görselin üstünde durmaları
+              o yolu ortadan kaldırıyor.
+
+              Bilerek silik: katalog görselinin önüne geçmemeliler. Masaüstünde
+              yalnızca imleç görselin üzerindeyken beliriyorlar, dokunmatikte
+              (hover yok) hep duruyorlar ama düşük belirginlikte.
+            */}
+            {fotoSayisi > 1 && (
+              <>
+                <FotoOk yon={-1} etiket={t.product.previousPhoto} onBas={gezin} />
+                <FotoOk yon={1} etiket={t.product.nextPhoto} onBas={gezin} />
+              </>
+            )}
+
+            {/* Kaçıncı fotoğraftayız — okların ne yaptığını sessizce söyler */}
+            {fotoSayisi > 1 && (
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-card bg-ink/45 px-2.5 py-1 text-caption tabular-nums text-ground opacity-0 transition-opacity duration-200 group-hover/foto:opacity-100 max-md:opacity-70"
+              >
+                {imageIndex + 1} / {fotoSayisi}
+              </span>
+            )}
           </div>
         </motion.div>
 
@@ -285,5 +326,49 @@ export function ProductDetail({
         />
       </div>
     </article>
+  );
+}
+
+/**
+ * Görselin üstündeki gezinme oku.
+ *
+ * Belli belirsiz duruyor: yarı saydam bir daire, imleç görselin üzerine
+ * gelince beliriyor. Dokunmatikte hover diye bir şey olmadığı için orada
+ * hep görünür ama soluk.
+ */
+function FotoOk({
+  yon,
+  etiket,
+  onBas,
+}: {
+  yon: -1 | 1;
+  etiket: string;
+  onBas: (yon: -1 | 1, olay: React.MouseEvent) => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={(olay) => onBas(yon, olay)}
+      aria-label={etiket}
+      className={cx(
+        "absolute top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full",
+        "bg-ground/70 text-ink backdrop-blur-sm transition-opacity duration-200",
+        "hover:bg-ground focus-visible:opacity-100",
+        // Masaüstünde gizli, görselin üzerine gelince beliriyor;
+        // dokunmatikte hover olmadığı için soluk hâlde hep duruyor.
+        "opacity-0 group-hover/foto:opacity-100 max-md:opacity-60",
+        yon === -1 ? "left-3" : "right-3",
+      )}
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+          d={yon === -1 ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"}
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
   );
 }

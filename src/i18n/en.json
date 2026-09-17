@@ -5,7 +5,7 @@
     "women": "Women",
     "men": "Men",
     "about": "Atelier",
-    "selection": "My Selection",
+    "selection": "My Cart",
     "menu": "Menu",
     "close": "Close",
     "skipToContent": "Skip to content"
@@ -44,7 +44,7 @@
       }
     ],
     "ctaTitle": "Keep what you like.",
-    "ctaLead": "Add bags to your selection as you browse. When you're done, send it to us on WhatsApp in one tap or download it as a PDF.",
+    "ctaLead": "Add bags to your cart as you browse. When you're done, send it to us on WhatsApp in one tap or download it as a PDF.",
     "ctaButton": "Browse the collection"
   },
   "collection": {
@@ -81,9 +81,9 @@
     "scaleA4": "A4 sheet",
     "scalePhone": "Phone",
     "scalePerson": "170 cm",
-    "add": "Add to selection",
-    "added": "In your selection",
-    "remove": "Remove from selection",
+    "add": "Add to cart",
+    "added": "In your cart",
+    "remove": "Remove from cart",
     "new": "New",
     "backToCollection": "Back to collection",
     "related": "Similar pieces",
@@ -94,37 +94,42 @@
       "sabit": "Fixed handles",
       "yok": "No strap"
     },
-    "price": "Price"
+    "price": "Price",
+    "nextPhoto": "Next photo",
+    "previousPhoto": "Previous photo"
   },
   "selection": {
-    "title": "My Selection",
+    "title": "My Cart",
     "lead": "The bags you liked. Add quantities and send them all at once.",
-    "empty": "Your selection is empty.",
+    "empty": "Your cart is empty.",
     "emptyLead": "Tap the + on any bag while browsing the collection.",
     "browse": "Browse the collection",
-    "dockLabel": "Selection",
+    "dockLabel": "Cart",
     "itemCount": "{n} items",
     "quantity": "Qty",
     "note": "Note",
     "notePlaceholder": "Delivery date, special request, note...",
-    "clearAll": "Clear selection",
-    "clearConfirm": "This will remove every item from your selection. Are you sure?",
+    "clearAll": "Empty cart",
+    "clearConfirm": "This will remove every item from your cart. Are you sure?",
     "sendWhatsApp": "Send on WhatsApp",
     "share": "Copy link",
     "shared": "Copied",
     "print": "Download as PDF",
     "printHint": "Choose \"Save as PDF\" in the print dialog.",
-    "sharedTitle": "Shared selection",
-    "sharedLead": "This selection was shared with you. You can copy it into your own.",
-    "importShared": "Copy into my selection",
+    "sharedTitle": "Shared cart",
+    "sharedLead": "This cart was shared with you. You can copy it into your own.",
+    "importShared": "Copy into my cart",
     "whatsappIntro": "Hello, I'm interested in the following bags from the catalogue:",
     "whatsappOutro": "Could you send me more information?",
-    "printTitle": "Selection",
+    "printTitle": "Cart",
     "printDate": "Date",
     "printBack": "Go back",
     "printNow": "Print",
     "total": "Total",
-    "totalPartial": "{n} item(s) have no price — not included in the total."
+    "totalPartial": "{n} item(s) have no price — not included in the total.",
+    "addNote": "Add note",
+    "subtotal": "Subtotal",
+    "modelCount": "{n} models"
   },
   "about": {
     "title": "Atelier",
@@ -168,6 +173,6 @@
     "homeDescription": "Handcrafted women's and men's leather bags from our Istanbul atelier. Totes, shoulder bags, baguettes, clutches, backpacks and briefcases.",
     "collectionTitle": "Collection",
     "collectionDescription": "Every model — filter by colour, form and material.",
-    "selectionTitle": "My Selection"
+    "selectionTitle": "My Cart"
   }
 }

@@ -44,6 +44,21 @@ export default async function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // ── Eski sepet adresi: /tr/secki → /tr/sepet ──
+  //
+  // Sayfanın adı "Seçkim"di, "Sepetim" oldu ve adres de onunla birlikte
+  // değişti. Paylaşılmış bağlantılar (sepet, adresin içine kodlanarak
+  // paylaşılabiliyor) kırılmasın diye eski adres yeniye yollanıyor;
+  // sorgu dizesi olduğu gibi taşınıyor.
+  const eskiSepet = pathname.match(
+    new RegExp(`^/(${locales.join("|")})/secki(/.*)?$`),
+  );
+  if (eskiSepet) {
+    const url = request.nextUrl.clone();
+    url.pathname = `/${eskiSepet[1]}/sepet${eskiSepet[2] ?? ""}`;
+    return NextResponse.redirect(url);
+  }
+
   // ── Admin ──
   if (pathname === "/admin" || pathname.startsWith("/admin/")) {
     const config = getAdminConfig();

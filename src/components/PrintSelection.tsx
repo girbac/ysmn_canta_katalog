@@ -91,7 +91,7 @@ export function PrintSelection({
         {/* Ekranda görünen, baskıya girmeyen kontroller */}
         <div className="no-print mb-10 flex flex-wrap items-center gap-4">
           <Link
-            href={`/${locale}/secki`}
+            href={`/${locale}/sepet`}
             className="border-b border-line-strong pb-1 text-body text-ink-60 hover:text-ink"
           >
             ← {t.selection.printBack}

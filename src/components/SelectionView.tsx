@@ -61,6 +61,14 @@ export function SelectionView({
   const items = useSelection((s) => s.items);
   const { remove, setQty, setNote, clear, merge } = useSelection();
   const [copied, setCopied] = useState(false);
+  /**
+   * Not kutusu açık olan satırlar.
+   *
+   * Her renge boş bir not kutusu koymak sepeti bir forma çeviriyordu.
+   * Kutu artık istenince açılıyor; dolu bir not zaten kendiliğinden
+   * görünüyor (bkz. notAcik).
+   */
+  const [acikNotlar, setAcikNotlar] = useState<Set<string>>(new Set());
 
   const shared = useMemo(
     () => decodeSelection(sharedRaw, (slug) => catalog.some((p) => p.slug === slug)),
@@ -84,7 +92,24 @@ export function SelectionView({
       Boolean(r.product),
     );
 
-  const shareUrl = `${siteUrl}/${locale}/secki?s=${encodeSelection(items)}`;
+  /**
+   * Satırları modele göre grupla.
+   *
+   * Sepette bir kayıt "ürün + renk" demek; aynı çantanın üç rengi üç ayrı
+   * kayıt. Ekranda ise bunlar tek bir çantanın üç rengi olarak okunmalı,
+   * üç ayrı ürün olarak değil.
+   *
+   * Sıra, ürünün sepete ilk giren renginin sırası: kullanıcı neyi önce
+   * eklediyse o üstte kalıyor, gruplama sırayı karıştırmıyor.
+   */
+  const gruplar: Array<{ product: Product; satirlar: typeof rows }> = [];
+  for (const satir of rows) {
+    const mevcut = gruplar.find((g) => g.product.slug === satir.product.slug);
+    if (mevcut) mevcut.satirlar.push(satir);
+    else gruplar.push({ product: satir.product, satirlar: [satir] });
+  }
+
+  const shareUrl = `${siteUrl}/${locale}/sepet?s=${encodeSelection(items)}`;
 
   const sum = selectionTotal(
     rows.map(({ item, product }) => ({ price: product.price, qty: item.qty })),
@@ -149,7 +174,7 @@ export function SelectionView({
             type="button"
             onClick={() => {
               merge(shared);
-              router.replace(`/${locale}/secki`);
+              router.replace(`/${locale}/sepet`);
             }}
             className="mt-5 rounded-card bg-ink px-6 py-4 text-body font-medium text-ground"
           >
@@ -175,102 +200,158 @@ export function SelectionView({
         <>
           <p className="text-caption text-ink-40">
             {interpolate(t.selection.itemCount, { n: rows.length })}
+            {gruplar.length !== rows.length &&
+              ` · ${interpolate(t.selection.modelCount, { n: gruplar.length })}`}
           </p>
 
-          <ul className="mt-8 divide-y divide-[var(--line)] border-y border-line">
-            {rows.map(({ item, product }) => {
-              const color = product.colors.find((c) => c.key === item.color) ?? product.colors[0];
-              const colorIndex = product.colors.findIndex((c) => c.key === color.key);
+          {/*
+            Aynı modelin renkleri tek kartta.
+
+            Eskiden her renk ayrı bir satırdı ve her satır ürünün adını,
+            kodunu, formunu, malzemesini, ölçüsünü ve bir not kutusunu
+            baştan yazıyordu. Üç renkli bir çanta, aynı altı bilgiyi üç kez
+            tekrarlayan bir duvara dönüşüyordu. Model künyesi artık bir kez
+            yazılıyor; altında yalnızca renkler, adetleri ve fiyatları
+            duruyor — göz "aynı çantanın üç rengi" diye okuyor.
+          */}
+          <ul className="mt-8 space-y-5">
+            {gruplar.map(({ product, satirlar }) => {
+              const araToplam = selectionTotal(
+                satirlar.map(({ item }) => ({ price: product.price, qty: item.qty })),
+              );
 
               return (
                 <li
-                  key={itemKey(item.slug, item.color)}
-                  className="grid gap-5 py-7 sm:grid-cols-[110px_1fr_auto]"
+                  key={product.slug}
+                  className="rounded-card border border-line bg-ground-2 p-5 sm:p-6"
                 >
-                  <Link href={`/${locale}/urun/${product.slug}`} className="block w-[110px]">
-                    <ProductMedia
-                      product={product}
-                      colorIndex={Math.max(0, colorIndex)}
-                      locale={locale}
-                      sizes="110px"
-                    />
-                  </Link>
-
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-baseline gap-x-3">
-                      <h2 className="text-subheading text-ink">
-                        <Link href={`/${locale}/urun/${product.slug}`} className="hover:text-ink-60">
-                          {product.name[locale]}
-                        </Link>
-                      </h2>
-                      {product.name[locale] !== product.code && (
-                        <span className="text-caption text-ink-40 tabular-nums">
-                          {product.code}
-                        </span>
-                      )}
-                    </div>
-
-                    <p className="mt-1 text-caption text-ink-60">
-                      {t.forms[product.form]} · {materialName(product.material)[locale]} ·{" "}
-                      {formatDimensions(product.dimensions, t.common.cm)}
-                    </p>
-
-                    {/* Renk seçkiye eklendiği anda sabitlenir — burada
-                        değiştirilmez, yalnızca gösterilir. Başka bir renk
-                        isteniyorsa ürün sayfasından ayrı satır olarak eklenir. */}
-                    <p className="mt-3 flex items-center gap-2 text-caption text-ink">
-                      <span
-                        aria-hidden="true"
-                        className="h-4 w-4 shrink-0 rounded-full border border-line"
-                        style={{ backgroundColor: color.hex }}
-                      />
-                      {color.name[locale]}
-                    </p>
-
-                    <label className="mt-4 block">
-                      <span className="sr-only">{t.selection.note}</span>
-                      <input
-                        type="text"
-                        value={item.note ?? ""}
-                        onChange={(e) => setNote(item.slug, item.color, e.target.value)}
-                        placeholder={t.selection.notePlaceholder}
-                        className="w-full max-w-md border-b border-line bg-transparent py-2 text-body text-ink placeholder:text-ink-40 focus:border-ink focus:outline-none"
-                      />
-                    </label>
-                  </div>
-
-                  <div className="flex items-start gap-4 sm:flex-col sm:items-end">
-                    {typeof product.price === "number" && (
-                      <div className="sm:text-right">
-                        <p className="text-body text-ink tabular-nums">
-                          {formatPrice(product.price * item.qty, locale)}
-                        </p>
-                        {item.qty > 1 && (
-                          <p className="mt-0.5 text-caption text-ink-40 tabular-nums">
-                            {formatPrice(product.price, locale)} × {item.qty}
-                          </p>
-                        )}
-                      </div>
+                  {/* Model künyesi — bir kez */}
+                  <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    <h2 className="text-subheading text-ink">
+                      <Link href={`/${locale}/urun/${product.slug}`} className="hover:text-ink-60">
+                        {product.name[locale]}
+                      </Link>
+                    </h2>
+                    {product.name[locale] !== product.code && (
+                      <span className="text-caption tabular-nums text-ink-40">
+                        {product.code}
+                      </span>
                     )}
-                    <label className="flex items-center gap-2">
-                      <span className="text-caption text-ink-40">{t.selection.quantity}</span>
-                      <input
-                        type="number"
-                        min={1}
-                        max={999}
-                        value={item.qty}
-                        onChange={(e) => setQty(item.slug, item.color, Number(e.target.value))}
-                        className="w-16 rounded-card border border-line-strong bg-ground-2 px-2 py-2 text-center text-body tabular-nums text-ink focus:border-ink focus:outline-none"
-                      />
-                    </label>
-                    <button
-                      type="button"
-                      onClick={() => remove(item.slug, item.color)}
-                      className="text-caption text-ink-40 underline-offset-4 hover:text-ink hover:underline"
-                    >
-                      {t.product.remove}
-                    </button>
                   </div>
+                  <p className="mt-1 text-caption text-ink-60">
+                    {t.forms[product.form]} · {materialName(product.material)[locale]} ·{" "}
+                    {formatDimensions(product.dimensions, t.common.cm)}
+                  </p>
+
+                  {/* Renkler — yan yana değil alt alta ama tek künye altında:
+                      yan yana dizmek dar ekranda okunmaz hâle geliyordu,
+                      asıl kazanç tekrarın kalkması. */}
+                  <ul className="mt-5 divide-y divide-[var(--line)] border-t border-line">
+                    {satirlar.map(({ item }) => {
+                      const color =
+                        product.colors.find((c) => c.key === item.color) ?? product.colors[0];
+                      const colorIndex = product.colors.findIndex((c) => c.key === color.key);
+                      const anahtar = itemKey(item.slug, item.color);
+                      const notAcik = acikNotlar.has(anahtar) || Boolean(item.note?.trim());
+
+                      return (
+                        <li key={anahtar} className="py-4">
+                          <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
+                            <Link
+                              href={`/${locale}/urun/${product.slug}`}
+                              className="block w-[72px] shrink-0"
+                            >
+                              <ProductMedia
+                                product={product}
+                                colorIndex={Math.max(0, colorIndex)}
+                                locale={locale}
+                                sizes="72px"
+                              />
+                            </Link>
+
+                            <span className="flex min-w-[7rem] flex-1 items-center gap-2 text-body text-ink">
+                              <span
+                                aria-hidden="true"
+                                className="h-4 w-4 shrink-0 rounded-full border border-line"
+                                style={{ backgroundColor: color.hex }}
+                              />
+                              {color.name[locale]}
+                            </span>
+
+                            <label className="flex items-center gap-2">
+                              <span className="text-caption text-ink-40">
+                                {t.selection.quantity}
+                              </span>
+                              <input
+                                type="number"
+                                min={1}
+                                max={999}
+                                value={item.qty}
+                                onChange={(e) =>
+                                  setQty(item.slug, item.color, Number(e.target.value))
+                                }
+                                className="w-16 rounded-card border border-line-strong bg-ground px-2 py-2 text-center text-body tabular-nums text-ink focus:border-ink focus:outline-none"
+                              />
+                            </label>
+
+                            {typeof product.price === "number" && (
+                              <span className="min-w-[5.5rem] text-right text-body tabular-nums text-ink">
+                                {formatPrice(product.price * item.qty, locale)}
+                              </span>
+                            )}
+
+                            <button
+                              type="button"
+                              onClick={() => remove(item.slug, item.color)}
+                              aria-label={`${product.name[locale]} — ${color.name[locale]} · ${t.product.remove}`}
+                              title={t.product.remove}
+                              className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-ink-40 hover:bg-ground hover:text-ink"
+                            >
+                              ×
+                            </button>
+                          </div>
+
+                          {/* Not kutusu yalnızca istenince açılıyor: her renge
+                              boş bir kutu koymak sayfayı form gibi
+                              gösteriyordu. */}
+                          {notAcik ? (
+                            <label className="mt-3 block">
+                              <span className="sr-only">{t.selection.note}</span>
+                              <input
+                                type="text"
+                                value={item.note ?? ""}
+                                onChange={(e) => setNote(item.slug, item.color, e.target.value)}
+                                placeholder={t.selection.notePlaceholder}
+                                autoFocus={acikNotlar.has(anahtar) && !item.note}
+                                className="w-full max-w-md border-b border-line bg-transparent py-1.5 text-caption text-ink placeholder:text-ink-40 focus:border-ink focus:outline-none"
+                              />
+                            </label>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setAcikNotlar((o) => new Set(o).add(anahtar))
+                              }
+                              className="mt-2 text-caption text-ink-40 underline-offset-4 hover:text-ink hover:underline"
+                            >
+                              + {t.selection.addNote}
+                            </button>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+
+                  {/* Ara toplam yalnızca birden fazla renk varsa: tek renkte
+                      satırdaki fiyatı tekrar etmekten başka işe yaramaz. */}
+                  {satirlar.length > 1 && araToplam.priced > 0 && (
+                    <p className="mt-4 text-right text-caption text-ink-60">
+                      {t.selection.subtotal}{" "}
+                      <span className="ml-2 text-body tabular-nums text-ink">
+                        {formatPrice(araToplam.total, locale)}
+                      </span>
+                    </p>
+                  )}
                 </li>
               );
             })}
@@ -315,7 +396,7 @@ export function SelectionView({
             </button>
 
             <Link
-              href={`/${locale}/secki/yazdir`}
+              href={`/${locale}/sepet/yazdir`}
               className="rounded-card border border-line-strong bg-ground-2 px-6 py-4 text-body font-medium text-ink transition-colors hover:bg-ink hover:text-ground"
             >
               {t.selection.print}

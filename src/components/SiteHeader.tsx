@@ -286,7 +286,7 @@ function MobileNav({
         );
       })}
       <Link
-        href={`/${locale}/secki`}
+        href={`/${locale}/sepet`}
         onClick={onNavigate}
         className="py-4 text-heading-sm font-whisper text-ink"
       >

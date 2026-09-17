@@ -32,7 +32,7 @@ export function SiteFooter({ locale, t }: { locale: Locale; t: Dictionary }) {
           <Link href={`/${locale}/atolye`} className="text-body text-ink-60 hover:text-ink">
             {t.nav.about}
           </Link>
-          <Link href={`/${locale}/secki`} className="text-body text-ink-60 hover:text-ink">
+          <Link href={`/${locale}/sepet`} className="text-body text-ink-60 hover:text-ink">
             {t.nav.selection}
           </Link>
         </nav>

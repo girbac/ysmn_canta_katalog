@@ -5,7 +5,7 @@
     "women": "Kadın",
     "men": "Erkek",
     "about": "Atölye",
-    "selection": "Seçkim",
+    "selection": "Sepetim",
     "menu": "Menü",
     "close": "Kapat",
     "skipToContent": "İçeriğe geç"
@@ -44,7 +44,7 @@
       }
     ],
     "ctaTitle": "Beğendiklerinizi biriktirin.",
-    "ctaLead": "Gezerken beğendiğiniz çantaları seçkinize ekleyin. Sonunda tek tıkla WhatsApp'tan bize gönderin ya da PDF olarak indirin.",
+    "ctaLead": "Gezerken beğendiğiniz çantaları sepetinize ekleyin. Sonunda tek tıkla WhatsApp'tan bize gönderin ya da PDF olarak indirin.",
     "ctaButton": "Koleksiyonu gez"
   },
   "collection": {
@@ -81,9 +81,9 @@
     "scaleA4": "A4 kâğıt",
     "scalePhone": "Telefon",
     "scalePerson": "170 cm",
-    "add": "Seçkime ekle",
-    "added": "Seçkimde",
-    "remove": "Seçkimden çıkar",
+    "add": "Sepete ekle",
+    "added": "Sepette",
+    "remove": "Sepetten çıkar",
     "new": "Yeni",
     "backToCollection": "Koleksiyona dön",
     "related": "Benzer parçalar",
@@ -94,37 +94,42 @@
       "sabit": "Sabit sap",
       "yok": "Askısız"
     },
-    "price": "Fiyat"
+    "price": "Fiyat",
+    "nextPhoto": "Sonraki fotoğraf",
+    "previousPhoto": "Önceki fotoğraf"
   },
   "selection": {
-    "title": "Seçkim",
+    "title": "Sepetim",
     "lead": "Beğendiğiniz çantalar burada. Adet girip tek seferde gönderebilirsiniz.",
-    "empty": "Seçkiniz henüz boş.",
+    "empty": "Sepetiniz henüz boş.",
     "emptyLead": "Koleksiyonu gezerken beğendiğiniz çantaların üzerindeki + işaretine dokunun.",
     "browse": "Koleksiyonu gez",
-    "dockLabel": "Seçkim",
+    "dockLabel": "Sepetim",
     "itemCount": "{n} ürün",
     "quantity": "Adet",
     "note": "Not",
     "notePlaceholder": "Teslim tarihi, özel istek, not...",
-    "clearAll": "Seçkiyi temizle",
-    "clearConfirm": "Seçkideki tüm ürünler silinecek. Emin misiniz?",
+    "clearAll": "Sepeti boşalt",
+    "clearConfirm": "Sepetteki tüm ürünler silinecek. Emin misiniz?",
     "sendWhatsApp": "WhatsApp'tan gönder",
     "share": "Bağlantıyı kopyala",
     "shared": "Kopyalandı",
     "print": "PDF olarak indir",
     "printHint": "Yazdırma penceresinde \"PDF olarak kaydet\" seçin.",
-    "sharedTitle": "Paylaşılan seçki",
-    "sharedLead": "Bu seçki sizinle paylaşıldı. Kendi seçkinize aktarabilirsiniz.",
-    "importShared": "Seçkime aktar",
+    "sharedTitle": "Paylaşılan sepet",
+    "sharedLead": "Bu sepet sizinle paylaşıldı. Kendi sepetinize aktarabilirsiniz.",
+    "importShared": "Sepetime aktar",
     "whatsappIntro": "Merhaba, katalogdan aşağıdaki çantalarla ilgileniyorum:",
     "whatsappOutro": "Bilgi alabilir miyim?",
-    "printTitle": "Seçki",
+    "printTitle": "Sepet",
     "printDate": "Tarih",
     "printBack": "Geri dön",
     "printNow": "Yazdır",
     "total": "Toplam",
-    "totalPartial": "{n} ürünün fiyatı belirtilmemiş — toplama dahil değil."
+    "totalPartial": "{n} ürünün fiyatı belirtilmemiş — toplama dahil değil.",
+    "addNote": "Not ekle",
+    "subtotal": "Ara toplam",
+    "modelCount": "{n} model"
   },
   "about": {
     "title": "Atölye",
@@ -168,6 +173,6 @@
     "homeDescription": "İstanbul atölyesinde el işçiliğiyle üretilen kadın ve erkek deri çanta koleksiyonu. Tote, omuz, baguette, clutch, sırt ve evrak çantaları.",
     "collectionTitle": "Koleksiyon",
     "collectionDescription": "Tüm modeller — renge, forma ve malzemeye göre süzün.",
-    "selectionTitle": "Seçkim"
+    "selectionTitle": "Sepetim"
   }
 }
