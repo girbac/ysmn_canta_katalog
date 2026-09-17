@@ -908,38 +908,20 @@
   },
   {
     "slug": "sedef-omuz",
-    "code": "YSM-1105",
+    "code": "2092-S",
     "name": {
-      "tr": "Sedef Omuz Çantası",
-      "en": "Sedef Shoulder Bag"
+      "tr": "Hakiki Süet Deri Kadın Omuz Çantası",
+      "en": "Hakiki Süet Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
     "form": "omuz",
-    "material": "deri",
+    "material": "suet",
     "dimensions": {
-      "w": 23,
-      "h": 16,
-      "d": 7
+      "w": 20,
+      "h": 20,
+      "d": 15
     },
     "colors": [
-      {
-        "key": "krem",
-        "name": {
-          "tr": "Krem",
-          "en": "Cream"
-        },
-        "hex": "#E3D5BE",
-        "images": []
-      },
-      {
-        "key": "pudra",
-        "name": {
-          "tr": "Pudra",
-          "en": "Blush"
-        },
-        "hex": "#D8AFA2",
-        "images": []
-      },
       {
         "key": "siyah",
         "name": {
@@ -960,7 +942,8 @@
         "en": "Card slots"
       }
     ],
-    "strap": "zincir"
+    "strap": "ayarlanabilir",
+    "price": 4500
   },
   {
     "slug": "lodos-omuz",
