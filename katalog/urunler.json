@@ -1,0 +1,2480 @@
+[
+  {
+    "slug": "meridyen-tote",
+    "code": "2098-S",
+    "name": {
+      "tr": "Hakiki Süet Deri Kadın Omuz Çantası",
+      "en": "Hakiki Süet Deri Kadın Omuz Çantası"
+    },
+    "segment": "kadin",
+    "form": "omuz",
+    "material": "deri",
+    "dimensions": {
+      "w": 23,
+      "h": 15,
+      "d": 6
+    },
+    "colors": [
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": [
+          "taba-mu2u991o-0.webp",
+          "taba-mu2u9ftf-0.webp"
+        ]
+      },
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": [
+          "siyah-mu2u9udy-0.webp",
+          "siyah-mu2ua377-0.webp"
+        ]
+      },
+      {
+        "key": "krem",
+        "name": {
+          "tr": "Krem",
+          "en": "Cream"
+        },
+        "hex": "#E3D5BE",
+        "images": [
+          "krem-mu2uaqa4-0.webp",
+          "krem-mu2ub32p-0.webp"
+        ]
+      },
+      {
+        "key": "vizon",
+        "name": {
+          "tr": "Vizon",
+          "en": "Taupe"
+        },
+        "hex": "#8C7B6B",
+        "images": [
+          "vizon-mu2ubj3l-0.webp",
+          "vizon-mu2ubt7o-0.webp"
+        ]
+      },
+      {
+        "key": "kahverengi",
+        "name": {
+          "tr": "Kahverengi",
+          "en": "Brown"
+        },
+        "hex": "#6B4423",
+        "images": [
+          "kahverengi-mu2uc7wb-0.webp",
+          "kahverengi-mu2ucgu6-0.webp"
+        ]
+      }
+    ],
+    "features": [
+      {
+        "tr": "Kumaş astar",
+        "en": "Fabric lining"
+      },
+      {
+        "tr": "İç fermuarlı cep",
+        "en": "Inner zip pocket"
+      },
+      {
+        "tr": "Taban ayakları",
+        "en": "Protective feet"
+      }
+    ],
+    "strap": "ayarlanabilir",
+    "isNew": true,
+    "price": 4500
+  },
+  {
+    "slug": "liman-tote",
+    "code": "2098-D",
+    "name": {
+      "tr": "Hakiki Süet Deri Kadın Omuz Çantası",
+      "en": "Hakiki Süet Deri Kadın Omuz Çantası"
+    },
+    "segment": "kadin",
+    "form": "omuz",
+    "material": "deri",
+    "dimensions": {
+      "w": 23,
+      "h": 15,
+      "d": 6
+    },
+    "colors": [
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": [
+          "siyah-mu2ugwsm-0.webp",
+          "siyah-mu2uh2x4-0.webp"
+        ]
+      }
+    ],
+    "features": [
+      {
+        "tr": "Kumaş astar",
+        "en": "Fabric lining"
+      },
+      {
+        "tr": "Taban ayakları",
+        "en": "Protective feet"
+      },
+      {
+        "tr": "El dikişi detay",
+        "en": "Hand-stitched detail"
+      }
+    ],
+    "strap": "ayarlanabilir",
+    "price": 4500
+  },
+  {
+    "slug": "sahil-shopper",
+    "code": "2097-D",
+    "name": {
+      "tr": "Hakiki Deri Kadın Omuz Çantası",
+      "en": "Hakiki Deri Kadın Omuz Çantası"
+    },
+    "segment": "kadin",
+    "form": "omuz",
+    "material": "deri",
+    "dimensions": {
+      "w": 40,
+      "h": 33,
+      "d": 14
+    },
+    "colors": [
+      {
+        "key": "bej",
+        "name": {
+          "tr": "Bej",
+          "en": "Beige"
+        },
+        "hex": "#C9B79C",
+        "images": [
+          "bej-mu2uw3eu-0.webp",
+          "bej-mu2uwegy-0.webp",
+          "bej-mu2uy49y-0.webp"
+        ]
+      },
+      {
+        "key": "haki",
+        "name": {
+          "tr": "Haki",
+          "en": "Khaki"
+        },
+        "hex": "#6B6A45",
+        "images": [
+          "haki-mu2uw8n9-0.webp",
+          "haki-mu2uwj76-0.webp",
+          "haki-mu2uyj90-0.webp"
+        ]
+      },
+      {
+        "key": "kahverengi",
+        "name": {
+          "tr": "Kahverengi",
+          "en": "Brown"
+        },
+        "hex": "#6B4423",
+        "images": [
+          "kahverengi-mu2uz1ng-0.webp",
+          "kahverengi-mu2uzdqf-0.webp",
+          "kahverengi-mu2uzn38-0.webp"
+        ]
+      },
+      {
+        "key": "kirmizi",
+        "name": {
+          "tr": "Kırmızı",
+          "en": "Red"
+        },
+        "hex": "#A81E27",
+        "images": [
+          "kirmizi-mu2v09aa-0.webp",
+          "kirmizi-mu2v0keb-0.webp",
+          "kirmizi-mu2v0s50-0.webp"
+        ]
+      },
+      {
+        "key": "hardal",
+        "name": {
+          "tr": "Hardal",
+          "en": "Mustard"
+        },
+        "hex": "#C9A227",
+        "images": [
+          "hardal-mu2v17pl-0.webp",
+          "hardal-mu2v1f09-0.webp",
+          "hardal-mu2v1ocj-0.webp"
+        ]
+      }
+    ],
+    "features": [
+      {
+        "tr": "Kumaş astar",
+        "en": "Fabric lining"
+      },
+      {
+        "tr": "İç fermuarlı cep",
+        "en": "Inner zip pocket"
+      }
+    ],
+    "strap": "sabit",
+    "price": 4500
+  },
+  {
+    "slug": "asma-tote",
+    "code": "2097-S",
+    "name": {
+      "tr": "Hakiki Deri Kadın Omuz Çantası",
+      "en": "Hakiki Deri Kadın Omuz Çantası"
+    },
+    "segment": "kadin",
+    "form": "omuz",
+    "material": "suet",
+    "dimensions": {
+      "w": 34,
+      "h": 29,
+      "d": 12
+    },
+    "colors": [
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": [
+          "siyah-mu2v9sos-0.webp",
+          "siyah-mu2va5y9-0.webp",
+          "siyah-mu2vaeg8-0.webp"
+        ]
+      },
+      {
+        "key": "vizon",
+        "name": {
+          "tr": "Vizon",
+          "en": "Taupe"
+        },
+        "hex": "#8C7B6B",
+        "images": [
+          "vizon-mu2vba5b-0.webp",
+          "vizon-mu2vbkz8-0.webp",
+          "vizon-mu2vbroe-0.webp"
+        ]
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": [
+          "taba-mu2vcemv-0.webp",
+          "taba-mu2vcllf-0.webp",
+          "taba-mu2vcqx4-0.webp"
+        ]
+      },
+      {
+        "key": "haki",
+        "name": {
+          "tr": "Haki",
+          "en": "Khaki"
+        },
+        "hex": "#6B6A45",
+        "images": [
+          "haki-mu2vd7x9-0.webp",
+          "haki-mu2vdgln-0.webp",
+          "haki-mu2vdmre-0.webp"
+        ]
+      },
+      {
+        "key": "kahverengi",
+        "name": {
+          "tr": "Kahverengi",
+          "en": "Brown"
+        },
+        "hex": "#6B4423",
+        "images": [
+          "kahverengi-mu2ve0hm-0.webp",
+          "kahverengi-mu2ve9yj-0.webp",
+          "kahverengi-mu2vefuh-0.webp"
+        ]
+      },
+      {
+        "key": "bej",
+        "name": {
+          "tr": "Bej",
+          "en": "Beige"
+        },
+        "hex": "#C9B79C",
+        "images": [
+          "bej-mu2vfxzi-0.webp",
+          "bej-mu2vgc9d-0.webp",
+          "bej-mu2vgijs-0.webp"
+        ]
+      }
+    ],
+    "features": [
+      {
+        "tr": "Kumaş astar",
+        "en": "Fabric lining"
+      },
+      {
+        "tr": "İç fermuarlı cep",
+        "en": "Inner zip pocket"
+      },
+      {
+        "tr": "Çıkarılabilir omuz askısı",
+        "en": "Detachable shoulder strap"
+      }
+    ],
+    "strap": "sabit",
+    "price": 4500
+  },
+  {
+    "slug": "defne-tote",
+    "code": "2097-S",
+    "name": {
+      "tr": "Hakiki Süet Deri Kadın Omuz Çantası",
+      "en": "Hakiki Süet Deri Kadın Omuz Çantası"
+    },
+    "segment": "kadin",
+    "form": "omuz",
+    "material": "suet",
+    "dimensions": {
+      "w": 26,
+      "h": 21,
+      "d": 11
+    },
+    "colors": [
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": [
+          "taba-mu5g6nf9-0.webp",
+          "taba-mu5g70uf-0.webp",
+          "taba-mu5g7800-0.webp"
+        ]
+      },
+      {
+        "key": "vizon",
+        "name": {
+          "tr": "Vizon",
+          "en": "Taupe"
+        },
+        "hex": "#8C7B6B",
+        "images": [
+          "vizon-mu5g5sq3-0.webp",
+          "vizon-mu5g601i-0.webp",
+          "vizon-mu5g678l-0.webp"
+        ]
+      },
+      {
+        "key": "kahverengi",
+        "name": {
+          "tr": "Kahverengi",
+          "en": "Brown"
+        },
+        "hex": "#6B4423",
+        "images": [
+          "kahverengi-mu5g7r15-0.webp",
+          "kahverengi-mu5g82d2-0.webp",
+          "kahverengi-mu5g8crz-0.webp"
+        ]
+      },
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": [
+          "siyah-mu5g8xjb-0.webp"
+        ]
+      },
+      {
+        "key": "haki",
+        "name": {
+          "tr": "Haki",
+          "en": "Khaki"
+        },
+        "hex": "#6B6A45",
+        "images": [
+          "haki-mu5g9kxy-0.webp",
+          "haki-mu5g9v3x-0.webp",
+          "haki-mu5ga20n-0.webp"
+        ]
+      }
+    ],
+    "features": [
+      {
+        "tr": "Kumaş astar",
+        "en": "Fabric lining"
+      },
+      {
+        "tr": "Telefon bölmesi",
+        "en": "Phone slot"
+      }
+    ],
+    "strap": "sabit",
+    "price": 4500
+  },
+  {
+    "slug": "mika-tote",
+    "code": "YSM-1006",
+    "name": {
+      "tr": "Mika Tote",
+      "en": "Mika Tote"
+    },
+    "segment": "kadin",
+    "form": "tote",
+    "material": "vegan",
+    "dimensions": {
+      "w": 37,
+      "h": 30,
+      "d": 12
+    },
+    "colors": [
+      {
+        "key": "antrasit",
+        "name": {
+          "tr": "Antrasit",
+          "en": "Charcoal"
+        },
+        "hex": "#35373B",
+        "images": []
+      },
+      {
+        "key": "krem",
+        "name": {
+          "tr": "Krem",
+          "en": "Cream"
+        },
+        "hex": "#E3D5BE",
+        "images": []
+      },
+      {
+        "key": "pudra",
+        "name": {
+          "tr": "Pudra",
+          "en": "Blush"
+        },
+        "hex": "#D8AFA2",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Kumaş astar",
+        "en": "Fabric lining"
+      },
+      {
+        "tr": "İç fermuarlı cep",
+        "en": "Inner zip pocket"
+      },
+      {
+        "tr": "14\" laptop bölmesi",
+        "en": "14\" laptop compartment"
+      }
+    ],
+    "strap": "sabit",
+    "isNew": true
+  },
+  {
+    "slug": "hilal-omuz",
+    "code": "YSM-1101",
+    "name": {
+      "tr": "Hilal Omuz Çantası",
+      "en": "Hilal Shoulder Bag"
+    },
+    "segment": "kadin",
+    "form": "omuz",
+    "material": "deri",
+    "dimensions": {
+      "w": 26,
+      "h": 18,
+      "d": 8
+    },
+    "colors": [
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": []
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": []
+      },
+      {
+        "key": "bordo",
+        "name": {
+          "tr": "Bordo",
+          "en": "Burgundy"
+        },
+        "hex": "#5C1F2B",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Manyetik kapak",
+        "en": "Magnetic flap"
+      },
+      {
+        "tr": "Kart yuvaları",
+        "en": "Card slots"
+      },
+      {
+        "tr": "Telefon bölmesi",
+        "en": "Phone slot"
+      }
+    ],
+    "strap": "ayarlanabilir",
+    "isNew": true
+  },
+  {
+    "slug": "peri-omuz",
+    "code": "YSM-1102",
+    "name": {
+      "tr": "Peri Omuz Çantası",
+      "en": "Peri Shoulder Bag"
+    },
+    "segment": "kadin",
+    "form": "omuz",
+    "material": "suet",
+    "dimensions": {
+      "w": 24,
+      "h": 17,
+      "d": 7
+    },
+    "colors": [
+      {
+        "key": "pudra",
+        "name": {
+          "tr": "Pudra",
+          "en": "Blush"
+        },
+        "hex": "#D8AFA2",
+        "images": []
+      },
+      {
+        "key": "krem",
+        "name": {
+          "tr": "Krem",
+          "en": "Cream"
+        },
+        "hex": "#E3D5BE",
+        "images": []
+      },
+      {
+        "key": "vizon",
+        "name": {
+          "tr": "Vizon",
+          "en": "Taupe"
+        },
+        "hex": "#8C7B6B",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Manyetik kapak",
+        "en": "Magnetic flap"
+      },
+      {
+        "tr": "Kart yuvaları",
+        "en": "Card slots"
+      }
+    ],
+    "strap": "ayarlanabilir"
+  },
+  {
+    "slug": "ada-omuz",
+    "code": "YSM-1103",
+    "name": {
+      "tr": "Ada Omuz Çantası",
+      "en": "Ada Shoulder Bag"
+    },
+    "segment": "kadin",
+    "form": "omuz",
+    "material": "saffiano",
+    "dimensions": {
+      "w": 27,
+      "h": 19,
+      "d": 9
+    },
+    "colors": [
+      {
+        "key": "lacivert",
+        "name": {
+          "tr": "Lacivert",
+          "en": "Navy"
+        },
+        "hex": "#1E2A44",
+        "images": []
+      },
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "İç fermuarlı cep",
+        "en": "Inner zip pocket"
+      },
+      {
+        "tr": "Kart yuvaları",
+        "en": "Card slots"
+      },
+      {
+        "tr": "Telefon bölmesi",
+        "en": "Phone slot"
+      }
+    ],
+    "strap": "ayarlanabilir"
+  },
+  {
+    "slug": "reyhan-omuz",
+    "code": "YSM-1104",
+    "name": {
+      "tr": "Reyhan Omuz Çantası",
+      "en": "Reyhan Shoulder Bag"
+    },
+    "segment": "kadin",
+    "form": "omuz",
+    "material": "nubuk",
+    "dimensions": {
+      "w": 25,
+      "h": 18,
+      "d": 8
+    },
+    "colors": [
+      {
+        "key": "konyak",
+        "name": {
+          "tr": "Konyak",
+          "en": "Cognac"
+        },
+        "hex": "#8B4A2B",
+        "images": []
+      },
+      {
+        "key": "zeytin",
+        "name": {
+          "tr": "Zeytin",
+          "en": "Olive"
+        },
+        "hex": "#4A4F35",
+        "images": []
+      },
+      {
+        "key": "krem",
+        "name": {
+          "tr": "Krem",
+          "en": "Cream"
+        },
+        "hex": "#E3D5BE",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Manyetik kapak",
+        "en": "Magnetic flap"
+      },
+      {
+        "tr": "El dikişi detay",
+        "en": "Hand-stitched detail"
+      }
+    ],
+    "strap": "ayarlanabilir"
+  },
+  {
+    "slug": "sedef-omuz",
+    "code": "YSM-1105",
+    "name": {
+      "tr": "Sedef Omuz Çantası",
+      "en": "Sedef Shoulder Bag"
+    },
+    "segment": "kadin",
+    "form": "omuz",
+    "material": "deri",
+    "dimensions": {
+      "w": 23,
+      "h": 16,
+      "d": 7
+    },
+    "colors": [
+      {
+        "key": "krem",
+        "name": {
+          "tr": "Krem",
+          "en": "Cream"
+        },
+        "hex": "#E3D5BE",
+        "images": []
+      },
+      {
+        "key": "pudra",
+        "name": {
+          "tr": "Pudra",
+          "en": "Blush"
+        },
+        "hex": "#D8AFA2",
+        "images": []
+      },
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Zincir askı",
+        "en": "Chain strap"
+      },
+      {
+        "tr": "Kart yuvaları",
+        "en": "Card slots"
+      }
+    ],
+    "strap": "zincir"
+  },
+  {
+    "slug": "lodos-omuz",
+    "code": "YSM-1106",
+    "name": {
+      "tr": "Lodos Omuz Çantası",
+      "en": "Lodos Shoulder Bag"
+    },
+    "segment": "kadin",
+    "form": "omuz",
+    "material": "vegan",
+    "dimensions": {
+      "w": 28,
+      "h": 20,
+      "d": 9
+    },
+    "colors": [
+      {
+        "key": "antrasit",
+        "name": {
+          "tr": "Antrasit",
+          "en": "Charcoal"
+        },
+        "hex": "#35373B",
+        "images": []
+      },
+      {
+        "key": "bordo",
+        "name": {
+          "tr": "Bordo",
+          "en": "Burgundy"
+        },
+        "hex": "#5C1F2B",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "İç fermuarlı cep",
+        "en": "Inner zip pocket"
+      },
+      {
+        "tr": "Çıkarılabilir omuz askısı",
+        "en": "Detachable shoulder strap"
+      },
+      {
+        "tr": "Telefon bölmesi",
+        "en": "Phone slot"
+      }
+    ],
+    "strap": "ayarlanabilir"
+  },
+  {
+    "slug": "nisan-omuz",
+    "code": "YSM-1107",
+    "name": {
+      "tr": "Nisan Omuz Çantası",
+      "en": "Nisan Shoulder Bag"
+    },
+    "segment": "kadin",
+    "form": "omuz",
+    "material": "deri",
+    "dimensions": {
+      "w": 26,
+      "h": 18,
+      "d": 8
+    },
+    "colors": [
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": []
+      },
+      {
+        "key": "vizon",
+        "name": {
+          "tr": "Vizon",
+          "en": "Taupe"
+        },
+        "hex": "#8C7B6B",
+        "images": []
+      },
+      {
+        "key": "bej",
+        "name": {
+          "tr": "Bej",
+          "en": "Beige"
+        },
+        "hex": "#C9B79C",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Manyetik kapak",
+        "en": "Magnetic flap"
+      },
+      {
+        "tr": "Kart yuvaları",
+        "en": "Card slots"
+      },
+      {
+        "tr": "İç fermuarlı cep",
+        "en": "Inner zip pocket"
+      }
+    ],
+    "strap": "ayarlanabilir"
+  },
+  {
+    "slug": "mercan-omuz",
+    "code": "YSM-1108",
+    "name": {
+      "tr": "Mercan Omuz Çantası",
+      "en": "Mercan Shoulder Bag"
+    },
+    "segment": "kadin",
+    "form": "omuz",
+    "material": "tokluk",
+    "dimensions": {
+      "w": 29,
+      "h": 21,
+      "d": 10
+    },
+    "colors": [
+      {
+        "key": "bordo",
+        "name": {
+          "tr": "Bordo",
+          "en": "Burgundy"
+        },
+        "hex": "#5C1F2B",
+        "images": []
+      },
+      {
+        "key": "kahve",
+        "name": {
+          "tr": "Koyu Kahve",
+          "en": "Espresso"
+        },
+        "hex": "#40301F",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "El dikişi detay",
+        "en": "Hand-stitched detail"
+      },
+      {
+        "tr": "İç fermuarlı cep",
+        "en": "Inner zip pocket"
+      }
+    ],
+    "strap": "ayarlanabilir"
+  },
+  {
+    "slug": "efes-baguette",
+    "code": "YSM-1201",
+    "name": {
+      "tr": "Efes Baguette",
+      "en": "Efes Baguette"
+    },
+    "segment": "kadin",
+    "form": "baguette",
+    "material": "deri",
+    "dimensions": {
+      "w": 30,
+      "h": 14,
+      "d": 7
+    },
+    "colors": [
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": []
+      },
+      {
+        "key": "krem",
+        "name": {
+          "tr": "Krem",
+          "en": "Cream"
+        },
+        "hex": "#E3D5BE",
+        "images": []
+      },
+      {
+        "key": "konyak",
+        "name": {
+          "tr": "Konyak",
+          "en": "Cognac"
+        },
+        "hex": "#8B4A2B",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Manyetik kapak",
+        "en": "Magnetic flap"
+      },
+      {
+        "tr": "Kart yuvaları",
+        "en": "Card slots"
+      }
+    ],
+    "strap": "sabit",
+    "isNew": true
+  },
+  {
+    "slug": "inci-baguette",
+    "code": "YSM-1202",
+    "name": {
+      "tr": "İnci Baguette",
+      "en": "İnci Baguette"
+    },
+    "segment": "kadin",
+    "form": "baguette",
+    "material": "suet",
+    "dimensions": {
+      "w": 28,
+      "h": 13,
+      "d": 6
+    },
+    "colors": [
+      {
+        "key": "pudra",
+        "name": {
+          "tr": "Pudra",
+          "en": "Blush"
+        },
+        "hex": "#D8AFA2",
+        "images": []
+      },
+      {
+        "key": "krem",
+        "name": {
+          "tr": "Krem",
+          "en": "Cream"
+        },
+        "hex": "#E3D5BE",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Manyetik kapak",
+        "en": "Magnetic flap"
+      }
+    ],
+    "strap": "sabit"
+  },
+  {
+    "slug": "vera-baguette",
+    "code": "YSM-1203",
+    "name": {
+      "tr": "Vera Baguette",
+      "en": "Vera Baguette"
+    },
+    "segment": "kadin",
+    "form": "baguette",
+    "material": "saffiano",
+    "dimensions": {
+      "w": 31,
+      "h": 15,
+      "d": 7
+    },
+    "colors": [
+      {
+        "key": "bordo",
+        "name": {
+          "tr": "Bordo",
+          "en": "Burgundy"
+        },
+        "hex": "#5C1F2B",
+        "images": []
+      },
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": []
+      },
+      {
+        "key": "lacivert",
+        "name": {
+          "tr": "Lacivert",
+          "en": "Navy"
+        },
+        "hex": "#1E2A44",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Zincir askı",
+        "en": "Chain strap"
+      },
+      {
+        "tr": "Kart yuvaları",
+        "en": "Card slots"
+      }
+    ],
+    "strap": "zincir"
+  },
+  {
+    "slug": "zeyno-baguette",
+    "code": "YSM-1204",
+    "name": {
+      "tr": "Zeyno Baguette",
+      "en": "Zeyno Baguette"
+    },
+    "segment": "kadin",
+    "form": "baguette",
+    "material": "nubuk",
+    "dimensions": {
+      "w": 29,
+      "h": 14,
+      "d": 7
+    },
+    "colors": [
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": []
+      },
+      {
+        "key": "zeytin",
+        "name": {
+          "tr": "Zeytin",
+          "en": "Olive"
+        },
+        "hex": "#4A4F35",
+        "images": []
+      },
+      {
+        "key": "vizon",
+        "name": {
+          "tr": "Vizon",
+          "en": "Taupe"
+        },
+        "hex": "#8C7B6B",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Manyetik kapak",
+        "en": "Magnetic flap"
+      },
+      {
+        "tr": "El dikişi detay",
+        "en": "Hand-stitched detail"
+      }
+    ],
+    "strap": "sabit"
+  },
+  {
+    "slug": "ela-baguette",
+    "code": "YSM-1205",
+    "name": {
+      "tr": "Ela Baguette",
+      "en": "Ela Baguette"
+    },
+    "segment": "kadin",
+    "form": "baguette",
+    "material": "vegan",
+    "dimensions": {
+      "w": 27,
+      "h": 13,
+      "d": 6
+    },
+    "colors": [
+      {
+        "key": "antrasit",
+        "name": {
+          "tr": "Antrasit",
+          "en": "Charcoal"
+        },
+        "hex": "#35373B",
+        "images": []
+      },
+      {
+        "key": "krem",
+        "name": {
+          "tr": "Krem",
+          "en": "Cream"
+        },
+        "hex": "#E3D5BE",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Kart yuvaları",
+        "en": "Card slots"
+      },
+      {
+        "tr": "Telefon bölmesi",
+        "en": "Phone slot"
+      }
+    ],
+    "strap": "sabit"
+  },
+  {
+    "slug": "gece-clutch",
+    "code": "YSM-1301",
+    "name": {
+      "tr": "Gece Clutch",
+      "en": "Gece Clutch"
+    },
+    "segment": "kadin",
+    "form": "clutch",
+    "material": "saffiano",
+    "dimensions": {
+      "w": 28,
+      "h": 15,
+      "d": 4
+    },
+    "colors": [
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": []
+      },
+      {
+        "key": "bordo",
+        "name": {
+          "tr": "Bordo",
+          "en": "Burgundy"
+        },
+        "hex": "#5C1F2B",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Kart yuvaları",
+        "en": "Card slots"
+      },
+      {
+        "tr": "Manyetik kapak",
+        "en": "Magnetic flap"
+      }
+    ],
+    "strap": "yok"
+  },
+  {
+    "slug": "ay-clutch",
+    "code": "YSM-1302",
+    "name": {
+      "tr": "Ay Clutch",
+      "en": "Ay Clutch"
+    },
+    "segment": "kadin",
+    "form": "clutch",
+    "material": "suet",
+    "dimensions": {
+      "w": 26,
+      "h": 14,
+      "d": 4
+    },
+    "colors": [
+      {
+        "key": "krem",
+        "name": {
+          "tr": "Krem",
+          "en": "Cream"
+        },
+        "hex": "#E3D5BE",
+        "images": []
+      },
+      {
+        "key": "pudra",
+        "name": {
+          "tr": "Pudra",
+          "en": "Blush"
+        },
+        "hex": "#D8AFA2",
+        "images": []
+      },
+      {
+        "key": "vizon",
+        "name": {
+          "tr": "Vizon",
+          "en": "Taupe"
+        },
+        "hex": "#8C7B6B",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Zincir askı",
+        "en": "Chain strap"
+      },
+      {
+        "tr": "Kart yuvaları",
+        "en": "Card slots"
+      }
+    ],
+    "strap": "zincir",
+    "isNew": true
+  },
+  {
+    "slug": "ipek-clutch",
+    "code": "YSM-1303",
+    "name": {
+      "tr": "İpek Clutch",
+      "en": "İpek Clutch"
+    },
+    "segment": "kadin",
+    "form": "clutch",
+    "material": "deri",
+    "dimensions": {
+      "w": 29,
+      "h": 16,
+      "d": 5
+    },
+    "colors": [
+      {
+        "key": "lacivert",
+        "name": {
+          "tr": "Lacivert",
+          "en": "Navy"
+        },
+        "hex": "#1E2A44",
+        "images": []
+      },
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": []
+      },
+      {
+        "key": "konyak",
+        "name": {
+          "tr": "Konyak",
+          "en": "Cognac"
+        },
+        "hex": "#8B4A2B",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Kart yuvaları",
+        "en": "Card slots"
+      },
+      {
+        "tr": "El dikişi detay",
+        "en": "Hand-stitched detail"
+      }
+    ],
+    "strap": "yok"
+  },
+  {
+    "slug": "sahne-clutch",
+    "code": "YSM-1304",
+    "name": {
+      "tr": "Sahne Clutch",
+      "en": "Sahne Clutch"
+    },
+    "segment": "kadin",
+    "form": "clutch",
+    "material": "vegan",
+    "dimensions": {
+      "w": 27,
+      "h": 15,
+      "d": 4
+    },
+    "colors": [
+      {
+        "key": "bordo",
+        "name": {
+          "tr": "Bordo",
+          "en": "Burgundy"
+        },
+        "hex": "#5C1F2B",
+        "images": []
+      },
+      {
+        "key": "antrasit",
+        "name": {
+          "tr": "Antrasit",
+          "en": "Charcoal"
+        },
+        "hex": "#35373B",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Zincir askı",
+        "en": "Chain strap"
+      },
+      {
+        "tr": "Manyetik kapak",
+        "en": "Magnetic flap"
+      }
+    ],
+    "strap": "zincir"
+  },
+  {
+    "slug": "orman-sirt",
+    "code": "YSM-1401",
+    "name": {
+      "tr": "Orman Sırt Çantası",
+      "en": "Orman Backpack"
+    },
+    "segment": "kadin",
+    "form": "sirt",
+    "material": "tokluk",
+    "dimensions": {
+      "w": 30,
+      "h": 38,
+      "d": 14
+    },
+    "colors": [
+      {
+        "key": "zeytin",
+        "name": {
+          "tr": "Zeytin",
+          "en": "Olive"
+        },
+        "hex": "#4A4F35",
+        "images": []
+      },
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": []
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "14\" laptop bölmesi",
+        "en": "14\" laptop compartment"
+      },
+      {
+        "tr": "İç fermuarlı cep",
+        "en": "Inner zip pocket"
+      },
+      {
+        "tr": "Taban ayakları",
+        "en": "Protective feet"
+      }
+    ],
+    "strap": "ayarlanabilir"
+  },
+  {
+    "slug": "bulut-sirt",
+    "code": "YSM-1402",
+    "name": {
+      "tr": "Bulut Sırt Çantası",
+      "en": "Bulut Backpack"
+    },
+    "segment": "kadin",
+    "form": "sirt",
+    "material": "vegan",
+    "dimensions": {
+      "w": 28,
+      "h": 35,
+      "d": 12
+    },
+    "colors": [
+      {
+        "key": "krem",
+        "name": {
+          "tr": "Krem",
+          "en": "Cream"
+        },
+        "hex": "#E3D5BE",
+        "images": []
+      },
+      {
+        "key": "pudra",
+        "name": {
+          "tr": "Pudra",
+          "en": "Blush"
+        },
+        "hex": "#D8AFA2",
+        "images": []
+      },
+      {
+        "key": "vizon",
+        "name": {
+          "tr": "Vizon",
+          "en": "Taupe"
+        },
+        "hex": "#8C7B6B",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "İç fermuarlı cep",
+        "en": "Inner zip pocket"
+      },
+      {
+        "tr": "Telefon bölmesi",
+        "en": "Phone slot"
+      }
+    ],
+    "strap": "ayarlanabilir",
+    "isNew": true
+  },
+  {
+    "slug": "yol-sirt",
+    "code": "YSM-1403",
+    "name": {
+      "tr": "Yol Sırt Çantası",
+      "en": "Yol Backpack"
+    },
+    "segment": "kadin",
+    "form": "sirt",
+    "material": "kanvas",
+    "dimensions": {
+      "w": 31,
+      "h": 40,
+      "d": 15
+    },
+    "colors": [
+      {
+        "key": "antrasit",
+        "name": {
+          "tr": "Antrasit",
+          "en": "Charcoal"
+        },
+        "hex": "#35373B",
+        "images": []
+      },
+      {
+        "key": "lacivert",
+        "name": {
+          "tr": "Lacivert",
+          "en": "Navy"
+        },
+        "hex": "#1E2A44",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "15\" laptop bölmesi",
+        "en": "15\" laptop compartment"
+      },
+      {
+        "tr": "Valiz geçirme bandı",
+        "en": "Trolley sleeve"
+      },
+      {
+        "tr": "İç fermuarlı cep",
+        "en": "Inner zip pocket"
+      }
+    ],
+    "strap": "ayarlanabilir"
+  },
+  {
+    "slug": "toprak-sirt",
+    "code": "YSM-1404",
+    "name": {
+      "tr": "Toprak Sırt Çantası",
+      "en": "Toprak Backpack"
+    },
+    "segment": "kadin",
+    "form": "sirt",
+    "material": "nubuk",
+    "dimensions": {
+      "w": 29,
+      "h": 36,
+      "d": 13
+    },
+    "colors": [
+      {
+        "key": "kahve",
+        "name": {
+          "tr": "Koyu Kahve",
+          "en": "Espresso"
+        },
+        "hex": "#40301F",
+        "images": []
+      },
+      {
+        "key": "konyak",
+        "name": {
+          "tr": "Konyak",
+          "en": "Cognac"
+        },
+        "hex": "#8B4A2B",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "El dikişi detay",
+        "en": "Hand-stitched detail"
+      },
+      {
+        "tr": "İç fermuarlı cep",
+        "en": "Inner zip pocket"
+      }
+    ],
+    "strap": "ayarlanabilir"
+  },
+  {
+    "slug": "kumsal-postaci",
+    "code": "YSM-1501",
+    "name": {
+      "tr": "Kumsal Seyahat",
+      "en": "Kumsal Travel"
+    },
+    "segment": "kadin",
+    "form": "postaci",
+    "material": "deri",
+    "dimensions": {
+      "w": 27,
+      "h": 21,
+      "d": 9
+    },
+    "colors": [
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": []
+      },
+      {
+        "key": "krem",
+        "name": {
+          "tr": "Krem",
+          "en": "Cream"
+        },
+        "hex": "#E3D5BE",
+        "images": []
+      },
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Manyetik kapak",
+        "en": "Magnetic flap"
+      },
+      {
+        "tr": "İç fermuarlı cep",
+        "en": "Inner zip pocket"
+      },
+      {
+        "tr": "Telefon bölmesi",
+        "en": "Phone slot"
+      }
+    ],
+    "strap": "ayarlanabilir"
+  },
+  {
+    "slug": "ruzgar-postaci",
+    "code": "YSM-1502",
+    "name": {
+      "tr": "Rüzgâr Seyahat",
+      "en": "Rüzgâr Travel"
+    },
+    "segment": "kadin",
+    "form": "postaci",
+    "material": "kanvas",
+    "dimensions": {
+      "w": 29,
+      "h": 22,
+      "d": 10
+    },
+    "colors": [
+      {
+        "key": "zeytin",
+        "name": {
+          "tr": "Zeytin",
+          "en": "Olive"
+        },
+        "hex": "#4A4F35",
+        "images": []
+      },
+      {
+        "key": "antrasit",
+        "name": {
+          "tr": "Antrasit",
+          "en": "Charcoal"
+        },
+        "hex": "#35373B",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "İç fermuarlı cep",
+        "en": "Inner zip pocket"
+      },
+      {
+        "tr": "14\" laptop bölmesi",
+        "en": "14\" laptop compartment"
+      }
+    ],
+    "strap": "ayarlanabilir"
+  },
+  {
+    "slug": "mavi-postaci",
+    "code": "YSM-1503",
+    "name": {
+      "tr": "Mavi Seyahat",
+      "en": "Mavi Travel"
+    },
+    "segment": "kadin",
+    "form": "postaci",
+    "material": "saffiano",
+    "dimensions": {
+      "w": 26,
+      "h": 20,
+      "d": 8
+    },
+    "colors": [
+      {
+        "key": "lacivert",
+        "name": {
+          "tr": "Lacivert",
+          "en": "Navy"
+        },
+        "hex": "#1E2A44",
+        "images": []
+      },
+      {
+        "key": "vizon",
+        "name": {
+          "tr": "Vizon",
+          "en": "Taupe"
+        },
+        "hex": "#8C7B6B",
+        "images": []
+      },
+      {
+        "key": "bordo",
+        "name": {
+          "tr": "Bordo",
+          "en": "Burgundy"
+        },
+        "hex": "#5C1F2B",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Manyetik kapak",
+        "en": "Magnetic flap"
+      },
+      {
+        "tr": "Kart yuvaları",
+        "en": "Card slots"
+      }
+    ],
+    "strap": "ayarlanabilir"
+  },
+  {
+    "slug": "yaz-postaci",
+    "code": "YSM-1504",
+    "name": {
+      "tr": "Yaz Seyahat",
+      "en": "Yaz Travel"
+    },
+    "segment": "kadin",
+    "form": "postaci",
+    "material": "suet",
+    "dimensions": {
+      "w": 25,
+      "h": 19,
+      "d": 8
+    },
+    "colors": [
+      {
+        "key": "krem",
+        "name": {
+          "tr": "Krem",
+          "en": "Cream"
+        },
+        "hex": "#E3D5BE",
+        "images": []
+      },
+      {
+        "key": "bej",
+        "name": {
+          "tr": "Bej",
+          "en": "Beige"
+        },
+        "hex": "#C9B79C",
+        "images": []
+      },
+      {
+        "key": "pudra",
+        "name": {
+          "tr": "Pudra",
+          "en": "Blush"
+        },
+        "hex": "#D8AFA2",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Manyetik kapak",
+        "en": "Magnetic flap"
+      },
+      {
+        "tr": "Telefon bölmesi",
+        "en": "Phone slot"
+      }
+    ],
+    "strap": "ayarlanabilir"
+  },
+  {
+    "slug": "kule-tote",
+    "code": "YSM-1007",
+    "name": {
+      "tr": "Kule Tote",
+      "en": "Kule Tote"
+    },
+    "segment": "kadin",
+    "form": "tote",
+    "material": "saffiano",
+    "dimensions": {
+      "w": 33,
+      "h": 34,
+      "d": 12
+    },
+    "colors": [
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": []
+      },
+      {
+        "key": "antrasit",
+        "name": {
+          "tr": "Antrasit",
+          "en": "Charcoal"
+        },
+        "hex": "#35373B",
+        "images": []
+      },
+      {
+        "key": "bordo",
+        "name": {
+          "tr": "Bordo",
+          "en": "Burgundy"
+        },
+        "hex": "#5C1F2B",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "14\" laptop bölmesi",
+        "en": "14\" laptop compartment"
+      },
+      {
+        "tr": "Kumaş astar",
+        "en": "Fabric lining"
+      },
+      {
+        "tr": "Taban ayakları",
+        "en": "Protective feet"
+      }
+    ],
+    "strap": "sabit"
+  },
+  {
+    "slug": "safran-omuz",
+    "code": "YSM-1109",
+    "name": {
+      "tr": "Safran Omuz Çantası",
+      "en": "Safran Shoulder Bag"
+    },
+    "segment": "kadin",
+    "form": "omuz",
+    "material": "deri",
+    "dimensions": {
+      "w": 24,
+      "h": 17,
+      "d": 8
+    },
+    "colors": [
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": []
+      },
+      {
+        "key": "konyak",
+        "name": {
+          "tr": "Konyak",
+          "en": "Cognac"
+        },
+        "hex": "#8B4A2B",
+        "images": []
+      },
+      {
+        "key": "krem",
+        "name": {
+          "tr": "Krem",
+          "en": "Cream"
+        },
+        "hex": "#E3D5BE",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "Zincir askı",
+        "en": "Chain strap"
+      },
+      {
+        "tr": "Manyetik kapak",
+        "en": "Magnetic flap"
+      },
+      {
+        "tr": "Kart yuvaları",
+        "en": "Card slots"
+      }
+    ],
+    "strap": "zincir"
+  },
+  {
+    "slug": "kanun-evrak",
+    "code": "2040-D",
+    "name": {
+      "tr": "Hakiki Deri Unisex Sırt Çantası",
+      "en": "Hakiki Deri Unisex Sırt Çantası"
+    },
+    "segment": "erkek",
+    "form": "sirt",
+    "material": "deri",
+    "dimensions": {
+      "w": 31,
+      "h": 38,
+      "d": 19
+    },
+    "colors": [
+      {
+        "key": "kahve",
+        "name": {
+          "tr": "Koyu Kahve",
+          "en": "Espresso"
+        },
+        "hex": "#40301F",
+        "images": [
+          "kahve-mu2tr0nb-0.webp"
+        ]
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": [
+          "taba-mu2tr7fo-0.webp"
+        ]
+      },
+      {
+        "key": "kahverengi",
+        "name": {
+          "tr": "Kahverengi",
+          "en": "Brown"
+        },
+        "hex": "#6B4423",
+        "images": [
+          "kahverengi-mu2trds2-0.webp"
+        ]
+      }
+    ],
+    "features": [
+      {
+        "tr": "15\" laptop bölmesi",
+        "en": "15\" laptop compartment"
+      },
+      {
+        "tr": "Evrak bölmesi",
+        "en": "Document sleeve"
+      },
+      {
+        "tr": "Çıkarılabilir omuz askısı",
+        "en": "Detachable shoulder strap"
+      },
+      {
+        "tr": "Taban ayakları",
+        "en": "Protective feet"
+      }
+    ],
+    "strap": "ayarlanabilir",
+    "isNew": true,
+    "price": 4500
+  },
+  {
+    "slug": "meclis-evrak",
+    "code": "2040-D",
+    "name": {
+      "tr": "Hakiki Deri Unisex Sırt Çantası",
+      "en": "Hakiki Deri Unisex Sırt Çantası"
+    },
+    "segment": "erkek",
+    "form": "sirt",
+    "material": "deri",
+    "dimensions": {
+      "w": 31,
+      "h": 38,
+      "d": 19
+    },
+    "colors": [
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": [
+          "siyah-mu2tuj0o-0.webp"
+        ]
+      },
+      {
+        "key": "bordo",
+        "name": {
+          "tr": "Bordo",
+          "en": "Burgundy"
+        },
+        "hex": "#5C1F2B",
+        "images": [
+          "bordo-mu2tun3o-0.webp"
+        ]
+      }
+    ],
+    "features": [
+      {
+        "tr": "15\" laptop bölmesi",
+        "en": "15\" laptop compartment"
+      },
+      {
+        "tr": "Evrak bölmesi",
+        "en": "Document sleeve"
+      },
+      {
+        "tr": "Şifreli kilit",
+        "en": "Combination lock"
+      },
+      {
+        "tr": "Taban ayakları",
+        "en": "Protective feet"
+      }
+    ],
+    "strap": "ayarlanabilir",
+    "price": 4500
+  },
+  {
+    "slug": "mimar-evrak",
+    "code": "2040-D",
+    "name": {
+      "tr": "Hakiki Deri Unisex Sırt Çantası",
+      "en": "Hakiki Deri Unisex Sırt Çantası"
+    },
+    "segment": "erkek",
+    "form": "sirt",
+    "material": "deri",
+    "dimensions": {
+      "w": 31,
+      "h": 38,
+      "d": 19
+    },
+    "colors": [
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": [
+          "siyah-mu2txux5-0.webp"
+        ]
+      },
+      {
+        "key": "lacivert",
+        "name": {
+          "tr": "Lacivert",
+          "en": "Navy"
+        },
+        "hex": "#1E2A44",
+        "images": [
+          "lacivert-mu2txxj2-0.webp"
+        ]
+      },
+      {
+        "key": "kahve",
+        "name": {
+          "tr": "Koyu Kahve",
+          "en": "Espresso"
+        },
+        "hex": "#40301F",
+        "images": [
+          "kahve-mu2ty9dh-0.webp"
+        ]
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": [
+          "taba-mu2tyc7m-0.webp"
+        ]
+      }
+    ],
+    "features": [
+      {
+        "tr": "15\" laptop bölmesi",
+        "en": "15\" laptop compartment"
+      },
+      {
+        "tr": "Valiz geçirme bandı",
+        "en": "Trolley sleeve"
+      },
+      {
+        "tr": "Evrak bölmesi",
+        "en": "Document sleeve"
+      }
+    ],
+    "strap": "ayarlanabilir",
+    "price": 4500
+  },
+  {
+    "slug": "borsa-evrak",
+    "code": "2018-D",
+    "name": {
+      "tr": "Hakiki Deri Seyahat Çantası",
+      "en": "Hakiki Deri Seyahat Çantası"
+    },
+    "segment": "erkek",
+    "form": "postaci",
+    "material": "deri",
+    "dimensions": {
+      "w": 50,
+      "h": 32,
+      "d": 25
+    },
+    "colors": [
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": [
+          "siyah-mu2u1g6h-0.webp"
+        ]
+      },
+      {
+        "key": "lacivert",
+        "name": {
+          "tr": "Lacivert",
+          "en": "Navy"
+        },
+        "hex": "#1E2A44",
+        "images": [
+          "lacivert-mu2u1k8h-0.webp"
+        ]
+      },
+      {
+        "key": "kahverengi",
+        "name": {
+          "tr": "Kahverengi",
+          "en": "Brown"
+        },
+        "hex": "#6B4423",
+        "images": [
+          "kahverengi-mu2u1nxv-0.webp"
+        ]
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": [
+          "taba-mu2u1rg7-0.webp"
+        ]
+      }
+    ],
+    "features": [
+      {
+        "tr": "15\" laptop bölmesi",
+        "en": "15\" laptop compartment"
+      },
+      {
+        "tr": "Şifreli kilit",
+        "en": "Combination lock"
+      },
+      {
+        "tr": "Valiz geçirme bandı",
+        "en": "Trolley sleeve"
+      },
+      {
+        "tr": "Taban ayakları",
+        "en": "Protective feet"
+      }
+    ],
+    "strap": "ayarlanabilir"
+  },
+  {
+    "slug": "usta-evrak",
+    "code": "YSM-8005",
+    "name": {
+      "tr": "Usta Evrak Çantası",
+      "en": "Usta Briefcase"
+    },
+    "segment": "erkek",
+    "form": "evrak",
+    "material": "tokluk",
+    "dimensions": {
+      "w": 40,
+      "h": 30,
+      "d": 11
+    },
+    "colors": [
+      {
+        "key": "konyak",
+        "name": {
+          "tr": "Konyak",
+          "en": "Cognac"
+        },
+        "hex": "#8B4A2B",
+        "images": []
+      },
+      {
+        "key": "kahve",
+        "name": {
+          "tr": "Koyu Kahve",
+          "en": "Espresso"
+        },
+        "hex": "#40301F",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "El dikişi detay",
+        "en": "Hand-stitched detail"
+      },
+      {
+        "tr": "15\" laptop bölmesi",
+        "en": "15\" laptop compartment"
+      },
+      {
+        "tr": "Evrak bölmesi",
+        "en": "Document sleeve"
+      }
+    ],
+    "strap": "ayarlanabilir"
+  },
+  {
+    "slug": "sefer-postaci",
+    "code": "YSM-8101",
+    "name": {
+      "tr": "Sefer Seyahat",
+      "en": "Sefer Travel"
+    },
+    "segment": "erkek",
+    "form": "postaci",
+    "material": "kanvas",
+    "dimensions": {
+      "w": 38,
+      "h": 28,
+      "d": 11
+    },
+    "colors": [
+      {
+        "key": "kahve",
+        "name": {
+          "tr": "Koyu Kahve",
+          "en": "Espresso"
+        },
+        "hex": "#40301F",
+        "images": []
+      },
+      {
+        "key": "zeytin",
+        "name": {
+          "tr": "Zeytin",
+          "en": "Olive"
+        },
+        "hex": "#4A4F35",
+        "images": []
+      },
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "15\" laptop bölmesi",
+        "en": "15\" laptop compartment"
+      },
+      {
+        "tr": "İç fermuarlı cep",
+        "en": "Inner zip pocket"
+      },
+      {
+        "tr": "Manyetik kapak",
+        "en": "Magnetic flap"
+      }
+    ],
+    "strap": "ayarlanabilir"
+  },
+  {
+    "slug": "rota-postaci",
+    "code": "YSM-8102",
+    "name": {
+      "tr": "Rota Seyahat",
+      "en": "Rota Travel"
+    },
+    "segment": "erkek",
+    "form": "postaci",
+    "material": "vegan",
+    "dimensions": {
+      "w": 36,
+      "h": 27,
+      "d": 10
+    },
+    "colors": [
+      {
+        "key": "antrasit",
+        "name": {
+          "tr": "Antrasit",
+          "en": "Charcoal"
+        },
+        "hex": "#35373B",
+        "images": []
+      },
+      {
+        "key": "lacivert",
+        "name": {
+          "tr": "Lacivert",
+          "en": "Navy"
+        },
+        "hex": "#1E2A44",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "14\" laptop bölmesi",
+        "en": "14\" laptop compartment"
+      },
+      {
+        "tr": "İç fermuarlı cep",
+        "en": "Inner zip pocket"
+      },
+      {
+        "tr": "Valiz geçirme bandı",
+        "en": "Trolley sleeve"
+      }
+    ],
+    "strap": "ayarlanabilir",
+    "isNew": true
+  },
+  {
+    "slug": "atlas-sirt",
+    "code": "YSM-8201",
+    "name": {
+      "tr": "Atlas Sırt Çantası",
+      "en": "Atlas Backpack"
+    },
+    "segment": "erkek",
+    "form": "sirt",
+    "material": "deri",
+    "dimensions": {
+      "w": 32,
+      "h": 44,
+      "d": 16
+    },
+    "colors": [
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": []
+      },
+      {
+        "key": "antrasit",
+        "name": {
+          "tr": "Antrasit",
+          "en": "Charcoal"
+        },
+        "hex": "#35373B",
+        "images": []
+      },
+      {
+        "key": "kahve",
+        "name": {
+          "tr": "Koyu Kahve",
+          "en": "Espresso"
+        },
+        "hex": "#40301F",
+        "images": []
+      }
+    ],
+    "features": [
+      {
+        "tr": "15\" laptop bölmesi",
+        "en": "15\" laptop compartment"
+      },
+      {
+        "tr": "Valiz geçirme bandı",
+        "en": "Trolley sleeve"
+      },
+      {
+        "tr": "İç fermuarlı cep",
+        "en": "Inner zip pocket"
+      },
+      {
+        "tr": "Taban ayakları",
+        "en": "Protective feet"
+      }
+    ],
+    "strap": "ayarlanabilir"
+  }
+]
