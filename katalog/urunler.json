@@ -877,6 +877,15 @@
           "taba-mu5nlvit-0.webp",
           "taba-mu5nm49h-0.webp"
         ]
+      },
+      {
+        "key": "bej",
+        "name": {
+          "tr": "Bej",
+          "en": "Beige"
+        },
+        "hex": "#C9B79C",
+        "images": []
       }
     ],
     "features": [
