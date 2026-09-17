@@ -568,6 +568,15 @@
           "kahverengi-mu5lv7i3-0.webp",
           "kahverengi-mu5lvheu-0.webp"
         ]
+      },
+      {
+        "key": "vizon",
+        "name": {
+          "tr": "Vizon",
+          "en": "Taupe"
+        },
+        "hex": "#8C7B6B",
+        "images": []
       }
     ],
     "features": [
