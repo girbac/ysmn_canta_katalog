@@ -934,6 +934,15 @@
           "siyah-mu5nrume-0.webp",
           "siyah-mu5ns49t-0.webp"
         ]
+      },
+      {
+        "key": "kahverengi",
+        "name": {
+          "tr": "Kahverengi",
+          "en": "Brown"
+        },
+        "hex": "#6B4423",
+        "images": []
       }
     ],
     "features": [
