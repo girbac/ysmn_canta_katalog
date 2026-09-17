@@ -115,7 +115,7 @@
     "share": "Bağlantıyı kopyala",
     "shared": "Kopyalandı",
     "print": "PDF olarak indir",
-    "printHint": "Yazdırma penceresinde \"PDF olarak kaydet\" seçin.",
+    "printHint": "PDF telefonunuza iner; WhatsApp'tan ya da e-postayla doğrudan gönderebilirsiniz.",
     "sharedTitle": "Paylaşılan sepet",
     "sharedLead": "Bu sepet sizinle paylaşıldı. Kendi sepetinize aktarabilirsiniz.",
     "importShared": "Sepetime aktar",
@@ -129,7 +129,10 @@
     "totalPartial": "{n} ürünün fiyatı belirtilmemiş — toplama dahil değil.",
     "addNote": "Not ekle",
     "subtotal": "Ara toplam",
-    "modelCount": "{n} model"
+    "modelCount": "{n} model",
+    "preparing": "PDF hazırlanıyor…",
+    "pdfError": "PDF oluşturulamadı. Tekrar deneyin ya da yazdırma sayfasını kullanın.",
+    "continued": "devam"
   },
   "about": {
     "title": "Atölye",

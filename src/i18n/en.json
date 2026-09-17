@@ -115,7 +115,7 @@
     "share": "Copy link",
     "shared": "Copied",
     "print": "Download as PDF",
-    "printHint": "Choose \"Save as PDF\" in the print dialog.",
+    "printHint": "The PDF downloads to your device; send it straight on WhatsApp or by email.",
     "sharedTitle": "Shared cart",
     "sharedLead": "This cart was shared with you. You can copy it into your own.",
     "importShared": "Copy into my cart",
@@ -129,7 +129,10 @@
     "totalPartial": "{n} item(s) have no price — not included in the total.",
     "addNote": "Add note",
     "subtotal": "Subtotal",
-    "modelCount": "{n} models"
+    "modelCount": "{n} models",
+    "preparing": "Preparing the PDF…",
+    "pdfError": "The PDF could not be created. Try again or use the print page.",
+    "continued": "cont."
   },
   "about": {
     "title": "Atelier",

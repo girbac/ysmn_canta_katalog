@@ -29,12 +29,14 @@ import {
  * Üç çıkışı var, hiçbiri sunucu gerektirmiyor:
  *  1. WhatsApp — ürün kodları, adetler ve notlarla hazır mesaj
  *  2. Paylaşılabilir bağlantı — seçki adresin içine kodlanıyor
- *  3. PDF — ayrı bir A4 baskı görünümü
+ *  3. PDF — dosya tarayıcıda kuruluyor (bkz. lib/sepet-pdf)
  */
 export function SelectionView({
   locale,
   t,
   whatsapp,
+  brand,
+  email,
   siteUrl,
   /**
    * Katalogun tamamı sunucudan geliyor.
@@ -51,6 +53,8 @@ export function SelectionView({
   locale: Locale;
   t: Dictionary;
   whatsapp: string;
+  brand: string;
+  email: string;
   siteUrl: string;
   catalog: Product[];
   sharedRaw?: string;
@@ -69,6 +73,8 @@ export function SelectionView({
    * görünüyor (bkz. notAcik).
    */
   const [acikNotlar, setAcikNotlar] = useState<Set<string>>(new Set());
+  /* Hook'lar erken dönüşün üstünde kalmalı; kullanımı aşağıda, pdfIndir'de */
+  const [pdfDurum, setPdfDurum] = useState<"bos" | "hazirlaniyor" | "hata">("bos");
 
   const shared = useMemo(
     () => decodeSelection(sharedRaw, (slug) => catalog.some((p) => p.slug === slug)),
@@ -140,6 +146,65 @@ export function SelectionView({
     "",
     shareUrl,
   ].join("\n");
+
+  /**
+   * PDF.
+   *
+   * Eskiden bu düğme A4 baskı görünümüne götürüyor ve tarayıcının
+   * yazdırma penceresini açıyordu. Telefonda çalışmıyordu: iOS'taki
+   * Chrome ile uygulama içi tarayıcılarda window.print() sessizce hiçbir
+   * şey yapmıyor — düğmeye basılıyor, hiçbir şey olmuyor. Artık dosya
+   * burada kuruluyor, yazdırma penceresine ihtiyaç kalmadı.
+   */
+
+  async function pdfIndir() {
+    if (pdfDurum === "hazirlaniyor") return;
+    setPdfDurum("hazirlaniyor");
+    try {
+      /* pdf-lib yalnızca bu düğmeye basılınca iniyor: sepet sayfasının
+         kendisi bu yükü taşımıyor. */
+      const { sepetPdfOlustur, pdfDosyaAdi } = await import("@/lib/sepet-pdf");
+      const blob = await sepetPdfOlustur({
+        rows,
+        locale,
+        t,
+        brand,
+        contact: { whatsapp, email, url: siteUrl },
+      });
+      const ad = pdfDosyaAdi(brand, locale);
+      const dosya = new File([blob], ad, { type: "application/pdf" });
+
+      /* Telefonda paylaşım sayfası: "Dosyalara kaydet" de dosyayı
+         doğrudan WhatsApp'tan göndermek de buradan çıkıyor. */
+      if (navigator.canShare?.({ files: [dosya] })) {
+        try {
+          await navigator.share({ files: [dosya], title: ad });
+          setPdfDurum("bos");
+          return;
+        } catch (hata) {
+          /* Kullanıcı paylaşımdan vazgeçtiyse bu bir hata değil */
+          if ((hata as DOMException)?.name === "AbortError") {
+            setPdfDurum("bos");
+            return;
+          }
+          /* Paylaşım yoksa ya da başarısızsa indirmeye düşülüyor */
+        }
+      }
+
+      const adres = URL.createObjectURL(blob);
+      const bag = document.createElement("a");
+      bag.href = adres;
+      bag.download = ad;
+      bag.rel = "noopener";
+      document.body.appendChild(bag);
+      bag.click();
+      bag.remove();
+      setTimeout(() => URL.revokeObjectURL(adres), 10_000);
+      setPdfDurum("bos");
+    } catch {
+      setPdfDurum("hata");
+    }
+  }
 
   async function copyLink() {
     try {
@@ -401,12 +466,14 @@ export function SelectionView({
               {copied ? t.selection.shared : t.selection.share}
             </button>
 
-            <Link
-              href={`/${locale}/sepet/yazdir`}
-              className="rounded-card border border-line-strong bg-ground-2 px-6 py-4 text-body font-medium text-ink transition-colors hover:bg-ink hover:text-ground"
+            <button
+              type="button"
+              onClick={pdfIndir}
+              disabled={pdfDurum === "hazirlaniyor"}
+              className="rounded-card border border-line-strong bg-ground-2 px-6 py-4 text-body font-medium text-ink transition-colors hover:bg-ink hover:text-ground disabled:opacity-60"
             >
-              {t.selection.print}
-            </Link>
+              {pdfDurum === "hazirlaniyor" ? t.selection.preparing : t.selection.print}
+            </button>
 
             <button
               type="button"
@@ -419,7 +486,16 @@ export function SelectionView({
             </button>
           </div>
 
-          <p className="no-print mt-4 text-caption text-ink-40">{t.selection.printHint}</p>
+          {pdfDurum === "hata" ? (
+            <p role="alert" className="no-print mt-4 text-caption text-ink">
+              {t.selection.pdfError}{" "}
+              <Link href={`/${locale}/sepet/yazdir`} className="underline underline-offset-4">
+                {t.selection.printNow}
+              </Link>
+            </p>
+          ) : (
+            <p className="no-print mt-4 text-caption text-ink-40">{t.selection.printHint}</p>
+          )}
         </>
       )}
     </>

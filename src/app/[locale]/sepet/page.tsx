@@ -56,6 +56,8 @@ export default async function SelectionPage({
           locale={locale}
           t={t}
           whatsapp={site.whatsapp}
+          brand={site.brandLong}
+          email={site.email}
           siteUrl={site.url}
           catalog={catalog}
           sharedRaw={s}
