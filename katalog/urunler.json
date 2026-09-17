@@ -1100,45 +1100,36 @@
   },
   {
     "slug": "nisan-omuz",
-    "code": "YSM-1107",
+    "code": "2086-S",
     "name": {
-      "tr": "Nisan Omuz Çantası",
-      "en": "Nisan Shoulder Bag"
+      "tr": "Hakiki Süet Deri Kadın Omuz Çantası",
+      "en": "Hakiki Süet Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
     "form": "omuz",
-    "material": "deri",
+    "material": "suet",
     "dimensions": {
-      "w": 26,
-      "h": 18,
-      "d": 8
+      "w": 30,
+      "h": 25,
+      "d": 12
     },
     "colors": [
       {
-        "key": "taba",
+        "key": "siyah",
         "name": {
-          "tr": "Taba",
-          "en": "Tan"
+          "tr": "Siyah",
+          "en": "Black"
         },
-        "hex": "#A9784E",
+        "hex": "#14110F",
         "images": []
       },
       {
-        "key": "vizon",
+        "key": "kahverengi",
         "name": {
-          "tr": "Vizon",
-          "en": "Taupe"
+          "tr": "Kahverengi",
+          "en": "Brown"
         },
-        "hex": "#8C7B6B",
-        "images": []
-      },
-      {
-        "key": "bej",
-        "name": {
-          "tr": "Bej",
-          "en": "Beige"
-        },
-        "hex": "#C9B79C",
+        "hex": "#6B4423",
         "images": []
       }
     ],
