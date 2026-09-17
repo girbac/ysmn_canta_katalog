@@ -126,7 +126,9 @@ export function SelectionView({
           ? ` — ${formatPrice(product.price * item.qty, locale)}`
           : "";
       const note = item.note?.trim() ? `\n  ${t.selection.note}: ${item.note.trim()}` : "";
-      return `• ${product.name[locale]} (${product.code}) — ${color.name[locale]}${qty}${price}${note}`;
+      /* Kod başta: mesajı okuyan kişi ürünü adından değil kodundan
+         ayırt ediyor, adlar birbirine çok benziyor. */
+      return `• ${product.code} — ${product.name[locale]} · ${color.name[locale]}${qty}${price}${note}`;
     }),
     // Fiyatı olmayan ürün varsa toplam yanıltıcı olur; o yüzden ya tam
     // toplam yazılır ya da hiç yazılmaz.
@@ -225,18 +227,22 @@ export function SelectionView({
                   key={product.slug}
                   className="rounded-card border border-line bg-ground-2 p-5 sm:p-6"
                 >
-                  {/* Model künyesi — bir kez */}
-                  <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  {/* Model künyesi — bir kez.
+                      Kod önde ve okunur: modellerin adları birbirine çok
+                      benziyor, iki kartı ayıran şey pratikte kod oluyor.
+                      Solda soluk bir yazı olarak durduğunda göz onu
+                      atlıyordu. */}
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                    {product.name[locale] !== product.code && (
+                      <span className="rounded-full border border-line-strong bg-ground px-3 py-1 text-caption font-medium tracking-[0.08em] text-ink tabular-nums">
+                        {product.code}
+                      </span>
+                    )}
                     <h2 className="text-subheading text-ink">
                       <Link href={`/${locale}/urun/${product.slug}`} className="hover:text-ink-60">
                         {product.name[locale]}
                       </Link>
                     </h2>
-                    {product.name[locale] !== product.code && (
-                      <span className="text-caption tabular-nums text-ink-40">
-                        {product.code}
-                      </span>
-                    )}
                   </div>
                   <p className="mt-1 text-caption text-ink-60">
                     {t.forms[product.form]} · {materialName(product.material)[locale]} ·{" "}

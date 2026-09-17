@@ -168,7 +168,7 @@ export function PrintSelection({
                           />
                         </div>
                       </td>
-                      <td className="py-3 pr-3 text-[10px] tracking-wide">{p.code}</td>
+                      <td className="py-3 pr-3 text-[12px] font-medium tracking-wide">{p.code}</td>
                       <td className="py-3 pr-3">
                         <span className="block font-whisper text-[13px] leading-tight">
                           {p.name[locale]}
