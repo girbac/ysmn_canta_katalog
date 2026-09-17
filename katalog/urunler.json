@@ -1017,37 +1017,68 @@
   },
   {
     "slug": "lodos-omuz",
-    "code": "YSM-1106",
+    "code": "2086-D",
     "name": {
-      "tr": "Lodos Omuz Çantası",
-      "en": "Lodos Shoulder Bag"
+      "tr": "Hakiki Deri Kadın Omuz Çantası",
+      "en": "Hakiki Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
     "form": "omuz",
-    "material": "vegan",
+    "material": "deri",
     "dimensions": {
-      "w": 28,
-      "h": 20,
-      "d": 9
+      "w": 30,
+      "h": 25,
+      "d": 12
     },
     "colors": [
       {
-        "key": "antrasit",
+        "key": "kahve",
         "name": {
-          "tr": "Antrasit",
-          "en": "Charcoal"
+          "tr": "Koyu Kahve",
+          "en": "Espresso"
         },
-        "hex": "#35373B",
-        "images": []
+        "hex": "#40301F",
+        "images": [
+          "kahve-mu5p61b5-0.webp",
+          "kahve-mu5p6a9t-0.webp"
+        ]
       },
       {
-        "key": "bordo",
+        "key": "siyah",
         "name": {
-          "tr": "Bordo",
-          "en": "Burgundy"
+          "tr": "Siyah",
+          "en": "Black"
         },
-        "hex": "#5C1F2B",
-        "images": []
+        "hex": "#14110F",
+        "images": [
+          "siyah-mu5p7sar-0.webp",
+          "siyah-mu5p80pz-0.webp"
+        ]
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": [
+          "taba-mu5p8oa8-0.webp",
+          "taba-mu5p8xd5-0.webp"
+        ]
+      },
+      {
+        "key": "bej",
+        "name": {
+          "tr": "Bej",
+          "en": "Beige"
+        },
+        "hex": "#C9B79C",
+        "images": [
+          "bej-mu5p90vr-0.webp",
+          "bej-mu5p96k7-0.webp",
+          "bej-mu5p9gdk-0.webp"
+        ]
       }
     ],
     "features": [
@@ -1064,24 +1095,61 @@
         "en": "Phone slot"
       }
     ],
-    "strap": "ayarlanabilir"
+    "strap": "ayarlanabilir",
+    "price": 4500
   },
   {
     "slug": "nisan-omuz",
-    "code": "YSM-1107",
+    "code": "2086-S",
     "name": {
-      "tr": "Nisan Omuz Çantası",
-      "en": "Nisan Shoulder Bag"
+      "tr": "Hakiki Süet Deri Kadın Omuz Çantası",
+      "en": "Hakiki Süet Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
     "form": "omuz",
-    "material": "deri",
+    "material": "suet",
     "dimensions": {
-      "w": 26,
-      "h": 18,
-      "d": 8
+      "w": 30,
+      "h": 25,
+      "d": 12
     },
     "colors": [
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": [
+          "siyah-mu5pbnxx-0.webp",
+          "siyah-mu5pbsv9-0.webp"
+        ]
+      },
+      {
+        "key": "kahverengi",
+        "name": {
+          "tr": "Kahverengi",
+          "en": "Brown"
+        },
+        "hex": "#6B4423",
+        "images": [
+          "kahverengi-mu5pc484-0.webp",
+          "kahverengi-mu5pceka-0.webp"
+        ]
+      },
+      {
+        "key": "haki",
+        "name": {
+          "tr": "Haki",
+          "en": "Khaki"
+        },
+        "hex": "#6B6A45",
+        "images": [
+          "haki-mu5pdham-0.webp",
+          "haki-mu5pdtak-0.webp"
+        ]
+      },
       {
         "key": "taba",
         "name": {
@@ -1089,25 +1157,23 @@
           "en": "Tan"
         },
         "hex": "#A9784E",
-        "images": []
+        "images": [
+          "taba-mu5pddfe-0.webp",
+          "taba-mu5pdx7o-0.webp"
+        ]
       },
       {
-        "key": "vizon",
+        "key": "kirmizi",
         "name": {
-          "tr": "Vizon",
-          "en": "Taupe"
+          "tr": "Kırmızı",
+          "en": "Red"
         },
-        "hex": "#8C7B6B",
-        "images": []
-      },
-      {
-        "key": "bej",
-        "name": {
-          "tr": "Bej",
-          "en": "Beige"
-        },
-        "hex": "#C9B79C",
-        "images": []
+        "hex": "#A81E27",
+        "images": [
+          "kirmizi-mu5pevi4-0.webp",
+          "kirmizi-mu5pf2lr-0.webp",
+          "kirmizi-mu5pf9py-0.webp"
+        ]
       }
     ],
     "features": [
@@ -1124,7 +1190,8 @@
         "en": "Inner zip pocket"
       }
     ],
-    "strap": "ayarlanabilir"
+    "strap": "ayarlanabilir",
+    "price": 4500
   },
   {
     "slug": "mercan-omuz",
