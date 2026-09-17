@@ -960,6 +960,15 @@
           "haki-mu5nu8ds-0.webp",
           "haki-mu5nufkg-0.webp"
         ]
+      },
+      {
+        "key": "vizon",
+        "name": {
+          "tr": "Vizon",
+          "en": "Taupe"
+        },
+        "hex": "#8C7B6B",
+        "images": []
       }
     ],
     "features": [
