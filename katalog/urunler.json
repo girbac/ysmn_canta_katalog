@@ -763,6 +763,24 @@
           "taba-mu5n8h70-0.webp",
           "taba-mu5n8oin-0.webp"
         ]
+      },
+      {
+        "key": "haki",
+        "name": {
+          "tr": "Haki",
+          "en": "Khaki"
+        },
+        "hex": "#6B6A45",
+        "images": []
+      },
+      {
+        "key": "vizon",
+        "name": {
+          "tr": "Vizon",
+          "en": "Taupe"
+        },
+        "hex": "#8C7B6B",
+        "images": []
       }
     ],
     "features": [
