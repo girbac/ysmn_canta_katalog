@@ -718,7 +718,7 @@
     },
     "segment": "kadin",
     "form": "omuz",
-    "material": "suet",
+    "material": "saffiano",
     "dimensions": {
       "w": 40,
       "h": 30,
@@ -819,7 +819,8 @@
         "en": "Phone slot"
       }
     ],
-    "strap": "sabit"
+    "strap": "ayarlanabilir",
+    "price": 4500
   },
   {
     "slug": "reyhan-omuz",
