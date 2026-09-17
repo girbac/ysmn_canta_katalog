@@ -962,12 +962,12 @@
         ]
       },
       {
-        "key": "vizon",
+        "key": "kum",
         "name": {
-          "tr": "Vizon",
-          "en": "Taupe"
+          "tr": "Kum",
+          "en": "Sand"
         },
-        "hex": "#8C7B6B",
+        "hex": "#D6C3A5",
         "images": []
       }
     ],
