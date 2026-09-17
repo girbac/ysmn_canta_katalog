@@ -349,29 +349,20 @@
   },
   {
     "slug": "defne-tote",
-    "code": "YSM-1005",
+    "code": "2097-S",
     "name": {
-      "tr": "Defne Tote",
-      "en": "Defne Tote"
+      "tr": "Hakiki Süet Deri Kadın Omuz Çantası",
+      "en": "Hakiki Süet Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
-    "form": "tote",
+    "form": "omuz",
     "material": "suet",
     "dimensions": {
-      "w": 35,
-      "h": 31,
-      "d": 13
+      "w": 26,
+      "h": 21,
+      "d": 11
     },
     "colors": [
-      {
-        "key": "zeytin",
-        "name": {
-          "tr": "Zeytin",
-          "en": "Olive"
-        },
-        "hex": "#4A4F35",
-        "images": []
-      },
       {
         "key": "taba",
         "name": {
@@ -446,7 +437,8 @@
         "en": "Phone slot"
       }
     ],
-    "strap": "sabit"
+    "strap": "sabit",
+    "price": 4500
   },
   {
     "slug": "mika-tote",
