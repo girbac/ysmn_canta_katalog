@@ -442,45 +442,27 @@
   },
   {
     "slug": "mika-tote",
-    "code": "YSM-1006",
+    "code": "2094-D",
     "name": {
-      "tr": "Mika Tote",
-      "en": "Mika Tote"
+      "tr": "Hakiki Deri Kadın Omuz Çantası",
+      "en": "Hakiki Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
-    "form": "tote",
+    "form": "omuz",
     "material": "vegan",
     "dimensions": {
-      "w": 37,
-      "h": 30,
-      "d": 12
+      "w": 29,
+      "h": 21,
+      "d": 10
     },
     "colors": [
       {
-        "key": "antrasit",
+        "key": "siyah",
         "name": {
-          "tr": "Antrasit",
-          "en": "Charcoal"
+          "tr": "Siyah",
+          "en": "Black"
         },
-        "hex": "#35373B",
-        "images": []
-      },
-      {
-        "key": "krem",
-        "name": {
-          "tr": "Krem",
-          "en": "Cream"
-        },
-        "hex": "#E3D5BE",
-        "images": []
-      },
-      {
-        "key": "pudra",
-        "name": {
-          "tr": "Pudra",
-          "en": "Blush"
-        },
-        "hex": "#D8AFA2",
+        "hex": "#14110F",
         "images": []
       }
     ],
