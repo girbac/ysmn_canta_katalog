@@ -707,7 +707,8 @@
         "en": "Card slots"
       }
     ],
-    "strap": "sabit"
+    "strap": "sabit",
+    "price": 4500
   },
   {
     "slug": "ada-omuz",
