@@ -750,6 +750,15 @@
           "kahverengi-mu5n7gg6-0.webp",
           "kahverengi-mu5n7nub-0.webp"
         ]
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": []
       }
     ],
     "features": [
