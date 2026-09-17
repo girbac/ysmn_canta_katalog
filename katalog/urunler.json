@@ -973,6 +973,24 @@
           "kum-mu5nw8fu-0.webp",
           "kum-mu5nwmca-0.webp"
         ]
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": []
+      },
+      {
+        "key": "kirmizi",
+        "name": {
+          "tr": "Kırmızı",
+          "en": "Red"
+        },
+        "hex": "#A81E27",
+        "images": []
       }
     ],
     "features": [
