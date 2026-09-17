@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 import type { Product } from "@/data/types";
 import { orderColors, type ColorDef } from "@/data/colors";
 import { saveProductAction, type SaveState } from "../actions";
@@ -39,10 +39,36 @@ export function ProductEditor({ product }: { product?: Product }) {
       hex: c.hex,
     })),
   );
-  const [state, action, pending] = useActionState<SaveState | null, FormData>(
-    saveProductAction,
-    null,
-  );
+  /**
+   * Kaydetme useActionState yerine elle yürütülüyor.
+   *
+   * Sebebi: fotoğraf yükleme de kaydetmeyi ÇAĞIRMAK zorunda ve sonucunu
+   * beklemesi gerekiyor (bkz. aşağıdaki `kaydet`). useActionState'in
+   * gönderdiği eylem bir söz döndürmüyor, yani "kaydedildi mi?" sorusuna
+   * cevap vermiyordu.
+   */
+  const [state, setState] = useState<SaveState | null>(null);
+  const [pending, gecis] = useTransition();
+  /** Formda kaydedilmemiş bir değişiklik var mı? */
+  const [kirli, setKirli] = useState(false);
+
+  /**
+   * Formun o anki hâlini kaydeder ve başarılı olup olmadığını söyler.
+   *
+   * Fotoğraf yükleme bunu kendi başlangıcında çağırıyor: eskiden yükleme
+   * rengi kalıcı olarak kaydediyor ama yazılan ad, fiyat, ölçü hiçbir
+   * yere yazılmıyordu. Sayfa yenilenince yazılanlar eski hâline dönüyor,
+   * renk ise duruyordu — panel kendi kendine renk ekliyormuş gibi
+   * görünüyordu. Artık ikisi birlikte kaydediliyor.
+   */
+  const kaydet = useCallback(async (): Promise<boolean> => {
+    const form = document.getElementById(PRODUCT_FORM_ID) as HTMLFormElement | null;
+    if (!form) return false;
+    const sonuc = await saveProductAction(null, new FormData(form));
+    setState(sonuc);
+    if (sonuc.ok) setKirli(false);
+    return sonuc.ok;
+  }, []);
 
   /**
    * Kaydetme hata verdiyse ilk hatanın yanına git.
@@ -62,8 +88,23 @@ export function ProductEditor({ product }: { product?: Product }) {
       ?.scrollIntoView({ behavior: "smooth", block: "center" });
   }, [state]);
 
+  /**
+   * Kaydedilmemiş değişiklikle sayfadan çıkmak uyarı veriyor.
+   *
+   * Form alanları tarayıcının kendi alanları; sayfa yenilendiğinde
+   * yazılanlar kayboluyor ve kullanıcı bunu ancak iş işten geçtikten sonra
+   * fark ediyordu.
+   */
+  useEffect(() => {
+    if (!kirli) return;
+    const uyar = (olay: BeforeUnloadEvent) => olay.preventDefault();
+    window.addEventListener("beforeunload", uyar);
+    return () => window.removeEventListener("beforeunload", uyar);
+  }, [kirli]);
+
   /** Palete tıklamak seçer/kaldırır; aynı anahtar iki kez giremez */
   function toggle(color: ColorDef) {
+    setKirli(true);
     setSelected((prev) =>
       prev.some((c) => c.key === color.key)
         ? prev.filter((c) => c.key !== color.key)
@@ -79,6 +120,7 @@ export function ProductEditor({ product }: { product?: Product }) {
    * kapak rengini değiştirmemeli.
    */
   function addColor(color: ColorDef) {
+    setKirli(true);
     setSelected((prev) =>
       prev.some((c) => c.key === color.key)
         ? prev.map((c) => (c.key === color.key ? color : c))
@@ -105,12 +147,15 @@ export function ProductEditor({ product }: { product?: Product }) {
         selected={ordered}
         onToggleColor={toggle}
         onAddColor={addColor}
-        action={action}
+        action={() => gecis(() => void kaydet())}
+        onDirty={() => setKirli(true)}
         state={state}
       />
 
       <div className="max-w-3xl">
-        <ImageManager product={product} selected={ordered} />
+        {/* Yükleme önce formu kaydediyor: fotoğrafla birlikte yazdıkların da
+            yerine otursun, yenileyince kaybolmasın. */}
+        <ImageManager product={product} selected={ordered} onBeforeUpload={kaydet} />
       </div>
 
       {/* Kaydet en altta ve yapışkan: sayfa uzun olduğu için ekranın

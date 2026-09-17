@@ -24,11 +24,21 @@ import { fotoKucult } from "./foto-kucult";
 export function ImageManager({
   product,
   selected,
+  onBeforeUpload,
 }: {
   /** Yeni üründe henüz kayıt yok */
   product?: Product;
   /** Formda o an seçili renkler, kaydedilecekleri sırada */
   selected: ColorDef[];
+  /**
+   * Yüklemeden hemen önce çalışır ve formu kaydeder.
+   *
+   * Yükleme rengi kalıcı kaydediyor; yazılan ad, fiyat, ölçü ise formda
+   * duruyordu. Sayfa yenilenince yazılanlar eski hâline dönüyor, renk
+   * kalıyordu. İkisi artık birlikte kaydediliyor. false dönerse (form
+   * geçersiz) yükleme yapılmıyor — yarım iş kalmasın.
+   */
+  onBeforeUpload: () => Promise<boolean>;
 }) {
   const saved = new Map((product?.colors ?? []).map((c) => [c.key, c]));
   const secili = new Set(selected.map((c) => c.key));
@@ -135,7 +145,7 @@ export function ImageManager({
                   işlemi rengi ürüne kendisi ekliyor (bkz. addImages).
                   Eskiden önce Kaydet'e basmak gerekiyordu. */}
               {product ? (
-                <Uploader slug={product.slug} color={color} />
+                <Uploader slug={product.slug} color={color} onBeforeUpload={onBeforeUpload} />
               ) : (
                 <p className="mt-4 text-caption text-ink-40">
                   Aşağıdaki &quot;Ürünü oluştur&quot; düğmesine basın; hemen
@@ -150,7 +160,15 @@ export function ImageManager({
   );
 }
 
-function Uploader({ slug, color }: { slug: string; color: ColorDef }) {
+function Uploader({
+  slug,
+  color,
+  onBeforeUpload,
+}: {
+  slug: string;
+  color: ColorDef;
+  onBeforeUpload: () => Promise<boolean>;
+}) {
   const [state, action, pending] = useActionState<
     { error?: string; added?: number } | null,
     FormData
@@ -174,6 +192,14 @@ function Uploader({ slug, color }: { slug: string; color: ColorDef }) {
     const kutu = form.querySelector<HTMLInputElement>('input[type="file"]');
     const secilen = Array.from(kutu?.files ?? []);
     if (secilen.length === 0) return;
+
+    // Önce form kaydedilsin: fotoğrafla birlikte yazdıkların da yerine
+    // otursun. Kaydetme başarısızsa (ör. eksik alan) yükleme yapılmıyor;
+    // hata formda görünüyor ve sayfa oraya kayıyor.
+    setHazirlaniyor(-1);
+    const kaydedildi = await onBeforeUpload();
+    setHazirlaniyor(0);
+    if (!kaydedildi) return;
 
     const veri = new FormData();
     veri.set("slug", slug);
@@ -212,10 +238,12 @@ function Uploader({ slug, color }: { slug: string; color: ColorDef }) {
       />
       <button
         type="submit"
-        disabled={pending || hazirlaniyor > 0}
+        disabled={pending || hazirlaniyor !== 0}
         className="rounded-card border border-line-strong bg-ground-2 px-4 py-2 text-caption font-medium text-ink disabled:opacity-50"
       >
-        {hazirlaniyor > 0
+        {hazirlaniyor < 0
+          ? "Kaydediliyor…"
+          : hazirlaniyor > 0
           ? `Hazırlanıyor (${hazirlaniyor})…`
           : pending
           ? "Yükleniyor…"

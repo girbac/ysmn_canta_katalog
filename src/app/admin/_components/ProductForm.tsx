@@ -32,6 +32,7 @@ export function ProductForm({
   selected,
   onToggleColor,
   onAddColor,
+  onDirty,
   action,
   state,
 }: {
@@ -40,6 +41,8 @@ export function ProductForm({
   selected: ColorDef[];
   onToggleColor: (color: ColorDef) => void;
   onAddColor: (color: ColorDef) => void;
+  /** Herhangi bir alana dokunulduğunda: kaydedilmemiş değişiklik var demek */
+  onDirty: () => void;
   /**
    * Kaydetme eylemi ve durumu da ProductEditor'da duruyor: Kaydet düğmesi
    * sayfanın en altında, fotoğraf bölümünün ardında yaşıyor ve oraya
@@ -103,7 +106,15 @@ export function ProductForm({
      * kutularının altında ve kaydetme çubuğunda özetli çıkıyor;
      * ProductEditor da ilk hataya kaydırıyor.
      */
-    <form id={PRODUCT_FORM_ID} action={action} noValidate className="mt-8 max-w-3xl">
+    <form
+      id={PRODUCT_FORM_ID}
+      action={action}
+      /* Herhangi bir alana dokunulması "kaydedilmemiş değişiklik" demek:
+         ProductEditor bununla sayfadan çıkarken uyarıyor. */
+      onInput={onDirty}
+      noValidate
+      className="mt-8 max-w-3xl"
+    >
       {product && <input type="hidden" name="orijinalSlug" value={product.slug} />}
 
       {errors._ && <Alert>{errors._}</Alert>}
