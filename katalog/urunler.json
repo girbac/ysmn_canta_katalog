@@ -790,6 +790,15 @@
           "vizon-mu5nausz-0.webp",
           "vizon-mu5nb2yj-0.webp"
         ]
+      },
+      {
+        "key": "bordo",
+        "name": {
+          "tr": "Bordo",
+          "en": "Burgundy"
+        },
+        "hex": "#5C1F2B",
+        "images": []
       }
     ],
     "features": [
