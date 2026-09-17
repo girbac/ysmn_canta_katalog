@@ -442,28 +442,58 @@
   },
   {
     "slug": "mika-tote",
-    "code": "YSM-1006",
+    "code": "2094-D",
     "name": {
-      "tr": "Mika Tote",
-      "en": "Mika Tote"
+      "tr": "Hakiki Deri Kadın Omuz Çantası",
+      "en": "Hakiki Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
-    "form": "tote",
-    "material": "vegan",
+    "form": "omuz",
+    "material": "deri",
     "dimensions": {
-      "w": 37,
-      "h": 30,
-      "d": 12
+      "w": 29,
+      "h": 21,
+      "d": 10
     },
     "colors": [
       {
-        "key": "antrasit",
+        "key": "siyah",
         "name": {
-          "tr": "Antrasit",
-          "en": "Charcoal"
+          "tr": "Siyah",
+          "en": "Black"
         },
-        "hex": "#35373B",
-        "images": []
+        "hex": "#14110F",
+        "images": [
+          "siyah-mu5lhxu2-0.webp",
+          "siyah-mu5li564-0.webp",
+          "siyah-mu5lig89-0.webp"
+        ]
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": [
+          "taba-mu5ljlwn-0.webp",
+          "taba-mu5ljyyp-0.webp",
+          "taba-mu5lkb3y-0.webp"
+        ]
+      },
+      {
+        "key": "kahverengi",
+        "name": {
+          "tr": "Kahverengi",
+          "en": "Brown"
+        },
+        "hex": "#6B4423",
+        "images": [
+          "kahverengi-mu5ll2v8-0.webp",
+          "kahverengi-mu5llelu-0.webp",
+          "kahverengi-mu5llnz3-0.webp"
+        ]
       },
       {
         "key": "krem",
@@ -472,16 +502,12 @@
           "en": "Cream"
         },
         "hex": "#E3D5BE",
-        "images": []
-      },
-      {
-        "key": "pudra",
-        "name": {
-          "tr": "Pudra",
-          "en": "Blush"
-        },
-        "hex": "#D8AFA2",
-        "images": []
+        "images": [
+          "krem-mu5lmv9v-0.webp",
+          "krem-mu5ln5f4-0.webp",
+          "krem-mu5lnmlp-0.webp",
+          "krem-mu5lo30g-0.webp"
+        ]
       }
     ],
     "features": [
@@ -503,14 +529,14 @@
   },
   {
     "slug": "hilal-omuz",
-    "code": "YSM-1101",
+    "code": "2094-S",
     "name": {
-      "tr": "Hilal Omuz Çantası",
-      "en": "Hilal Shoulder Bag"
+      "tr": "Hakiki Süet Deri Kadın Omuz Çantası",
+      "en": "Hakiki Süet Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
     "form": "omuz",
-    "material": "deri",
+    "material": "suet",
     "dimensions": {
       "w": 26,
       "h": 18,
@@ -524,7 +550,37 @@
           "en": "Black"
         },
         "hex": "#14110F",
-        "images": []
+        "images": [
+          "siyah-mu5lswm7-0.webp",
+          "siyah-mu5lt74x-0.webp",
+          "siyah-mu5lthgz-0.webp"
+        ]
+      },
+      {
+        "key": "kahverengi",
+        "name": {
+          "tr": "Kahverengi",
+          "en": "Brown"
+        },
+        "hex": "#6B4423",
+        "images": [
+          "kahverengi-mu5lutw7-0.webp",
+          "kahverengi-mu5lv7i3-0.webp",
+          "kahverengi-mu5lvheu-0.webp"
+        ]
+      },
+      {
+        "key": "vizon",
+        "name": {
+          "tr": "Vizon",
+          "en": "Taupe"
+        },
+        "hex": "#8C7B6B",
+        "images": [
+          "vizon-mu5lycro-0.webp",
+          "vizon-mu5lynpt-0.webp",
+          "vizon-mu5lz0y9-0.webp"
+        ]
       },
       {
         "key": "taba",
@@ -533,16 +589,25 @@
           "en": "Tan"
         },
         "hex": "#A9784E",
-        "images": []
+        "images": [
+          "taba-mu5m0ixy-0.webp",
+          "taba-mu5m0u37-0.webp",
+          "taba-mu5m1458-0.webp"
+        ]
       },
       {
-        "key": "bordo",
+        "key": "kirmizi",
         "name": {
-          "tr": "Bordo",
-          "en": "Burgundy"
+          "tr": "Kırmızı",
+          "en": "Red"
         },
-        "hex": "#5C1F2B",
-        "images": []
+        "hex": "#A81E27",
+        "images": [
+          "kirmizi-mu5m276u-0.webp",
+          "kirmizi-mu5m2iv8-0.webp",
+          "kirmizi-mu5m2rfi-0.webp",
+          "kirmizi-mu5m32ph-0.webp"
+        ]
       }
     ],
     "features": [
@@ -559,33 +624,50 @@
         "en": "Phone slot"
       }
     ],
-    "strap": "ayarlanabilir",
+    "strap": "sabit",
     "isNew": true
   },
   {
     "slug": "peri-omuz",
-    "code": "YSM-1102",
+    "code": "2093-D",
     "name": {
-      "tr": "Peri Omuz Çantası",
-      "en": "Peri Shoulder Bag"
+      "tr": "Hakiki Deri Kadın Omuz Çantası",
+      "en": "Hakiki Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
     "form": "omuz",
-    "material": "suet",
+    "material": "deri",
     "dimensions": {
-      "w": 24,
-      "h": 17,
-      "d": 7
+      "w": 40,
+      "h": 30,
+      "d": 15
     },
     "colors": [
       {
-        "key": "pudra",
+        "key": "siyah",
         "name": {
-          "tr": "Pudra",
-          "en": "Blush"
+          "tr": "Siyah",
+          "en": "Black"
         },
-        "hex": "#D8AFA2",
-        "images": []
+        "hex": "#14110F",
+        "images": [
+          "siyah-mu5mx8s4-0.webp",
+          "siyah-mu5mxh5r-0.webp",
+          "siyah-mu5mxprn-0.webp"
+        ]
+      },
+      {
+        "key": "kahverengi",
+        "name": {
+          "tr": "Kahverengi",
+          "en": "Brown"
+        },
+        "hex": "#6B4423",
+        "images": [
+          "kahverengi-mu5mybvt-0.webp",
+          "kahverengi-mu5myjq9-0.webp",
+          "kahverengi-mu5myub7-0.webp"
+        ]
       },
       {
         "key": "krem",
@@ -594,16 +676,25 @@
           "en": "Cream"
         },
         "hex": "#E3D5BE",
-        "images": []
+        "images": [
+          "krem-mu5n19qq-0.webp",
+          "krem-mu5n1i7c-0.webp",
+          "krem-mu5n1pan-0.webp"
+        ]
       },
       {
-        "key": "vizon",
+        "key": "taba",
         "name": {
-          "tr": "Vizon",
-          "en": "Taupe"
+          "tr": "Taba",
+          "en": "Tan"
         },
-        "hex": "#8C7B6B",
-        "images": []
+        "hex": "#A9784E",
+        "images": [
+          "taba-mu5n2jdg-0.webp",
+          "taba-mu5n2s4n-0.webp",
+          "taba-mu5n31sa-0.webp",
+          "taba-mu5n3p2u-0.webp"
+        ]
       }
     ],
     "features": [
@@ -616,33 +707,25 @@
         "en": "Card slots"
       }
     ],
-    "strap": "ayarlanabilir"
+    "strap": "sabit",
+    "price": 4500
   },
   {
     "slug": "ada-omuz",
-    "code": "YSM-1103",
+    "code": "2093-S",
     "name": {
-      "tr": "Ada Omuz Çantası",
-      "en": "Ada Shoulder Bag"
+      "tr": "Hakiki Süet Deri Kadın Omuz Çantası",
+      "en": "Hakiki Süet Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
     "form": "omuz",
     "material": "saffiano",
     "dimensions": {
-      "w": 27,
-      "h": 19,
-      "d": 9
+      "w": 40,
+      "h": 30,
+      "d": 15
     },
     "colors": [
-      {
-        "key": "lacivert",
-        "name": {
-          "tr": "Lacivert",
-          "en": "Navy"
-        },
-        "hex": "#1E2A44",
-        "images": []
-      },
       {
         "key": "siyah",
         "name": {
@@ -650,7 +733,77 @@
           "en": "Black"
         },
         "hex": "#14110F",
-        "images": []
+        "images": [
+          "siyah-mu5n5v94-0.webp",
+          "siyah-mu5n636t-0.webp",
+          "siyah-mu5n6aqq-0.webp"
+        ]
+      },
+      {
+        "key": "kahverengi",
+        "name": {
+          "tr": "Kahverengi",
+          "en": "Brown"
+        },
+        "hex": "#6B4423",
+        "images": [
+          "kahverengi-mu5n78ol-0.webp",
+          "kahverengi-mu5n7gg6-0.webp",
+          "kahverengi-mu5n7nub-0.webp"
+        ]
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": [
+          "taba-mu5n89rp-0.webp",
+          "taba-mu5n8h70-0.webp",
+          "taba-mu5n8oin-0.webp"
+        ]
+      },
+      {
+        "key": "haki",
+        "name": {
+          "tr": "Haki",
+          "en": "Khaki"
+        },
+        "hex": "#6B6A45",
+        "images": [
+          "haki-mu5na0ac-0.webp",
+          "haki-mu5naaoz-0.webp",
+          "haki-mu5nan8a-0.webp"
+        ]
+      },
+      {
+        "key": "vizon",
+        "name": {
+          "tr": "Vizon",
+          "en": "Taupe"
+        },
+        "hex": "#8C7B6B",
+        "images": [
+          "vizon-mu5na55w-0.webp",
+          "vizon-mu5nah1v-0.webp",
+          "vizon-mu5nausz-0.webp",
+          "vizon-mu5nb2yj-0.webp"
+        ]
+      },
+      {
+        "key": "bordo",
+        "name": {
+          "tr": "Bordo",
+          "en": "Burgundy"
+        },
+        "hex": "#5C1F2B",
+        "images": [
+          "bordo-mu5nckr4-0.webp",
+          "bordo-mu5ncsrs-0.webp",
+          "bordo-mu5nd17z-0.webp"
+        ]
       }
     ],
     "features": [
@@ -667,50 +820,77 @@
         "en": "Phone slot"
       }
     ],
-    "strap": "ayarlanabilir"
+    "strap": "ayarlanabilir",
+    "price": 4500
   },
   {
     "slug": "reyhan-omuz",
-    "code": "YSM-1104",
+    "code": "2092-D",
     "name": {
-      "tr": "Reyhan Omuz Çantası",
-      "en": "Reyhan Shoulder Bag"
+      "tr": "Hakiki Deri Kadın Omuz Çantası",
+      "en": "Hakiki Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
     "form": "omuz",
-    "material": "nubuk",
+    "material": "deri",
     "dimensions": {
-      "w": 25,
-      "h": 18,
-      "d": 8
+      "w": 20,
+      "h": 20,
+      "d": 15
     },
     "colors": [
       {
-        "key": "konyak",
+        "key": "siyah",
         "name": {
-          "tr": "Konyak",
-          "en": "Cognac"
+          "tr": "Siyah",
+          "en": "Black"
         },
-        "hex": "#8B4A2B",
-        "images": []
+        "hex": "#14110F",
+        "images": [
+          "siyah-mu5nj0yv-0.webp",
+          "siyah-mu5nj8yq-0.webp",
+          "siyah-mu5njh2b-0.webp"
+        ]
       },
       {
-        "key": "zeytin",
+        "key": "kahve",
         "name": {
-          "tr": "Zeytin",
-          "en": "Olive"
+          "tr": "Koyu Kahve",
+          "en": "Espresso"
         },
-        "hex": "#4A4F35",
-        "images": []
+        "hex": "#40301F",
+        "images": [
+          "kahve-mu5nk587-0.webp",
+          "kahve-mu5nkeml-0.webp",
+          "kahve-mu5nkmgn-0.webp"
+        ]
       },
       {
-        "key": "krem",
+        "key": "taba",
         "name": {
-          "tr": "Krem",
-          "en": "Cream"
+          "tr": "Taba",
+          "en": "Tan"
         },
-        "hex": "#E3D5BE",
-        "images": []
+        "hex": "#A9784E",
+        "images": [
+          "taba-mu5nlnqd-0.webp",
+          "taba-mu5nlvit-0.webp",
+          "taba-mu5nm49h-0.webp"
+        ]
+      },
+      {
+        "key": "bej",
+        "name": {
+          "tr": "Bej",
+          "en": "Beige"
+        },
+        "hex": "#C9B79C",
+        "images": [
+          "bej-mu5nnmc5-0.webp",
+          "bej-mu5nnv4l-0.webp",
+          "bej-mu5no72j-0.webp",
+          "bej-mu5noecl-0.webp"
+        ]
       }
     ],
     "features": [
@@ -723,42 +903,25 @@
         "en": "Hand-stitched detail"
       }
     ],
-    "strap": "ayarlanabilir"
+    "strap": "ayarlanabilir",
+    "price": 4500
   },
   {
     "slug": "sedef-omuz",
-    "code": "YSM-1105",
+    "code": "2092-S",
     "name": {
-      "tr": "Sedef Omuz Çantası",
-      "en": "Sedef Shoulder Bag"
+      "tr": "Hakiki Süet Deri Kadın Omuz Çantası",
+      "en": "Hakiki Süet Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
     "form": "omuz",
-    "material": "deri",
+    "material": "suet",
     "dimensions": {
-      "w": 23,
-      "h": 16,
-      "d": 7
+      "w": 20,
+      "h": 20,
+      "d": 15
     },
     "colors": [
-      {
-        "key": "krem",
-        "name": {
-          "tr": "Krem",
-          "en": "Cream"
-        },
-        "hex": "#E3D5BE",
-        "images": []
-      },
-      {
-        "key": "pudra",
-        "name": {
-          "tr": "Pudra",
-          "en": "Blush"
-        },
-        "hex": "#D8AFA2",
-        "images": []
-      },
       {
         "key": "siyah",
         "name": {
@@ -766,7 +929,77 @@
           "en": "Black"
         },
         "hex": "#14110F",
-        "images": []
+        "images": [
+          "siyah-mu5nrmyp-0.webp",
+          "siyah-mu5nrume-0.webp",
+          "siyah-mu5ns49t-0.webp"
+        ]
+      },
+      {
+        "key": "kahverengi",
+        "name": {
+          "tr": "Kahverengi",
+          "en": "Brown"
+        },
+        "hex": "#6B4423",
+        "images": [
+          "kahverengi-mu5nsy0l-0.webp",
+          "kahverengi-mu5nt61m-0.webp",
+          "kahverengi-mu5ntf0r-0.webp"
+        ]
+      },
+      {
+        "key": "haki",
+        "name": {
+          "tr": "Haki",
+          "en": "Khaki"
+        },
+        "hex": "#6B6A45",
+        "images": [
+          "haki-mu5nu0uy-0.webp",
+          "haki-mu5nu8ds-0.webp",
+          "haki-mu5nufkg-0.webp"
+        ]
+      },
+      {
+        "key": "kum",
+        "name": {
+          "tr": "Kum",
+          "en": "Sand"
+        },
+        "hex": "#D6C3A5",
+        "images": [
+          "kum-mu5nvzez-0.webp",
+          "kum-mu5nw8fu-0.webp",
+          "kum-mu5nwmca-0.webp"
+        ]
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": [
+          "taba-mu5ny0s8-0.webp",
+          "taba-mu5nye4t-0.webp",
+          "taba-mu5nyoki-0.webp"
+        ]
+      },
+      {
+        "key": "kirmizi",
+        "name": {
+          "tr": "Kırmızı",
+          "en": "Red"
+        },
+        "hex": "#A81E27",
+        "images": [
+          "kirmizi-mu5nxwtx-0.webp",
+          "kirmizi-mu5ny9pb-0.webp",
+          "kirmizi-mu5nykfc-0.webp",
+          "kirmizi-mu5nyscj-0.webp"
+        ]
       }
     ],
     "features": [
@@ -779,7 +1012,8 @@
         "en": "Card slots"
       }
     ],
-    "strap": "zincir"
+    "strap": "ayarlanabilir",
+    "price": 4500
   },
   {
     "slug": "lodos-omuz",
