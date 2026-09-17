@@ -668,6 +668,15 @@
           "kahverengi-mu5myjq9-0.webp",
           "kahverengi-mu5myub7-0.webp"
         ]
+      },
+      {
+        "key": "krem",
+        "name": {
+          "tr": "Krem",
+          "en": "Cream"
+        },
+        "hex": "#E3D5BE",
+        "images": []
       }
     ],
     "features": [
