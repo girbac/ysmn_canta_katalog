@@ -397,6 +397,17 @@
           "vizon-mu5g601i-0.webp",
           "vizon-mu5g678l-0.webp"
         ]
+      },
+      {
+        "key": "kahverengi",
+        "name": {
+          "tr": "Kahverengi",
+          "en": "Brown"
+        },
+        "hex": "#6B4423",
+        "images": [
+          "kahverengi-mu5g7r15-0.webp"
+        ]
       }
     ],
     "features": [
