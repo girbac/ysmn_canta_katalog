@@ -468,6 +468,15 @@
           "siyah-mu5li564-0.webp",
           "siyah-mu5lig89-0.webp"
         ]
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": []
       }
     ],
     "features": [
