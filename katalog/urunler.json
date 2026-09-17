@@ -581,6 +581,15 @@
           "vizon-mu5lynpt-0.webp",
           "vizon-mu5lz0y9-0.webp"
         ]
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": []
       }
     ],
     "features": [
