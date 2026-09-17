@@ -1042,6 +1042,15 @@
           "kahve-mu5p61b5-0.webp",
           "kahve-mu5p6a9t-0.webp"
         ]
+      },
+      {
+        "key": "siyah",
+        "name": {
+          "tr": "Siyah",
+          "en": "Black"
+        },
+        "hex": "#14110F",
+        "images": []
       }
     ],
     "features": [
