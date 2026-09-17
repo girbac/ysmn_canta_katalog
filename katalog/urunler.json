@@ -711,29 +711,20 @@
   },
   {
     "slug": "ada-omuz",
-    "code": "YSM-1103",
+    "code": "2093-S",
     "name": {
-      "tr": "Ada Omuz Çantası",
-      "en": "Ada Shoulder Bag"
+      "tr": "Hakiki Süet Deri Kadın Omuz Çantası",
+      "en": "Hakiki Süet Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
     "form": "omuz",
-    "material": "saffiano",
+    "material": "suet",
     "dimensions": {
-      "w": 27,
-      "h": 19,
-      "d": 9
+      "w": 40,
+      "h": 30,
+      "d": 15
     },
     "colors": [
-      {
-        "key": "lacivert",
-        "name": {
-          "tr": "Lacivert",
-          "en": "Navy"
-        },
-        "hex": "#1E2A44",
-        "images": []
-      },
       {
         "key": "siyah",
         "name": {
@@ -758,7 +749,7 @@
         "en": "Phone slot"
       }
     ],
-    "strap": "ayarlanabilir"
+    "strap": "sabit"
   },
   {
     "slug": "reyhan-omuz",
