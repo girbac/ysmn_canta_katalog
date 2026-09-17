@@ -629,45 +629,27 @@
   },
   {
     "slug": "peri-omuz",
-    "code": "YSM-1102",
+    "code": "2093-D",
     "name": {
-      "tr": "Peri Omuz Çantası",
-      "en": "Peri Shoulder Bag"
+      "tr": "Hakiki Deri Kadın Omuz Çantası",
+      "en": "Hakiki Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
     "form": "omuz",
-    "material": "suet",
+    "material": "deri",
     "dimensions": {
-      "w": 24,
-      "h": 17,
-      "d": 7
+      "w": 40,
+      "h": 30,
+      "d": 15
     },
     "colors": [
       {
-        "key": "pudra",
+        "key": "siyah",
         "name": {
-          "tr": "Pudra",
-          "en": "Blush"
+          "tr": "Siyah",
+          "en": "Black"
         },
-        "hex": "#D8AFA2",
-        "images": []
-      },
-      {
-        "key": "krem",
-        "name": {
-          "tr": "Krem",
-          "en": "Cream"
-        },
-        "hex": "#E3D5BE",
-        "images": []
-      },
-      {
-        "key": "vizon",
-        "name": {
-          "tr": "Vizon",
-          "en": "Taupe"
-        },
-        "hex": "#8C7B6B",
+        "hex": "#14110F",
         "images": []
       }
     ],
@@ -681,7 +663,7 @@
         "en": "Card slots"
       }
     ],
-    "strap": "ayarlanabilir"
+    "strap": "sabit"
   },
   {
     "slug": "ada-omuz",
