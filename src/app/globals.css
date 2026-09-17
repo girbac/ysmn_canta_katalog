@@ -310,6 +310,12 @@ body {
     break-inside: avoid;
     page-break-inside: avoid;
   }
+  /* Model künyesi sayfa sonunda tek başına kalmasın: renkleriyle
+     birlikte sonraki sayfaya geçsin. */
+  .print-keep-next {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
   a[href]::after {
     content: "";
   }

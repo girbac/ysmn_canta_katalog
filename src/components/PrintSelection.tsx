@@ -42,6 +42,17 @@ export function PrintSelection({
     rows.map(({ item, product }) => ({ price: product?.price, qty: item.qty })),
   );
 
+  /* Sepet sayfasındaki düzenin kâğıt hâli: aynı modelin renkleri tek künye
+     altında toplanıyor ve kod başta duruyor. Düz tabloda ad, malzeme ve ölçü
+     her renk için baştan yazılıyordu; asıl ayırt edici olan kod ise satırın
+     içinde kayboluyordu. */
+  const gruplar: Array<{ product: Product; satirlar: typeof rows }> = [];
+  for (const satir of rows) {
+    const mevcut = gruplar.find((g) => g.product!.slug === satir.product!.slug);
+    if (mevcut) mevcut.satirlar.push(satir);
+    else gruplar.push({ product: satir.product!, satirlar: [satir] });
+  }
+
   useEffect(() => {
     if (!hydrated || rows.length === 0) return;
     let iptal = false;
@@ -127,108 +138,138 @@ export function PrintSelection({
               </div>
             </header>
 
-            <table className="mt-8 w-full border-collapse text-left">
-              <thead>
-                <tr className="border-b border-black/30 text-[9px] uppercase text-ink-40 print:text-black/60">
-                  <th className="w-[74px] pb-2 font-normal"> </th>
-                  <th className="pb-2 font-normal">{t.product.code}</th>
-                  <th className="pb-2 font-normal">{t.common.product}</th>
-                  <th className="pb-2 font-normal">{t.product.material}</th>
-                  <th className="pb-2 font-normal">{t.product.dimensions}</th>
-                  <th className="pb-2 text-right font-normal">{t.selection.quantity}</th>
-                  <th className="pb-2 text-right font-normal">{t.product.price}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map(({ item, product }) => {
-                  const p = product!;
-                  const colorIndex = Math.max(
-                    0,
-                    p.colors.findIndex((c) => c.key === item.color),
-                  );
-                  const color = p.colors[colorIndex];
-                  return (
-                    <tr
-                      key={itemKey(item.slug, item.color)}
-                      className="print-break border-b border-black/12 align-top text-[11px] text-ink print:text-black"
-                    >
-                      {/* Gerçek ürün fotoğrafı — fotoğrafı olmayan renkte
-                          silüete düşer. Burası eskiden doğrudan silüet
-                          çiziyordu, yani ürünün fotoğrafı olsa bile PDF'e
-                          çizim giriyordu. Fotoğraf sınırı tek yerde
-                          (ProductMedia) kalsın diye artık o kullanılıyor. */}
-                      <td className="py-3">
-                        <div className="w-[62px]">
-                          <ProductMedia
-                            product={p}
-                            colorIndex={colorIndex}
-                            locale={locale}
-                            sizes="62px"
-                            eager
-                          />
-                        </div>
-                      </td>
-                      <td className="py-3 pr-3 text-[12px] font-medium tracking-wide">{p.code}</td>
-                      <td className="py-3 pr-3">
-                        <span className="block font-whisper text-[13px] leading-tight">
-                          {p.name[locale]}
-                        </span>
-                        <span className="mt-0.5 flex items-center gap-1.5 text-[10px] text-ink-40 print:text-black/60">
-                          {t.forms[p.form]} ·
-                          {/* Renk noktası SVG, CSS arka planı değil: tarayıcının
-                              "arka plan grafikleri" seçeneği kapalıyken de basılsın.
-                              Renk PDF'te yalnızca isimle kalmıyor, gözle de görünüyor. */}
-                          <svg
-                            width="8"
-                            height="8"
-                            viewBox="0 0 8 8"
-                            aria-hidden="true"
-                            className="shrink-0"
-                          >
-                            <circle cx="4" cy="4" r="3.6" fill={color.hex} stroke="#00000033" strokeWidth="0.8" />
-                          </svg>
-                          {color.name[locale]}
-                        </span>
-                        {item.note?.trim() && (
-                          <span className="mt-1 block text-[10px] italic text-ink-60 print:text-black/70">
-                            {t.selection.note}: {item.note.trim()}
-                          </span>
-                        )}
-                      </td>
-                      <td className="py-3 pr-3">{materialName(p.material)[locale]}</td>
-                      <td className="py-3 pr-3 tabular-nums">
+            <p className="mt-3 text-[10px] uppercase tracking-wide text-ink-40 print:text-black/60">
+              {interpolate(t.selection.itemCount, { n: rows.length })} ·{" "}
+              {interpolate(t.selection.modelCount, { n: gruplar.length })}
+            </p>
+
+            <div className="mt-6">
+              {gruplar.map(({ product, satirlar }) => {
+                const p = product!;
+                const araToplam = selectionTotal(
+                  satirlar.map(({ item }) => ({ price: p.price, qty: item.qty })),
+                );
+
+                return (
+                  <section key={p.slug} className="mt-7 first:mt-0">
+                    {/* Model künyesi — bir kez. print-keep-next: sayfa
+                        sonunda başlık renklerinden kopup tek başına kalmasın. */}
+                    <div className="print-keep-next flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-black/40 pb-2">
+                      <span className="rounded-full border border-black/40 px-2 py-0.5 text-[11px] font-medium tracking-[0.08em] tabular-nums text-ink print:text-black">
+                        {p.code}
+                      </span>
+                      <span className="font-whisper text-[15px] leading-tight text-ink print:text-black">
+                        {p.name[locale]}
+                      </span>
+                      <span className="ml-auto text-[10px] text-ink-40 print:text-black/60">
+                        {t.forms[p.form]} · {materialName(p.material)[locale]} ·{" "}
                         {formatDimensions(p.dimensions, t.common.cm)}
-                      </td>
-                      <td className="py-3 pr-3 text-right tabular-nums">{item.qty}</td>
-                      <td className="py-3 text-right tabular-nums">
-                        {typeof p.price === "number"
-                          ? formatPrice(p.price * item.qty, locale)
-                          : "—"}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-              {sum.priced > 0 && (
-                <tfoot>
-                  <tr className="text-[11px] text-ink print:text-black">
-                    <td colSpan={5} className="pt-4 text-right">
-                      {t.selection.total}
-                    </td>
-                    <td className="pt-4 text-right font-whisper text-[15px] tabular-nums">
-                      {formatPrice(sum.total, locale)}
-                    </td>
-                  </tr>
-                  {sum.unpriced > 0 && (
-                    <tr className="text-[9px] text-ink-40 print:text-black/60">
-                      <td colSpan={6} className="pt-1 text-right">
-                        {interpolate(t.selection.totalPartial, { n: sum.unpriced })}
-                      </td>
-                    </tr>
-                  )}
-                </tfoot>
-              )}
-            </table>
+                      </span>
+                    </div>
+
+                    <table className="w-full border-collapse text-left">
+                      <tbody>
+                        {satirlar.map(({ item }) => {
+                          const colorIndex = Math.max(
+                            0,
+                            p.colors.findIndex((c) => c.key === item.color),
+                          );
+                          const color = p.colors[colorIndex];
+
+                          return (
+                            <tr
+                              key={itemKey(item.slug, item.color)}
+                              className="print-break border-b border-black/12 align-middle text-[11px] text-ink print:text-black"
+                            >
+                              {/* Gerçek ürün fotoğrafı — fotoğrafı olmayan renkte
+                                  silüete düşer. Burası eskiden doğrudan silüet
+                                  çiziyordu, yani ürünün fotoğrafı olsa bile PDF'e
+                                  çizim giriyordu. Fotoğraf sınırı tek yerde
+                                  (ProductMedia) kalsın diye artık o kullanılıyor. */}
+                              <td className="w-[74px] py-3">
+                                <div className="w-[62px]">
+                                  <ProductMedia
+                                    product={p}
+                                    colorIndex={colorIndex}
+                                    locale={locale}
+                                    sizes="62px"
+                                    eager
+                                  />
+                                </div>
+                              </td>
+                              <td className="py-3 pr-3">
+                                <span className="flex items-center gap-1.5">
+                                  {/* Renk noktası SVG, CSS arka planı değil: tarayıcının
+                                      "arka plan grafikleri" seçeneği kapalıyken de basılsın.
+                                      Renk PDF'te yalnızca isimle kalmıyor, gözle de görünüyor. */}
+                                  <svg
+                                    width="9"
+                                    height="9"
+                                    viewBox="0 0 8 8"
+                                    aria-hidden="true"
+                                    className="shrink-0"
+                                  >
+                                    <circle
+                                      cx="4"
+                                      cy="4"
+                                      r="3.6"
+                                      fill={color.hex}
+                                      stroke="#00000033"
+                                      strokeWidth="0.8"
+                                    />
+                                  </svg>
+                                  {color.name[locale]}
+                                </span>
+                                {item.note?.trim() && (
+                                  <span className="mt-1 block text-[10px] italic text-ink-60 print:text-black/70">
+                                    {t.selection.note}: {item.note.trim()}
+                                  </span>
+                                )}
+                              </td>
+                              <td className="py-3 pr-3 text-right tabular-nums">
+                                <span className="text-[9px] uppercase text-ink-40 print:text-black/60">
+                                  {t.selection.quantity}{" "}
+                                </span>
+                                {item.qty}
+                              </td>
+                              <td className="w-[110px] py-3 text-right tabular-nums">
+                                {typeof p.price === "number"
+                                  ? formatPrice(p.price * item.qty, locale)
+                                  : "—"}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+
+                    {/* Tek renkte ara toplam, satırın fiyatının tekrarı olurdu */}
+                    {satirlar.length > 1 && araToplam.priced > 0 && (
+                      <p className="mt-1.5 text-right text-[10px] text-ink-60 print:text-black/70">
+                        {t.selection.subtotal}{" "}
+                        <span className="tabular-nums">
+                          {formatPrice(araToplam.total, locale)}
+                        </span>
+                      </p>
+                    )}
+                  </section>
+                );
+              })}
+            </div>
+
+            {sum.priced > 0 && (
+              <div className="mt-8 flex items-baseline justify-end gap-4 border-t border-black/40 pt-4 text-ink print:text-black">
+                <span className="text-[11px]">{t.selection.total}</span>
+                <span className="font-whisper text-[17px] tabular-nums">
+                  {formatPrice(sum.total, locale)}
+                </span>
+              </div>
+            )}
+            {sum.unpriced > 0 && (
+              <p className="mt-1 text-right text-[9px] text-ink-40 print:text-black/60">
+                {interpolate(t.selection.totalPartial, { n: sum.unpriced })}
+              </p>
+            )}
 
             <footer className="mt-10 border-t border-black/30 pt-4 text-[10px] text-ink-40 print:text-black/60">
               {contact.url}
