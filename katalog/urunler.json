@@ -594,6 +594,15 @@
           "taba-mu5m0u37-0.webp",
           "taba-mu5m1458-0.webp"
         ]
+      },
+      {
+        "key": "kirmizi",
+        "name": {
+          "tr": "Kırmızı",
+          "en": "Red"
+        },
+        "hex": "#A81E27",
+        "images": []
       }
     ],
     "features": [
