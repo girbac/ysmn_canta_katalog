@@ -1054,6 +1054,24 @@
           "siyah-mu5p7sar-0.webp",
           "siyah-mu5p80pz-0.webp"
         ]
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": []
+      },
+      {
+        "key": "bej",
+        "name": {
+          "tr": "Bej",
+          "en": "Beige"
+        },
+        "hex": "#C9B79C",
+        "images": []
       }
     ],
     "features": [
