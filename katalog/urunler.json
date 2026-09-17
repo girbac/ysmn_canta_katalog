@@ -1017,36 +1017,27 @@
   },
   {
     "slug": "lodos-omuz",
-    "code": "YSM-1106",
+    "code": "2086-D",
     "name": {
-      "tr": "Lodos Omuz Çantası",
-      "en": "Lodos Shoulder Bag"
+      "tr": "Hakiki Deri Kadın Omuz Çantası",
+      "en": "Hakiki Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
     "form": "omuz",
-    "material": "vegan",
+    "material": "deri",
     "dimensions": {
-      "w": 28,
-      "h": 20,
-      "d": 9
+      "w": 30,
+      "h": 25,
+      "d": 12
     },
     "colors": [
       {
-        "key": "antrasit",
+        "key": "kahve",
         "name": {
-          "tr": "Antrasit",
-          "en": "Charcoal"
+          "tr": "Koyu Kahve",
+          "en": "Espresso"
         },
-        "hex": "#35373B",
-        "images": []
-      },
-      {
-        "key": "bordo",
-        "name": {
-          "tr": "Bordo",
-          "en": "Burgundy"
-        },
-        "hex": "#5C1F2B",
+        "hex": "#40301F",
         "images": []
       }
     ],
@@ -1064,7 +1055,8 @@
         "en": "Phone slot"
       }
     ],
-    "strap": "ayarlanabilir"
+    "strap": "ayarlanabilir",
+    "price": 4500
   },
   {
     "slug": "nisan-omuz",
