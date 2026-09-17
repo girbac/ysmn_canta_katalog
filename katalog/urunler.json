@@ -529,14 +529,14 @@
   },
   {
     "slug": "hilal-omuz",
-    "code": "YSM-1101",
+    "code": "2094-S",
     "name": {
-      "tr": "Hilal Omuz Çantası",
-      "en": "Hilal Shoulder Bag"
+      "tr": "Hakiki Süet Deri Kadın Omuz Çantası",
+      "en": "Hakiki Süet Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
     "form": "omuz",
-    "material": "deri",
+    "material": "suet",
     "dimensions": {
       "w": 26,
       "h": 18,
@@ -550,24 +550,6 @@
           "en": "Black"
         },
         "hex": "#14110F",
-        "images": []
-      },
-      {
-        "key": "taba",
-        "name": {
-          "tr": "Taba",
-          "en": "Tan"
-        },
-        "hex": "#A9784E",
-        "images": []
-      },
-      {
-        "key": "bordo",
-        "name": {
-          "tr": "Bordo",
-          "en": "Burgundy"
-        },
-        "hex": "#5C1F2B",
         "images": []
       }
     ],
@@ -585,7 +567,7 @@
         "en": "Phone slot"
       }
     ],
-    "strap": "ayarlanabilir",
+    "strap": "sabit",
     "isNew": true
   },
   {
