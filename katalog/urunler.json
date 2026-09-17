@@ -825,45 +825,27 @@
   },
   {
     "slug": "reyhan-omuz",
-    "code": "YSM-1104",
+    "code": "2092-D",
     "name": {
-      "tr": "Reyhan Omuz Çantası",
-      "en": "Reyhan Shoulder Bag"
+      "tr": "Hakiki Deri Kadın Omuz Çantası",
+      "en": "Hakiki Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
     "form": "omuz",
-    "material": "nubuk",
+    "material": "deri",
     "dimensions": {
-      "w": 25,
-      "h": 18,
-      "d": 8
+      "w": 20,
+      "h": 20,
+      "d": 15
     },
     "colors": [
       {
-        "key": "konyak",
+        "key": "siyah",
         "name": {
-          "tr": "Konyak",
-          "en": "Cognac"
+          "tr": "Siyah",
+          "en": "Black"
         },
-        "hex": "#8B4A2B",
-        "images": []
-      },
-      {
-        "key": "zeytin",
-        "name": {
-          "tr": "Zeytin",
-          "en": "Olive"
-        },
-        "hex": "#4A4F35",
-        "images": []
-      },
-      {
-        "key": "krem",
-        "name": {
-          "tr": "Krem",
-          "en": "Cream"
-        },
-        "hex": "#E3D5BE",
+        "hex": "#14110F",
         "images": []
       }
     ],
@@ -877,7 +859,8 @@
         "en": "Hand-stitched detail"
       }
     ],
-    "strap": "ayarlanabilir"
+    "strap": "ayarlanabilir",
+    "price": 4500
   },
   {
     "slug": "sedef-omuz",
