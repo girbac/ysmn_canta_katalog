@@ -380,6 +380,17 @@
         },
         "hex": "#A9784E",
         "images": []
+      },
+      {
+        "key": "vizon",
+        "name": {
+          "tr": "Vizon",
+          "en": "Taupe"
+        },
+        "hex": "#8C7B6B",
+        "images": [
+          "vizon-mu5g5sq3-0.webp"
+        ]
       }
     ],
     "features": [
