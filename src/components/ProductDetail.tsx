@@ -315,12 +315,13 @@ export function ProductDetail({
       <div className="lg:col-span-2">
         <ScaleCompare
           product={product}
+          locale={locale}
+          hex={color.hex}
           labels={{
             title: t.product.scaleTitle,
             lead: t.product.scaleLead,
             a4: t.product.scaleA4,
             phone: t.product.scalePhone,
-            person: t.product.scalePerson,
             cm: t.common.cm,
           }}
         />
