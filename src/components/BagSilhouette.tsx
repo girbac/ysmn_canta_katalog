@@ -24,14 +24,6 @@ type Geometry = {
   behind?: string[];
   /** Çizimin sınırlayıcı kutusu: [x1, y1, x2, y2] */
   box: [number, number, number, number];
-  /**
-   * Yalnızca gövdenin kutusu — sap ve askılar hariç.
-   *
-   * Ölçek karşılaştırması (ScaleCompare) çizimi ürünün gerçek en/boyuna
-   * oturtuyor; ölçüler çantanın gövdesine ait, sapına değil. `box` bunun
-   * için kullanılamaz, o sapları da içeriyor.
-   */
-  bodyBox: [number, number, number, number];
 };
 
 const GEOMETRY: Record<Form, Geometry> = {
@@ -44,7 +36,6 @@ const GEOMETRY: Record<Form, Geometry> = {
       "M114 240 H286",
     ],
     box: [104, 90, 296, 336],
-    bodyBox: [104, 152, 296, 336],
   },
 
   omuz: {
@@ -60,14 +51,12 @@ const GEOMETRY: Record<Form, Geometry> = {
       "M190 238 h20 a6 6 0 0 1 6 6 v10 a6 6 0 0 1 -6 6 h-20 a6 6 0 0 1 -6 -6 v-10 a6 6 0 0 1 6 -6 z",
     ],
     box: [116, 96, 286, 308],
-    bodyBox: [120, 182, 280, 308],
   },
 
   baguette: {
     body: "M140 182 H260 A46 46 0 0 1 260 274 H140 A46 46 0 0 1 140 182 Z",
     details: ["M158 184 C158 140 242 140 242 184", "M112 206 H288", "M196 206 V182"],
     box: [94, 140, 306, 274],
-    bodyBox: [94, 182, 306, 274],
   },
 
   clutch: {
@@ -79,7 +68,6 @@ const GEOMETRY: Record<Form, Geometry> = {
     ],
     details: ["M200 270 v12", "M186 274 h28"],
     box: [96, 186, 304, 300],
-    bodyBox: [96, 186, 304, 300],
   },
 
   sirt: {
@@ -90,7 +78,6 @@ const GEOMETRY: Record<Form, Geometry> = {
     behind: ["M126 176 C92 216 92 288 122 328", "M274 176 C308 216 308 288 278 328"],
     details: ["M182 160 C182 132 218 132 218 160", "M104 206 H296"],
     box: [92, 132, 308, 340],
-    bodyBox: [104, 158, 296, 340],
   },
 
   evrak: {
@@ -105,7 +92,6 @@ const GEOMETRY: Record<Form, Geometry> = {
       "M86 296 H314",
     ],
     box: [86, 142, 314, 320],
-    bodyBox: [86, 180, 314, 320],
   },
 
   /**
@@ -131,7 +117,6 @@ const GEOMETRY: Record<Form, Geometry> = {
       "M274 214 C286 236 286 272 274 294",
     ],
     box: [86, 148, 314, 302],
-    bodyBox: [86, 206, 314, 302],
   },
 };
 
@@ -153,11 +138,6 @@ function fit(box: [number, number, number, number]) {
     baseline: CENTER_Y + (y2 - cy) * scale,
     halfWidth: (w * scale) / 2,
   };
-}
-
-/** Forma ait çizim geometrisi — ölçek karşılaştırması da bunu kullanıyor */
-export function bagGeometry(form: Form): Geometry {
-  return GEOMETRY[form];
 }
 
 export function BagSilhouette({

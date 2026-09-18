@@ -7,7 +7,6 @@ import type { Locale, Product } from "@/data/types";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { materialName } from "@/data/materials";
 import { ProductMedia } from "./ProductMedia";
-import { ScaleCompare } from "./ScaleCompare";
 import { SelectionButton } from "./SelectionButton";
 import { cx, formatDimensions, formatPrice, whatsappUrl } from "@/lib/utils";
 
@@ -311,21 +310,6 @@ export function ProductDetail({
         )}
       </div>
 
-      {/* ── Ölçek ── */}
-      <div className="lg:col-span-2">
-        <ScaleCompare
-          product={product}
-          locale={locale}
-          hex={color.hex}
-          labels={{
-            title: t.product.scaleTitle,
-            lead: t.product.scaleLead,
-            a4: t.product.scaleA4,
-            phone: t.product.scalePhone,
-            cm: t.common.cm,
-          }}
-        />
-      </div>
     </article>
   );
 }
