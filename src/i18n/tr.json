@@ -17,32 +17,8 @@
     "scrollHint": "Kaydırın",
     "womenTitle": "Kadın Koleksiyonu",
     "womenLead": "Sabahtan geceye geçen, günün ritmini bozmayan parçalar.",
-    "menTitle": "Erkek / Evrak",
+    "menTitle": "Erkek Koleksiyonu",
     "menLead": "Sekiz model. Her biri bir masaya, bir laptopa ve uzun bir güne göre ölçüldü.",
-    "craftTitle": "Zanaat",
-    "craftLead": "Bir çanta ortalama 4 günde bitiyor. Acele eden kısmı yok.",
-    "craftItems": [
-      {
-        "n": "01",
-        "t": "Deri seçimi",
-        "d": "Her post elle ayıklanır. Gergi izi, doku ve kalınlık tek tek bakılır."
-      },
-      {
-        "n": "02",
-        "t": "Kesim",
-        "d": "Şablon değil, deriye göre kesim. Aynı modelin iki çantası hiç birebir aynı olmaz."
-      },
-      {
-        "n": "03",
-        "t": "Dikiş",
-        "d": "Kritik hatlar el dikişi — eyer dikişi, çift iğne. Sökülmez, sökülse tek nokta sökülür."
-      },
-      {
-        "n": "04",
-        "t": "Kenar & cila",
-        "d": "Kenarlar zımparalanır, cilalanır, yeniden zımparalanır. Toplam altı geçiş."
-      }
-    ],
     "ctaTitle": "Beğendiklerinizi biriktirin.",
     "ctaLead": "Gezerken beğendiğiniz çantaları sepetinize ekleyin. Sonunda tek tıkla WhatsApp'tan bize gönderin ya da PDF olarak indirin.",
     "ctaButton": "Koleksiyonu gez"
@@ -62,7 +38,7 @@
     "sortNew": "Önce yeniler",
     "sortNameAsc": "İsim (A–Z)",
     "titleWomen": "Kadın Koleksiyonu",
-    "titleMen": "Erkek / Evrak Koleksiyonu",
+    "titleMen": "Erkek Koleksiyonu",
     "showFilters": "Filtrele",
     "hideFilters": "Filtreleri gizle",
     "removeFilter": "Filtreyi kaldır"
@@ -158,7 +134,7 @@
   },
   "segments": {
     "kadin": "Kadın",
-    "erkek": "Erkek / Evrak"
+    "erkek": "Erkek"
   },
   "common": {
     "cm": "cm",

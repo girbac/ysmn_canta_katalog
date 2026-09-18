@@ -86,7 +86,7 @@ export default async function HomePage({
         </div>
       </ModeSection>
 
-      {/* ── 3 · Erkek / Evrak — teknik ızgara ──
+      {/* ── 3 · Erkek koleksiyonu — teknik ızgara ──
           Eskiden burada tam ekranlık bir "perde" bölümü vardı; kaldırıldı çünkü
           içinde ürün yoktu ve bir ekran boyu fazladan kaydırma yaratıyordu.
           Aydınlıktan karanlığa geçiş artık doğrudan bu bölümün kenarında
@@ -134,26 +134,7 @@ export default async function HomePage({
         </div>
       </ModeSection>
 
-      {/* ── 4 · Zanaat ── */}
-      <ModeSection mode="kadin" className="bg-ground-2 py-24 md:py-32">
-        <div className="mx-auto max-w-[1280px] px-5 md:px-10">
-          <Reveal>
-            <SectionHead title={t.home.craftTitle} lead={t.home.craftLead} />
-          </Reveal>
-
-          <ol className="mt-16 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
-            {t.home.craftItems.map((item, i) => (
-              <Reveal as="li" key={item.n} delay={i * 0.08}>
-                <p className="eyebrow text-ink-40">{item.n}</p>
-                <h3 className="mt-4 text-heading-sm text-ink">{item.t}</h3>
-                <p className="mt-3 text-body text-ink-60">{item.d}</p>
-              </Reveal>
-            ))}
-          </ol>
-        </div>
-      </ModeSection>
-
-      {/* ── 5 · Seçki çağrısı ── */}
+      {/* ── 4 · Sepet çağrısı ── */}
       <ModeSection mode="kadin" className="bg-ground px-5 py-28 md:px-10 md:py-36">
         <Reveal className="mx-auto max-w-[1280px]">
           <h2 className="max-w-3xl font-whisper text-[clamp(2.2rem,5.4vw,58px)] leading-[1.06] tracking-[-0.04em] text-ink">

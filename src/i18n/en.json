@@ -17,32 +17,8 @@
     "scrollHint": "Scroll",
     "womenTitle": "Women's Collection",
     "womenLead": "Pieces that move from morning to evening without breaking the rhythm of the day.",
-    "menTitle": "Men / Briefcases",
+    "menTitle": "Men's Collection",
     "menLead": "Eight models. Each one measured against a desk, a laptop and a long day.",
-    "craftTitle": "Craft",
-    "craftLead": "A bag takes about four days. No part of it is in a hurry.",
-    "craftItems": [
-      {
-        "n": "01",
-        "t": "Selecting the hide",
-        "d": "Every hide is sorted by hand — stretch marks, grain and thickness checked one by one."
-      },
-      {
-        "n": "02",
-        "t": "Cutting",
-        "d": "Cut to the hide, not to a template. No two bags of the same model are ever identical."
-      },
-      {
-        "n": "03",
-        "t": "Stitching",
-        "d": "Critical seams are hand-sewn — saddle stitch, two needles. It doesn't unravel; if it gives, it gives at one point only."
-      },
-      {
-        "n": "04",
-        "t": "Edge & burnish",
-        "d": "Edges are sanded, burnished, sanded again. Six passes in total."
-      }
-    ],
     "ctaTitle": "Keep what you like.",
     "ctaLead": "Add bags to your cart as you browse. When you're done, send it to us on WhatsApp in one tap or download it as a PDF.",
     "ctaButton": "Browse the collection"
@@ -62,7 +38,7 @@
     "sortNew": "Newest first",
     "sortNameAsc": "Name (A–Z)",
     "titleWomen": "Women's Collection",
-    "titleMen": "Men's / Briefcase Collection",
+    "titleMen": "Men's Collection",
     "showFilters": "Filter",
     "hideFilters": "Hide filters",
     "removeFilter": "Remove filter"
@@ -158,7 +134,7 @@
   },
   "segments": {
     "kadin": "Women",
-    "erkek": "Men / Briefcase"
+    "erkek": "Men"
   },
   "common": {
     "cm": "cm",
