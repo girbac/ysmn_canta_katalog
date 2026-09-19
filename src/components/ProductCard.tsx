@@ -20,9 +20,9 @@ export type CardLabels = {
  * Katalog kartı.
  *
  * Fotoğraf kartın kahramanı: aydınlık bir yüzeyde, kırpılmadan, nefes
- * payıyla duruyor. İmleç üzerine gelince kart hafifçe yükseliyor ve —
- * varsa — rengin ikinci fotoğrafına geçiyor, yani başka bir açıyı görmek
- * için tıklamak gerekmiyor.
+ * payıyla duruyor. İmleç üzerine gelince kart hafifçe yükseliyor; görsel
+ * değişmiyor — bir ara üzerine gelince ikinci fotoğrafa geçiyordu,
+ * kaldırıldı. Diğer kareler ürünün kendi sayfasında görülüyor.
  *
  * Eskiden kart imlece göre eğiliyordu (3B tilt); çerçeveli bir kartta o
  * eğim kenarları eğriltip ucuzlatıyordu, yerini yükselme aldı.
@@ -47,7 +47,7 @@ export function ProductCard({
   const colorLabel = product.colors[colorIndex]?.name[locale] ?? "";
 
   return (
-    <div className={cx("group/kart group relative", className)}>
+    <div className={cx("group relative", className)}>
       <Link
         href={`/${locale}/urun/${product.slug}`}
         className="block focus-visible:outline-none"
@@ -61,7 +61,6 @@ export function ProductCard({
             sizes={sizes}
             priority={priority}
             contain
-            hoverSecond
           />
 
           {product.isNew && (

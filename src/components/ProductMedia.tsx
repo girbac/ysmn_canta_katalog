@@ -27,7 +27,6 @@ export function ProductMedia({
   priority = false,
   eager = false,
   contain = false,
-  hoverSecond = false,
   className = "",
 }: {
   product: Product;
@@ -53,13 +52,6 @@ export function ProductMedia({
    * daha iyi duruyor.
    */
   contain?: boolean;
-  /**
-   * İmleç kartın üzerine gelince rengin ikinci fotoğrafına geçer.
-   *
-   * İkinci fotoğraf yoksa hiç basılmıyor: boşa bir geçiş yapmak,
-   * "tıklasam başka kare var" izlenimi veriyordu.
-   */
-  hoverSecond?: boolean;
   className?: string;
 }) {
   const color = product.colors[colorIndex] ?? product.colors[0];
@@ -67,10 +59,6 @@ export function ProductMedia({
   // Çözümlenemeyen kaynak (ör. silinmiş depodan kalma tam adres) boş döner
   const file = ham && resolveImageSource(ham, product.slug) ? ham : undefined;
   const alt = `${product.name[locale]} — ${color?.name[locale] ?? ""}`.trim();
-
-  const ikinciHam = hoverSecond ? color?.images?.[imageIndex + 1] : undefined;
-  const ikinci =
-    ikinciHam && resolveImageSource(ikinciHam, product.slug) ? ikinciHam : undefined;
 
   /* Nefes payı görselin KENDİ dolgusu: `fill` ile basılan görsel mutlak
      konumlandığı için kapsayıcının dolgusu onu içeri almıyor, img'nin
@@ -83,29 +71,16 @@ export function ProductMedia({
       style={{ contain: "paint" }}
     >
       {file ? (
-        <>
-          <Image
-            src={resolveImageSource(file, product.slug)}
-            alt={alt}
-            fill
-            sizes={sizes}
-            priority={priority}
-            /* priority zaten eager demek; ikisini birden vermek geçersiz */
-            {...(!priority && eager ? { loading: "eager" as const } : {})}
-            className={oturma}
-          />
-          {ikinci && (
-            <Image
-              src={resolveImageSource(ikinci, product.slug)}
-              alt=""
-              aria-hidden="true"
-              fill
-              sizes={sizes}
-              loading="lazy"
-              className={`${oturma} opacity-0 transition-opacity duration-500 group-hover/kart:opacity-100`}
-            />
-          )}
-        </>
+        <Image
+          src={resolveImageSource(file, product.slug)}
+          alt={alt}
+          fill
+          sizes={sizes}
+          priority={priority}
+          /* priority zaten eager demek; ikisini birden vermek geçersiz */
+          {...(!priority && eager ? { loading: "eager" as const } : {})}
+          className={oturma}
+        />
       ) : (
         <>
           <BagSilhouette
