@@ -146,8 +146,8 @@ etkilemiyor. Anahtar filtre adresinde geçtiği için küçük harf, rakam ve
 tireyle sınırlı; panel Türkçe addan kendisi üretiyor ("Gül Kurusu" →
 `gul-kurusu`).
 
-`dimensions` yalnızca künye için değil: ürün sayfasındaki **ölçek
-karşılaştırması** (170 cm insan, A4, telefon) bu değerlerden çiziliyor.
+`dimensions` ürün sayfasındaki künyede yükseklik × en × derinlik olarak
+yazılır; PDF ve WhatsApp mesajı da aynı değerleri kullanır.
 
 ## Fotoğraf eklemek
 
@@ -164,17 +164,17 @@ fotoğrafları tek tek ekleyebilirsiniz, eksik olanlar hata vermez.
 ```
 src/
   app/[locale]/           tr / en — tüm sayfalar dil önekli
-    page.tsx              anasayfa (yedi bölümlük vitrin, ~18 ürün)
+    page.tsx              anasayfa (kadın + erkek vitrini; açılış bölümü
+                          şimdilik kapalı, bkz. components/Hero.tsx)
     koleksiyon/           katalogun tamamı + filtre (filtre durumu URL'de)
     urun/[slug]/          ürün detayı (tam sayfa)
     @modal/(.)urun/       aynı detay, ızgaradan açılınca pencere olarak
-    secki/                seçki + /yazdir A4 baskı görünümü
+    sepet/                sepet + /yazdir baskı görünümü
     atolye/
   components/
     BagSilhouette.tsx     7 form için çizgisel SVG silüet
     ProductMedia.tsx      fotoğraf ↔ silüet sınırı (tek değişim noktası)
     ModeSection.tsx       bölüm ekranın ortasına gelince <body> modunu çevirir
-    ScaleCompare.tsx      gerçek ölçekli boyut karşılaştırması
   app/admin/              yönetim paneli (liste, form, fotoğraf, giriş)
   lib/catalog/            şema (zod), depo adaptörleri, okuma/yazma
   lib/admin-auth.ts       imzalı oturum kurabiyesi
@@ -187,9 +187,11 @@ src/
 
 - **Tema** `data-mode` attribute'una bağlı CSS değişkenleriyle çalışır; bir
   bölümün üstüne `data-mode="erkek"` koymak o bölümün tamamını dönüştürür.
-- **Hero giriş animasyonu bilerek CSS** (`.hero-line`). JS ile yapılsaydı
-  hidrasyon bitene kadar metin görünmez kalır ve LCP ~2.3s'ye çıkardı; CSS ile
-  0.3s.
+- **Açılış (Hero) bölümü şu an anasayfada kullanılmıyor.** Bileşen ve yardımcıları
+  (`components/Hero.tsx`, `lib/hero.ts`, sözlükteki `home.heroTitle` ve
+  arkadaşları) duruyor; girişte ne olacağına karar verilince tek blokla geri
+  takılır. Giriş animasyonu bilerek CSS'ti (`.hero-line`): JS ile yapılsaydı
+  hidrasyon bitene kadar metin görünmez kalır ve LCP ~2,3 sn'ye çıkardı.
 - **CLS = 0**: her görsel sabit en-boy oranlı kutuda.
 - **Filtrede ölü uç yok.** Tıklanabilir her seçenek en az bir ürüne çıkar:
   seçenekler faceted mantıkla, *diğer* filtrelere göre süzülmüş listeden
@@ -199,7 +201,7 @@ src/
   `useSearchParams` gerekiyor; nav bu yüzden `<Suspense>` içinde. Fallback aynı
   menüyü işaretsiz basar, böylece bağlantılar ilk HTML'de yerinde kalır.
 - `prefers-reduced-motion` açıkken tüm hareket kapanır, içerik eksiksiz kalır.
-- Seçki sayfaları `robots` ile dizine kapalıdır (kişiye özel ve paylaşım
+- Sepet sayfaları `robots` ile dizine kapalıdır (kişiye özel ve paylaşım
   bağlantılı).
 
 ## Yayın bir türlü güncellenmiyorsa
