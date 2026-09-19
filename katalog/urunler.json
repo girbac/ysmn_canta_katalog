@@ -1259,6 +1259,15 @@
         },
         "hex": "#6B6A45",
         "images": []
+      },
+      {
+        "key": "kum",
+        "name": {
+          "tr": "Kum",
+          "en": "Sand"
+        },
+        "hex": "#D6C3A5",
+        "images": []
       }
     ],
     "features": [
