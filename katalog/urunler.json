@@ -1220,6 +1220,42 @@
           "siyah-mu8doohm-0.webp",
           "siyah-mu8doxw9-0.webp"
         ]
+      },
+      {
+        "key": "kahverengi",
+        "name": {
+          "tr": "Kahverengi",
+          "en": "Brown"
+        },
+        "hex": "#6B4423",
+        "images": []
+      },
+      {
+        "key": "vizon",
+        "name": {
+          "tr": "Vizon",
+          "en": "Taupe"
+        },
+        "hex": "#8C7B6B",
+        "images": []
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": []
+      },
+      {
+        "key": "haki",
+        "name": {
+          "tr": "Haki",
+          "en": "Khaki"
+        },
+        "hex": "#6B6A45",
+        "images": []
       }
     ],
     "features": [
