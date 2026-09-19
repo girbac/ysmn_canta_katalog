@@ -201,3 +201,22 @@ src/
 - `prefers-reduced-motion` açıkken tüm hareket kapanır, içerik eksiksiz kalır.
 - Seçki sayfaları `robots` ile dizine kapalıdır (kişiye özel ve paylaşım
   bağlantılı).
+
+## Yayın bir türlü güncellenmiyorsa
+
+Panelden yapılan her kayıt ve her fotoğraf depoya bir commit bırakıyor
+(`[skip ci]` ile, yani site yeniden derlenmesin diye). Bu commit'ler arka
+arkaya geldiğinde Vercel bir yığın dağıtım açıp çoğunu iptal ediyor; iptal
+sırası ters giderse **canlıya eski bir commit'in derlemesi** düşebiliyor ve
+ondan sonra gelen kod değişikliği için yeni bir derleme başlamıyor.
+
+Böyle bir durumda site, depo güncel olsa bile eski hâlini göstermeye devam
+eder. Teşhis ve çözüm:
+
+1. Vercel → proje → **Deployments**: en üstteki **Ready** dağıtımın commit'i,
+   GitHub'daki son commit mi? Değilse yayın geride kalmış demektir.
+2. Vercel → Deployments → o dağıtımın **⋯ → Redeploy**'u aynı (eski) commit'i
+   yeniden kurar; işe yaramaz. Bunun yerine depoya yeni bir commit gönderin
+   (herhangi bir değişiklik) — yeni webhook yeni derlemeyi başlatır.
+3. Tekrarlıyorsa Vercel projesinde **Settings → Git → Ignored Build Step**
+   ayarına ve `[skip ci]` davranışına bakın.
