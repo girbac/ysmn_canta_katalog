@@ -45,5 +45,9 @@ ekleyebilirsiniz; eksik olanlar hata vermez.
 | Zemin | Düz beyaz ya da çok açık gri stüdyo zemini |
 | Kadraj | Çanta çerçevenin ~%80'ini doldursun, altında hafif gölge |
 
-İlk fotoğraf listede ve kartlarda görünen kapak görselidir; diğerleri ürün
-sayfasında galeri olarak kullanılır (oklarla gezilir).
+## Kapak görseli
+
+Bir rengin **sıradaki ilk** fotoğrafı kapaktır: koleksiyon kartlarında,
+anasayfada ve sepette görünen odur. Diğerleri ürün sayfasındaki galeride,
+oklarla gezilir. Sırayı panelden fotoğrafları sürükleyerek değiştirebilir,
+yani kapağı istediğiniz kareyle değiştirebilirsiniz.
