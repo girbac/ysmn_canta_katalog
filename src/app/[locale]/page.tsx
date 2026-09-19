@@ -58,12 +58,7 @@ export default async function HomePage({
       >
         <div className="mx-auto max-w-[1280px] px-5 md:px-10">
           <Reveal>
-            <SectionHead
-              title={t.home.womenTitle}
-              lead={t.home.womenLead}
-              href={`/${locale}/koleksiyon?bolum=kadin`}
-              hrefLabel={`${t.common.viewAll} (${womenProducts.length})`}
-            />
+            <SectionHead title={t.home.womenTitle} lead={t.home.womenLead} />
           </Reveal>
 
           {/* Izgarayı ikiye bölen editoryal alıntı şeridi kaldırıldı;
@@ -71,6 +66,11 @@ export default async function HomePage({
           <div className="mt-16 grid grid-cols-2 gap-x-4 gap-y-14 md:gap-x-6 lg:grid-cols-3 lg:gap-x-8">
             <Grid products={womenPreview} locale={locale} labels={cardLabels} />
           </div>
+
+          <TumunuGor
+            href={`/${locale}/koleksiyon?bolum=kadin`}
+            label={`${t.common.viewAll} (${womenProducts.length})`}
+          />
         </div>
       </ModeSection>
 
@@ -86,12 +86,7 @@ export default async function HomePage({
       >
         <div className="mx-auto max-w-[1280px] px-5 md:px-10">
           <Reveal>
-            <SectionHead
-              title={t.home.menTitle}
-              lead={t.home.menLead}
-              href={`/${locale}/koleksiyon?bolum=erkek`}
-              hrefLabel={`${t.common.viewAll} (${menProducts.length})`}
-            />
+            <SectionHead title={t.home.menTitle} lead={t.home.menLead} />
           </Reveal>
 
           <ul className="mt-16 grid grid-cols-2 gap-x-4 gap-y-16 md:gap-x-6 lg:grid-cols-3 lg:gap-x-8">
@@ -118,6 +113,11 @@ export default async function HomePage({
               </Reveal>
             ))}
           </ul>
+
+          <TumunuGor
+            href={`/${locale}/koleksiyon?bolum=erkek`}
+            label={`${t.common.viewAll} (${menProducts.length})`}
+          />
         </div>
       </ModeSection>
 
@@ -152,34 +152,34 @@ export default async function HomePage({
 
 /* ───────────────────────── yardımcılar ───────────────────────── */
 
-function SectionHead({
-  title,
-  lead,
-  href,
-  hrefLabel,
-}: {
-  title: string;
-  lead: string;
-  href?: string;
-  hrefLabel?: string;
-}) {
+function SectionHead({ title, lead }: { title: string; lead: string }) {
   return (
-    <div className="flex flex-wrap items-end justify-between gap-6 border-b border-line pb-6">
-      <div>
-        <h2 className="font-whisper text-[clamp(1.8rem,4vw,38px)] leading-[1.08] tracking-[-0.04em] text-ink">
-          {title}
-        </h2>
-        <p className="mt-3 max-w-lg text-body text-ink-60">{lead}</p>
-      </div>
-      {href && hrefLabel && (
-        <Link
-          href={href}
-          className="shrink-0 border-b border-line-strong pb-1 text-body text-ink-60 transition-colors hover:text-ink"
-        >
-          {hrefLabel}
-        </Link>
-      )}
+    <div className="border-b border-line pb-6">
+      <h2 className="font-whisper text-[clamp(1.8rem,4vw,38px)] leading-[1.08] tracking-[-0.04em] text-ink">
+        {title}
+      </h2>
+      <p className="mt-3 max-w-lg text-body text-ink-60">{lead}</p>
     </div>
+  );
+}
+
+/**
+ * "Tümünü gör" bağlantısı — ızgaranın ALTINDA.
+ *
+ * Eskiden bölüm başlığının sağ üstündeydi: kartları gezip sonuna gelen
+ * kişi, koleksiyonun tamamına geçmek için sayfanın başına geri
+ * kaydırmak zorunda kalıyordu. Bağlantı artık gözün zaten geldiği yerde.
+ */
+function TumunuGor({ href, label }: { href: string; label: string }) {
+  return (
+    <Reveal className="mt-14 flex justify-center">
+      <Link
+        href={href}
+        className="rounded-card border border-line-strong bg-ground-2 px-8 py-4 text-body font-medium text-ink transition-colors hover:bg-ink hover:text-ground"
+      >
+        {label}
+      </Link>
+    </Reveal>
   );
 }
 
