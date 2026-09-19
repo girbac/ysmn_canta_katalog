@@ -1195,36 +1195,27 @@
   },
   {
     "slug": "mercan-omuz",
-    "code": "YSM-1108",
+    "code": "2079-S",
     "name": {
-      "tr": "Mercan Omuz Çantası",
-      "en": "Mercan Shoulder Bag"
+      "tr": "Hakiki Süet Deri Kadın Omuz Çantası",
+      "en": "Hakiki Süet Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
     "form": "omuz",
-    "material": "tokluk",
+    "material": "suet",
     "dimensions": {
-      "w": 29,
-      "h": 21,
-      "d": 10
+      "w": 42,
+      "h": 28,
+      "d": 20
     },
     "colors": [
       {
-        "key": "bordo",
+        "key": "siyah",
         "name": {
-          "tr": "Bordo",
-          "en": "Burgundy"
+          "tr": "Siyah",
+          "en": "Black"
         },
-        "hex": "#5C1F2B",
-        "images": []
-      },
-      {
-        "key": "kahve",
-        "name": {
-          "tr": "Koyu Kahve",
-          "en": "Espresso"
-        },
-        "hex": "#40301F",
+        "hex": "#14110F",
         "images": []
       }
     ],
@@ -1238,7 +1229,8 @@
         "en": "Inner zip pocket"
       }
     ],
-    "strap": "ayarlanabilir"
+    "strap": "sabit",
+    "price": 4500
   },
   {
     "slug": "efes-baguette",
