@@ -1298,18 +1298,18 @@
   },
   {
     "slug": "efes-baguette",
-    "code": "YSM-1201",
+    "code": "2076-D",
     "name": {
-      "tr": "Efes Baguette",
-      "en": "Efes Baguette"
+      "tr": "Hakiki Deri Kadın Omuz Çantası",
+      "en": "Hakiki Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
-    "form": "baguette",
+    "form": "omuz",
     "material": "deri",
     "dimensions": {
-      "w": 30,
-      "h": 14,
-      "d": 7
+      "w": 34,
+      "h": 24,
+      "d": 9
     },
     "colors": [
       {
@@ -1322,21 +1322,30 @@
         "images": []
       },
       {
-        "key": "krem",
+        "key": "kahve",
         "name": {
-          "tr": "Krem",
-          "en": "Cream"
+          "tr": "Koyu Kahve",
+          "en": "Espresso"
         },
-        "hex": "#E3D5BE",
+        "hex": "#40301F",
         "images": []
       },
       {
-        "key": "konyak",
+        "key": "taba",
         "name": {
-          "tr": "Konyak",
-          "en": "Cognac"
+          "tr": "Taba",
+          "en": "Tan"
         },
-        "hex": "#8B4A2B",
+        "hex": "#A9784E",
+        "images": []
+      },
+      {
+        "key": "kum",
+        "name": {
+          "tr": "Kum",
+          "en": "Sand"
+        },
+        "hex": "#D6C3A5",
         "images": []
       }
     ],
@@ -1351,7 +1360,8 @@
       }
     ],
     "strap": "sabit",
-    "isNew": true
+    "isNew": true,
+    "price": 4500
   },
   {
     "slug": "inci-baguette",
