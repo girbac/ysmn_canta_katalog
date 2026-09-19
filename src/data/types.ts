@@ -30,6 +30,11 @@ export type ColorVariant = {
    * Boşsa ProductMedia silüet placeholder'ı çizer.
    */
   images: string[];
+  /**
+   * Elde kaç tane var. Yalnızca panelde görünür; genel siteye giden
+   * veriden çıkarılıyor (bkz. lib/catalog/catalog.ts).
+   */
+  stock?: number;
 };
 
 export type Product = {

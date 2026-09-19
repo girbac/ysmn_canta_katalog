@@ -61,6 +61,19 @@ const colorVariant = z.object({
    *  - "https://.../taba-1.webp"  → tam adres (eski kayıtlar)
    */
   images: z.array(z.string().trim().min(1)).default([]),
+  /**
+   * Elde kaç tane var — YALNIZCA panelde görünür.
+   *
+   * Genel site bu alanı hiç görmüyor: getCatalog() okurken siliyor, yani
+   * sayfanın kaynağına da düşmüyor (bkz. lib/catalog/catalog.ts). Renk
+   * başına tutuluyor çünkü satılan şey renk: siyahı bitmiş bir model
+   * tabasıyla hâlâ stokta olabiliyor.
+   */
+  stock: z
+    .number({ error: "Stoğu rakamla yazın (ör. 3)" })
+    .int("Stok tam sayı olmalı")
+    .min(0, "Stok eksi olamaz")
+    .optional(),
 });
 
 /**

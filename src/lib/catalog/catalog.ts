@@ -19,6 +19,26 @@ function withOrder(list: StoredProduct[]): Product[] {
   return list.map((p, i) => ({ ...p, order: i }) as Product);
 }
 
+/**
+ * Stok bilgisini genel siteye giden veriden çıkarır.
+ *
+ * "Panelde göster, müşteri görmesin" yalnızca ekranda gizlemekle olmuyor:
+ * ürün verisi istemci bileşenlerine (kartlar, sepet) aktarıldığı için
+ * sayfanın kaynağında okunabilir hâlde duruyor. Bu yüzden alan, genel
+ * okuma yolunda veriden tamamen siliniyor. Panel kendi yolundan okuyor
+ * (getCatalogForAdmin → store.read) ve stoğu görüyor.
+ */
+function withoutStock(list: Product[]): Product[] {
+  return list.map((p) => ({
+    ...p,
+    colors: p.colors.map((renk) => {
+      const temiz = { ...renk };
+      delete temiz.stock;
+      return temiz;
+    }),
+  }));
+}
+
 export const getCatalog = cache(async (): Promise<Product[]> => {
   /**
    * Okuma burada dayanıklı: depoya ulaşılamasa bile genel site boş
@@ -30,9 +50,9 @@ export const getCatalog = cache(async (): Promise<Product[]> => {
    * katalogun üzerine yazmak demek olurdu.
    */
   try {
-    return withOrder(await getStore().read());
+    return withoutStock(withOrder(await getStore().read()));
   } catch {
-    return withOrder(seedProducts);
+    return withoutStock(withOrder(seedProducts));
   }
 });
 
@@ -95,4 +115,24 @@ export async function getCatalogForAdmin(): Promise<
     const detay = cause instanceof Error ? cause.message : String(cause);
     return { ok: false, error: detay.trim() || "Katalog okunamadı." };
   }
+}
+
+/**
+ * Panelin tek ürün okuması.
+ *
+ * Düzenleme ekranı eskiden genel okumayı (getProductBySlug) kullanıyordu;
+ * iki sakıncası vardı: stok alanı orada siliniyor (panelde boş görünüyordu)
+ * ve depo okunamadığında sayfa pakete gömülü demo ürünü gerçek sanıp
+ * düzenlemeye açıyordu. Panel kendi yolundan okumalı.
+ */
+export async function getProductForAdmin(
+  slug: string,
+): Promise<{ ok: true; product: Product } | { ok: false; error: string }> {
+  const okuma = await getCatalogForAdmin();
+  if (!okuma.ok) return okuma;
+
+  const product = okuma.products.find((p) => p.slug === slug);
+  return product
+    ? { ok: true, product }
+    : { ok: false, error: "Ürün bulunamadı." };
 }

@@ -212,6 +212,34 @@ export function ProductForm({
         <ColorPicker selected={selected} onToggle={onToggleColor} onAdd={onAddColor} />
       </Section>
 
+      {/* Stok — panelde kalır, genel siteye hiç gitmez (bkz.
+          lib/catalog/catalog.ts). Renk başına, çünkü satılan şey renk. */}
+      {selected.length > 0 && (
+        <Section
+          title="Stok"
+          hint="Yalnızca sizin göreceğiniz bilgi: müşteriye ne sitede ne PDF'te ne de sayfanın kaynağında görünür. Boş bırakırsanız o renk için stok takibi yapılmaz; 0 yazmak “kalmadı” demektir."
+        >
+          {selected.map((c) => (
+            <Field
+              key={c.key}
+              label={c.tr || c.key}
+              error={stokHatasi(errors, product, c.key)}
+            >
+              {/* Sayı kutusu değil: fiyatta olduğu gibi yazım biçimi
+                  sunucuda okunuyor, tarayıcı formu engellemesin. */}
+              <input
+                name={`stok-${c.key}`}
+                type="text"
+                inputMode="numeric"
+                defaultValue={stokDegeri(v, c.key)}
+                placeholder="—"
+                className={input}
+              />
+            </Field>
+          ))}
+        </Section>
+      )}
+
       <Section title="Detaylar" hint="Her satır bir madde. Türkçe ve İngilizce karşılığı dikey çizgiyle ayırın: Manyetik kapak | Magnetic flap">
         <textarea name="detaylar" rows={5} defaultValue={featureText}
           placeholder={"Manyetik kapak | Magnetic flap\nKart yuvaları | Card slots"}
@@ -251,6 +279,28 @@ export function ProductForm({
 
 const input =
   "mt-2 w-full rounded-card border border-line-strong bg-ground-2 px-4 py-3 text-body text-ink focus:border-ink focus:outline-none";
+
+/** Kutuda görünecek stok: hatadan sonra taslak, yoksa kayıtlı ürün */
+function stokDegeri(
+  v: { colors?: Array<{ key: string; stock?: number }> } | undefined,
+  key: string,
+): string {
+  const renk = v?.colors?.find((c) => c.key === key);
+  return typeof renk?.stock === "number" ? String(renk.stock) : "";
+}
+
+/**
+ * Stok hatası renk sırasına göre geliyor ("colors.2.stock"); kutu ise
+ * renk anahtarıyla çiziliyor. Sırayı üründen buluyoruz.
+ */
+function stokHatasi(
+  errors: Record<string, string>,
+  product: { colors: { key: string }[] } | undefined,
+  key: string,
+): string | undefined {
+  const i = product?.colors.findIndex((c) => c.key === key) ?? -1;
+  return i >= 0 ? errors[`colors.${i}.stock`] : undefined;
+}
 
 function Section({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (

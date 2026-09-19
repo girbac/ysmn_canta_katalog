@@ -201,16 +201,24 @@ function productFromForm(formData: FormData) {
       h: num(formData.get("yukseklik")),
       d: num(formData.get("derinlik")),
     },
-    colors: ordered.map((c) => ({
-      key: c.key,
-      // Renk adı da ürün adı gibi tek kutuda yazılıyor; iki dilde aynı
-      // görünüyor. Hazır renklerin İngilizcesi paletten geliyor.
-      name: { tr: String(c.tr ?? ""), en: String(c.en || c.tr || "") },
-      hex: c.hex,
-      // Fotoğraflar formdan gelmiyor; kaydetme sırasında depodakiler
-      // korunuyor (bkz. saveProduct).
-      images: [],
-    })),
+    colors: ordered.map((c) => {
+      /* Stok renk başına ayrı bir kutuda: boş bırakmak "takip etmiyorum"
+         demek, sıfır ise "kalmadı". Okunamayan bir sayı sessizce
+         düşmüyor — şema hata veriyor, yazılan değer buharlaşmıyor. */
+      const stokRaw = String(formData.get(`stok-${c.key}`) ?? "").trim();
+
+      return {
+        key: c.key,
+        // Renk adı da ürün adı gibi tek kutuda yazılıyor; iki dilde aynı
+        // görünüyor. Hazır renklerin İngilizcesi paletten geliyor.
+        name: { tr: String(c.tr ?? ""), en: String(c.en || c.tr || "") },
+        hex: c.hex,
+        // Fotoğraflar formdan gelmiyor; kaydetme sırasında depodakiler
+        // korunuyor (bkz. saveProduct).
+        images: [],
+        ...(stokRaw ? { stock: num(stokRaw) } : {}),
+      };
+    }),
     /**
      * Fiyatın YAZILDIĞI hâli de geri dönüyor.
      *

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { isAdmin, isAdminConfigured } from "@/lib/admin-session";
-import { getProductBySlug } from "@/lib/catalog/catalog";
+import { getProductForAdmin } from "@/lib/catalog/catalog";
 import { getStoreStatus } from "@/lib/catalog/store";
 import { AdminShell } from "../../_components/AdminShell";
 import { NotConfigured } from "../../_components/NotConfigured";
@@ -22,8 +22,25 @@ export default async function EditProduct({
   const store = await getStoreStatus();
 
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
-  if (!product) notFound();
+  const okuma = await getProductForAdmin(slug);
+  /* Depo okunamadığında "ürün yok" demek yanıltıcı olur; sebebi yazıyoruz.
+     Gerçekten silinmiş bir ürün ise 404 doğru cevap. */
+  if (!okuma.ok) {
+    if (okuma.error === "Ürün bulunamadı.") notFound();
+    return (
+      <AdminShell
+        storeKind={store.kind}
+        storeError={store.error}
+        title="Ürün"
+        back={{ href: "/admin", label: "Katalog" }}
+      >
+        <p role="alert" className="mt-6 rounded-card border border-line-strong bg-ground-2 p-4 text-body text-ink">
+          Ürün okunamadı: {okuma.error}
+        </p>
+      </AdminShell>
+    );
+  }
+  const product = okuma.product;
 
   const { kaydedildi, hata } = await searchParams;
 

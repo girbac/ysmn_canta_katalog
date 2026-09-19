@@ -136,6 +136,10 @@ export default async function AdminHome({
         key={products.map((p) => p.slug).join(",")}
         items={products.map((p) => {
           const photos = p.colors.reduce((n, c) => n + c.images.length, 0);
+          /* Stok yalnızca panelde: girilmemişse satırda hiç yazmıyor,
+             girilmişse renklerin toplamı künyeye ekleniyor. */
+          const stoklu = p.colors.filter((c) => typeof c.stock === "number");
+          const stok = stoklu.reduce((n, c) => n + (c.stock ?? 0), 0);
           return {
             slug: p.slug,
             ad: p.name.tr,
@@ -160,6 +164,9 @@ export default async function AdminHome({
                     {p.code} · {p.segment === "kadin" ? "Kadın" : "Erkek"} ·{" "}
                     {FORM_LABEL[p.form]} · {materialName(p.material).tr} ·{" "}
                     {p.colors.length} renk
+                    {stoklu.length > 0 && (
+                      <> · <span className="text-ink">Stok {stok}</span></>
+                    )}
                     {p.isNew && <> · <span className="text-ink">Yeni</span></>}
                   </p>
                 </div>
