@@ -50,8 +50,8 @@ export default async function HomePage({
   // Anasayfa bir vitrin: her bölümden tat verir, tamamını koleksiyona bırakır.
   // Katalogun tümü tek yerde (/koleksiyon) dursun ki müşteri aynı ürünlerle
   // iki farklı yerde karşılaşıp "burayı görmüş müydüm?" demesin.
-  const womenPreview = womenProducts.slice(0, 8);
-  const menPreview = menProducts.slice(0, 4);
+  const womenPreview = womenProducts.slice(0, 9);
+  const menPreview = menProducts.slice(0, 6);
 
   return (
     <>
@@ -80,7 +80,7 @@ export default async function HomePage({
 
           {/* Izgarayı ikiye bölen editoryal alıntı şeridi kaldırıldı;
               kartlar tek akışta gidiyor. */}
-          <div className="mt-16 grid grid-cols-2 gap-x-4 gap-y-14 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4 lg:gap-x-8">
+          <div className="mt-16 grid grid-cols-2 gap-x-4 gap-y-14 md:gap-x-6 lg:grid-cols-3 lg:gap-x-8">
             <Grid products={womenPreview} locale={locale} labels={cardLabels} />
           </div>
         </div>
@@ -106,14 +106,13 @@ export default async function HomePage({
             />
           </Reveal>
 
-          <ul className="mt-16 grid grid-cols-1 gap-x-6 gap-y-16 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="mt-16 grid grid-cols-2 gap-x-4 gap-y-16 md:gap-x-6 lg:grid-cols-3 lg:gap-x-8">
             {menPreview.map((p, i) => (
-              <Reveal as="li" key={p.slug} delay={(i % 4) * 0.06}>
+              <Reveal as="li" key={p.slug} delay={(i % 3) * 0.06}>
                 <ProductCard
                   product={p}
                   locale={locale}
                   labels={cardLabels(p.form)}
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 />
                 {/* Teknik künye — evrak tarafının dili ölçü ve malzeme */}
                 <dl className="mt-4 border-t border-line pt-3 text-caption">
@@ -207,13 +206,10 @@ function Grid({
 }) {
   return (
     <>
+      {/* Eskiden çift sütunlar aşağı kayıyordu (editoryal zikzak);
+          çerçeveli kartlarda o kayma ızgarayı bozuk gösteriyor. */}
       {list.map((p, i) => (
-        <Reveal
-          key={p.slug}
-          delay={(i % 4) * 0.05}
-          // Çift sütunlar hafifçe aşağıda başlasın — ızgaraya editoryal kayma
-          className="lg:even:mt-14"
-        >
+        <Reveal key={p.slug} delay={(i % 3) * 0.05}>
           <ProductCard product={p} locale={locale} labels={labels(p.form)} />
         </Reveal>
       ))}

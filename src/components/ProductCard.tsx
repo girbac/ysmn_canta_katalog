@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from "motion/react";
+import { useState } from "react";
 import type { Locale, Product } from "@/data/types";
 import { ProductMedia } from "./ProductMedia";
 import { SelectionButton } from "./SelectionButton";
@@ -19,15 +18,21 @@ export type CardLabels = {
 
 /**
  * Katalog kartı.
- * İmleç kartın üzerinde gezerken çanta hafifçe eğilir ve gölgesi derinleşir —
- * kaydırmanın "fiziği" burada başlıyor. Hareket azaltma tercihinde eğim kapanır.
+ *
+ * Fotoğraf kartın kahramanı: aydınlık bir yüzeyde, kırpılmadan, nefes
+ * payıyla duruyor. İmleç üzerine gelince kart hafifçe yükseliyor ve —
+ * varsa — rengin ikinci fotoğrafına geçiyor, yani başka bir açıyı görmek
+ * için tıklamak gerekmiyor.
+ *
+ * Eskiden kart imlece göre eğiliyordu (3B tilt); çerçeveli bir kartta o
+ * eğim kenarları eğriltip ucuzlatıyordu, yerini yükselme aldı.
  */
 export function ProductCard({
   product,
   locale,
   labels,
   priority = false,
-  sizes = "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw",
+  sizes = "(max-width: 768px) 50vw, 33vw",
   className,
 }: {
   product: Product;
@@ -37,71 +42,38 @@ export function ProductCard({
   sizes?: string;
   className?: string;
 }) {
-  const reduce = useReducedMotion();
-  const ref = useRef<HTMLDivElement>(null);
   const [colorIndex, setColorIndex] = useState(0);
-
-  const px = useMotionValue(0);
-  const py = useMotionValue(0);
-  const rotateX = useSpring(useTransform(py, [-0.5, 0.5], [2.5, -2.5]), {
-    stiffness: 180,
-    damping: 20,
-  });
-  const rotateY = useSpring(useTransform(px, [-0.5, 0.5], [-3, 3]), {
-    stiffness: 180,
-    damping: 20,
-  });
-
-  function onMove(e: React.MouseEvent) {
-    if (reduce || !ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    px.set((e.clientX - r.left) / r.width - 0.5);
-    py.set((e.clientY - r.top) / r.height - 0.5);
-  }
-
-  function onLeave() {
-    px.set(0);
-    py.set(0);
-  }
 
   const colorLabel = product.colors[colorIndex]?.name[locale] ?? "";
 
   return (
-    <div className={cx("group relative", className)}>
+    <div className={cx("group/kart group relative", className)}>
       <Link
         href={`/${locale}/urun/${product.slug}`}
         className="block focus-visible:outline-none"
         aria-label={`${product.name[locale]} — ${labels.form}`}
       >
-        <div
-          ref={ref}
-          onMouseMove={onMove}
-          onMouseLeave={onLeave}
-          style={{ perspective: 900 }}
-        >
-          <motion.div
-            style={reduce ? undefined : { rotateX, rotateY, transformStyle: "preserve-3d" }}
-            className="relative"
-          >
-            <ProductMedia
-              product={product}
-              colorIndex={colorIndex}
-              locale={locale}
-              sizes={sizes}
-              priority={priority}
-            />
+        <div className="relative overflow-hidden rounded-card border border-line bg-ground-3 transition-[translate,box-shadow] duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_18px_40px_-24px_rgb(13_13_13/0.45)] motion-reduce:translate-none motion-reduce:transition-none">
+          <ProductMedia
+            product={product}
+            colorIndex={colorIndex}
+            locale={locale}
+            sizes={sizes}
+            priority={priority}
+            contain
+            hoverSecond
+          />
 
-            {product.isNew && (
-              <span className="pointer-events-none absolute left-3 top-3 rounded-tile bg-ink px-2.5 py-1 text-caption font-medium uppercase text-ground">
-                {labels.isNew}
-              </span>
-            )}
-          </motion.div>
+          {product.isNew && (
+            <span className="pointer-events-none absolute left-4 top-4 rounded-tile bg-ink px-2.5 py-1 text-caption font-medium uppercase text-ground">
+              {labels.isNew}
+            </span>
+          )}
         </div>
       </Link>
 
       {/* Seçkiye ekle — kartın dışında ki link tıklamasıyla çakışmasın */}
-      <div className="absolute right-3 top-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100 focus-within:opacity-100 max-md:opacity-100">
+      <div className="absolute right-4 top-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 focus-within:opacity-100 max-md:opacity-100">
         <SelectionButton
           slug={product.slug}
           color={product.colors[colorIndex]?.key}

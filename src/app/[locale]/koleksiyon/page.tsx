@@ -147,14 +147,14 @@ export default async function CollectionPage({
             )}
           </div>
         ) : (
-          <ul className="mt-10 grid grid-cols-2 gap-x-4 gap-y-14 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4 lg:gap-x-8">
+          <ul className="mt-10 grid grid-cols-2 gap-x-4 gap-y-14 md:gap-x-6 lg:grid-cols-3 lg:gap-x-8">
             {list.map((p, i) => (
-              <Reveal as="li" key={p.slug} delay={(i % 4) * 0.05}>
+              <Reveal as="li" key={p.slug} delay={(i % 3) * 0.05}>
                 <ProductCard
                   product={p}
                   locale={locale}
                   labels={cardLabels(p.form)}
-                  priority={i < 4}
+                  priority={i < 3}
                 />
               </Reveal>
             ))}

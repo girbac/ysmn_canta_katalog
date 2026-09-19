@@ -36,7 +36,11 @@
      tabandan belirgin şekilde yükseltildi — Cosmos'ta derinlik
      gölgeyle değil yalnızca yüzey kontrastıyla anlatılıyor. */
   --ground-2: #656260;
-  --ground-3: #656260;
+  /* Ürün kartının yüzeyi koyu bölümde de beyaz kalıyor: fotoğraflar
+     beyaz fonda çekiliyor; kırık beyaz bir kartta fotoğrafın kendi
+     zemini kart içinde ikinci bir dikdörtgen gibi görünüyordu. Bölümün
+     koyu zemini duruyor, kartın sınırını çerçeve çiziyor. */
+  --ground-3: #ffffff;
   /*
    * Yazı tonları zeminle birlikte açıldı.
    *
@@ -113,7 +117,10 @@
      Çantalar dikey çekiliyor; kare çerçeve fotoğrafın altını ve üstünü
      kırpıyordu. Tek yerde duruyor: ProductMedia bunu kullanıyor ve
      katalogdaki bütün ürün görselleri oradan geçiyor. */
-  --aspect-product: 3 / 4;
+  /* Çerçeve oranı fotoğrafların oranı: depodaki 184 fotoğrafın tamamı
+     2:3. Eskiden 3/4'tü; kırpmadan yerleştirince çantanın iki yanında
+     boşluk kalıyor, çanta olduğundan küçük görünüyordu. */
+  --aspect-product: 2 / 3;
 
   /* Tek imza radius: 16px. 12px yalnızca görsel karolarında. */
   --radius-tile: 12px;

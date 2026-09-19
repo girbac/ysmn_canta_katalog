@@ -71,7 +71,7 @@ export default async function ProductPage({
     ...products.filter((p) => p.slug !== slug && p.segment === product.segment),
   ]
     .filter((p, i, arr) => arr.findIndex((x) => x.slug === p.slug) === i)
-    .slice(0, 4);
+    .slice(0, 3);
 
   const cardLabels = (form: Form) => ({
     add: t.product.add,
@@ -110,10 +110,14 @@ export default async function ProductPage({
             <h2 className="font-display text-[clamp(1.4rem,3vw,2.2rem)] text-ink">
               {t.product.related}
             </h2>
-            <ul className="mt-10 grid grid-cols-2 gap-x-4 gap-y-12 md:grid-cols-4 md:gap-x-8">
+            <ul className="mt-10 grid grid-cols-2 gap-x-4 gap-y-12 md:grid-cols-3 md:gap-x-8">
               {related.map((p, i) => (
                 <Reveal as="li" key={p.slug} delay={i * 0.05}>
-                  <ProductCard product={p} locale={locale} labels={cardLabels(p.form)} />
+                  <ProductCard
+                    product={p}
+                    locale={locale}
+                    labels={cardLabels(p.form)}
+                  />
                 </Reveal>
               ))}
             </ul>
