@@ -6,21 +6,17 @@ import { site } from "@/config/site";
 import type { Form, Locale, Product } from "@/data/types";
 import { getCatalogViews } from "@/lib/catalog/catalog";
 import { materialName } from "@/data/materials";
-import { Hero } from "@/components/Hero";
 import { ModeSection } from "@/components/ModeSection";
 import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
 import { formatDimensions } from "@/lib/utils";
-import { pickHeroBags } from "@/lib/hero";
 
 /**
- * Anasayfa belirli aralıklarla yeniden üretiliyor: açılıştaki çanta seti
- * her üretimde bir kayıyor, böylece farklı zamanlarda giren farklı bir
- * parçayla karşılaşıyor. Katalog değişince zaten ayrıca tazeleniyor.
+ * Anasayfa belirli aralıklarla yeniden üretiliyor; katalog değişince
+ * zaten ayrıca tazeleniyor.
  *
  * Doğrudan sayı yazılmak zorunda: Next bu ayarı derleme sırasında statik
- * olarak okuyor, içe aktarılan bir sabit kabul edilmiyor. Aynı değer
- * aşağıda pickHeroBags'e veriliyor, yani tek kaynak yine burası.
+ * olarak okuyor, içe aktarılan bir sabit kabul edilmiyor.
  */
 export const revalidate = 600;
 
@@ -33,7 +29,7 @@ export default async function HomePage({
   if (!isLocale(raw)) notFound();
   const locale = raw as Locale;
   const t = getDictionary(locale);
-  const { products, women: womenProducts, men: menProducts, featured } = await getCatalogViews();
+  const { women: womenProducts, men: menProducts } = await getCatalogViews();
 
   const cardLabels = (form: Form) => ({
     add: t.product.add,
@@ -44,9 +40,6 @@ export default async function HomePage({
     colorCount: t.product.colorCount,
   });
 
-  // Açılışta birkaç çanta sırayla geçiyor; seçim ve zamana göre kayma
-  // src/lib/hero.ts içinde (render saf kalsın diye orada).
-  const heroList = pickHeroBags(featured, products, revalidate);
   // Anasayfa bir vitrin: her bölümden tat verir, tamamını koleksiyona bırakır.
   // Katalogun tümü tek yerde (/koleksiyon) dursun ki müşteri aynı ürünlerle
   // iki farklı yerde karşılaşıp "burayı görmüş müydüm?" demesin.
@@ -55,19 +48,14 @@ export default async function HomePage({
 
   return (
     <>
-      {/* ── 1 · Açılış ── */}
-      <ModeSection mode="kadin" className="bg-ground">
-        <Hero
-          products={heroList}
-          eyebrow={t.home.eyebrow}
-          title={t.home.heroTitle}
-          lead={t.home.heroLead}
-          scrollHint={t.home.scrollHint}
-        />
-      </ModeSection>
-
-      {/* ── 2 · Kadın — vitrin tadı ── */}
-      <ModeSection mode="kadin" id="kadin" className="cv-auto bg-ground py-24 md:py-32">
+      {/* ── 1 · Kadın — vitrin tadı ── */}
+      {/* Açılış bölümü kaldırıldı; ilk bölüm artık bu, üst dolgusu yüzen
+          başlık çubuğunu temizleyecek kadar. */}
+      <ModeSection
+        mode="kadin"
+        id="kadin"
+        className="cv-auto bg-ground pb-24 pt-28 md:pb-32 md:pt-36"
+      >
         <div className="mx-auto max-w-[1280px] px-5 md:px-10">
           <Reveal>
             <SectionHead
@@ -86,7 +74,7 @@ export default async function HomePage({
         </div>
       </ModeSection>
 
-      {/* ── 3 · Erkek koleksiyonu — teknik ızgara ──
+      {/* ── 2 · Erkek koleksiyonu — teknik ızgara ──
           Eskiden burada tam ekranlık bir "perde" bölümü vardı; kaldırıldı çünkü
           içinde ürün yoktu ve bir ekran boyu fazladan kaydırma yaratıyordu.
           Aydınlıktan karanlığa geçiş artık doğrudan bu bölümün kenarında
@@ -133,7 +121,7 @@ export default async function HomePage({
         </div>
       </ModeSection>
 
-      {/* ── 4 · Sepet çağrısı ── */}
+      {/* ── 3 · Sepet çağrısı ── */}
       <ModeSection mode="kadin" className="bg-ground px-5 py-28 md:px-10 md:py-36">
         <Reveal className="mx-auto max-w-[1280px]">
           <h2 className="max-w-3xl font-whisper text-[clamp(2.2rem,5.4vw,58px)] leading-[1.06] tracking-[-0.04em] text-ink">
