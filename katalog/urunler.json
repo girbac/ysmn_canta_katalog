@@ -1378,13 +1378,13 @@
   },
   {
     "slug": "inci-baguette",
-    "code": "YSM-1202",
+    "code": "2076-S",
     "name": {
-      "tr": "İnci Baguette",
-      "en": "İnci Baguette"
+      "tr": "Hakiki Süet Deri Kadın Omuz Çantası",
+      "en": "Hakiki Süet Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
-    "form": "baguette",
+    "form": "omuz",
     "material": "suet",
     "dimensions": {
       "w": 28,
@@ -1393,21 +1393,57 @@
     },
     "colors": [
       {
-        "key": "pudra",
+        "key": "siyah",
         "name": {
-          "tr": "Pudra",
-          "en": "Blush"
+          "tr": "Siyah",
+          "en": "Black"
         },
-        "hex": "#D8AFA2",
+        "hex": "#14110F",
         "images": []
       },
       {
-        "key": "krem",
+        "key": "gri",
         "name": {
-          "tr": "Krem",
-          "en": "Cream"
+          "tr": "Gri",
+          "en": "Grey"
         },
-        "hex": "#E3D5BE",
+        "hex": "#7A7C80",
+        "images": []
+      },
+      {
+        "key": "kum",
+        "name": {
+          "tr": "Kum",
+          "en": "Sand"
+        },
+        "hex": "#D6C3A5",
+        "images": []
+      },
+      {
+        "key": "kahve",
+        "name": {
+          "tr": "Koyu Kahve",
+          "en": "Espresso"
+        },
+        "hex": "#40301F",
+        "images": []
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": []
+      },
+      {
+        "key": "haki",
+        "name": {
+          "tr": "Haki",
+          "en": "Khaki"
+        },
+        "hex": "#6B6A45",
         "images": []
       }
     ],
@@ -1417,7 +1453,8 @@
         "en": "Magnetic flap"
       }
     ],
-    "strap": "sabit"
+    "strap": "sabit",
+    "price": 4500
   },
   {
     "slug": "vera-baguette",
