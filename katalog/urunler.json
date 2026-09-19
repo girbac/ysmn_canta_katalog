@@ -1234,17 +1234,6 @@
         ]
       },
       {
-        "key": "vizon",
-        "name": {
-          "tr": "Vizon",
-          "en": "Taupe"
-        },
-        "hex": "#8C7B6B",
-        "images": [
-          "vizon-mu8dqcbv-0.webp"
-        ]
-      },
-      {
         "key": "taba",
         "name": {
           "tr": "Taba",
@@ -1272,6 +1261,15 @@
         "images": [
           "kum-mu8dqfox-0.webp"
         ]
+      },
+      {
+        "key": "gri",
+        "name": {
+          "tr": "Gri",
+          "en": "Grey"
+        },
+        "hex": "#7A7C80",
+        "images": []
       }
     ],
     "features": [
