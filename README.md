@@ -8,7 +8,7 @@ sayfanın kendi paletini değiştirmesi.
 net kapı verir (Kadın / Erkek). Katalogun tamamı tek yerde, `/koleksiyon`'da durur —
 müşteri aynı ürünlerle iki ayrı yerde karşılaşmasın diye.
 
-Ziyaretçi gezerken beğendiklerini **seçkisine** ekler; seçkiyi tek tıkla
+Ziyaretçi gezerken beğendiklerini **sepetine** ekler; sepeti tek tıkla
 WhatsApp'tan gönderir, bağlantı olarak paylaşır ya da PDF indirir.
 
 ## Çalıştırma
@@ -25,8 +25,8 @@ npm run build && npm start   # production
 
 ## Yönetim paneli (`/admin`)
 
-Ürün ekleme/düzenleme/silme, sıralama ve fotoğraf yükleme panelden yapılır.
-Kod bilgisi gerekmez.
+Ürün ekleme/düzenleme/silme, sıralama, stok ve fotoğraf yükleme panelden
+yapılır. Kod bilgisi gerekmez.
 
 ### Açmak için
 
@@ -83,8 +83,8 @@ GitHub deposunun karşıladıkları:
 - Yazmalar dosyanın `sha`'sıyla yapılıyor: arada başka bir yerden yazıldıysa
   GitHub reddediyor. İki kaydetmenin birbirini ezmesi mümkün değil.
 - Fotoğraflar `/foto/<adres>/<dosya>` yolundan servis ediliyor, yani yüklendiği
-  anda görünüyor — yeni bir yayın beklenmiyor. Veri commit'leri `[skip ci]`
-  taşıdığı için siteyi yeniden derlemiyor.
+  anda görünüyor — yeni bir yayın beklenmiyor. Veri commit'leri siteyi yeniden
+  derlemiyor (bkz. "Yayın bir türlü güncellenmiyorsa").
 
 Fotoğraflar yüklenmeden önce **tarayıcıda** küçültülüp webp'ye çevriliyor
 (uzun kenar 1600 px). Telefondan çekildiği gibi seçebilirsiniz; boyutla
@@ -94,6 +94,17 @@ Depoda henüz veri yokken katalog paketle gelen tohumdan
 (`src/data/products.json`) okunur — ilk dağıtımda site hiç boş görünmez. Okuma
 **hatası** ise asla tohuma düşmez: hata yukarı çıkar, panel durumu söyler ve
 hiçbir şey yazılmaz. Veri kaybının sebebi tam olarak bu ayrımın yapılmamasıydı.
+
+### Stok
+
+Her rengin yanında bir stok kutusu var: boş bırakmak "takip etmiyorum", 0
+"kalmadı" demek. Panel listesinde ürünün künyesine toplam olarak düşüyor.
+
+**Müşteri bu bilgiyi hiçbir yerde görmez.** Ekranda gizlemek yetmiyordu: ürün
+verisi istemci bileşenlerine aktarıldığı için sayfanın kaynağında okunabilir
+kalıyordu. Bu yüzden alan, genel okuma yolunda (`getCatalog`) veriden tamamen
+siliniyor — site, PDF ve sepet onu hiç görmüyor. Panel kendi yolundan
+(`getCatalogForAdmin`, `getProductForAdmin`) okuyup stoğu görüyor.
 
 ### Nasıl çalışır
 
@@ -126,7 +137,7 @@ Panel yerine dosyayı elle düzenlemek isterseniz tek kaynak
   "dimensions": { "w": 26, "h": 18, "d": 8 },
   "colors": [
     { "key": "taba", "name": { "tr": "Taba", "en": "Tan" },
-      "hex": "#A9784E", "images": [] }
+      "hex": "#A9784E", "images": [], "stock": 3 }
   ],
   "features": [{ "tr": "Manyetik kapak", "en": "Magnetic flap" }],
   "strap": "ayarlanabilir",
@@ -136,7 +147,8 @@ Panel yerine dosyayı elle düzenlemek isterseniz tek kaynak
 
 Geçerli değerler: `segment` → kadin | erkek · `form` → tote | omuz | baguette |
 clutch | sirt | evrak | postaci · `material` → `src/data/materials.ts`.
-Listedeki **sıra** katalog sırasıdır.
+Listedeki **sıra** katalog sırasıdır. `stock` isteğe bağlı ve yalnızca panelde
+görünür.
 
 Renkler kapalı bir liste değil: `src/data/colors.ts` yalnızca panelde tek
 tıkla seçilen **hazır renkleri** tutuyor, panelden istenen ada ve tona sahip
@@ -175,12 +187,12 @@ src/
     BagSilhouette.tsx     7 form için çizgisel SVG silüet
     ProductMedia.tsx      fotoğraf ↔ silüet sınırı (tek değişim noktası)
     ModeSection.tsx       bölüm ekranın ortasına gelince <body> modunu çevirir
-  app/admin/              yönetim paneli (liste, form, fotoğraf, giriş)
+  app/admin/              yönetim paneli (liste, form, stok, fotoğraf, giriş)
   lib/catalog/            şema (zod), depo adaptörleri, okuma/yazma
   lib/admin-auth.ts       imzalı oturum kurabiyesi
   data/                   products.json / colors / materials — içerik burada
   i18n/                   tr.json, en.json (anahtarları eşit tutun)
-  store/selection.ts      seçki (zustand + localStorage)
+  store/selection.ts      sepet (zustand + localStorage)
 ```
 
 ## Dikkat edilenler
@@ -206,19 +218,29 @@ src/
 
 ## Yayın bir türlü güncellenmiyorsa
 
-Panelden yapılan her kayıt ve her fotoğraf depoya bir commit bırakıyor
-(`[skip ci]` ile, yani site yeniden derlenmesin diye). Bu commit'ler arka
-arkaya geldiğinde Vercel bir yığın dağıtım açıp çoğunu iptal ediyor; iptal
-sırası ters giderse **canlıya eski bir commit'in derlemesi** düşebiliyor ve
-ondan sonra gelen kod değişikliği için yeni bir derleme başlamıyor.
+Panelden yapılan her kayıt ve her fotoğraf depoya bir commit bırakıyor. Bu
+commit'lerin siteyi yeniden derlememesi gerekiyor (fotoğraflar `/foto`
+yolundan zaten anında yayınlanıyor), ama kod değişikliklerinin derlenmesi
+gerekiyor. Ayrımı `vercel.json` yapıyor:
 
-Böyle bir durumda site, depo güncel olsa bile eski hâlini göstermeye devam
-eder. Teşhis ve çözüm:
+```json
+"ignoreCommand": "git diff --quiet ${VERCEL_GIT_PREVIOUS_SHA:-HEAD^} HEAD -- . ':(exclude)katalog'"
+```
 
-1. Vercel → proje → **Deployments**: en üstteki **Ready** dağıtımın commit'i,
+Karşılaştırma **son başarılı yayınla** yapılıyor: o yayından bu yana
+`katalog/` dışında bir şey değiştiyse derleme çalışır, değişmediyse atlanır
+(Vercel bunu listede "Canceled" olarak gösterir — hata değildir).
+
+Neden `HEAD^` değil: birleştirme (merge) commit'lerinde merge'ün ilk
+atasıyla farkı yalnızca karşı daldan geleni gösteriyor, yani kendi kod
+değişiklikleriniz o farkta görünmüyor ve derleme yanlışlıkla atlanıyor.
+
+Site yine de eski görünüyorsa sırayla:
+
+1. Vercel → proje → **Deployments**: en üstteki **Ready** dağıtımın commit'i
    GitHub'daki son commit mi? Değilse yayın geride kalmış demektir.
-2. Vercel → Deployments → o dağıtımın **⋯ → Redeploy**'u aynı (eski) commit'i
-   yeniden kurar; işe yaramaz. Bunun yerine depoya yeni bir commit gönderin
-   (herhangi bir değişiklik) — yeni webhook yeni derlemeyi başlatır.
-3. Tekrarlıyorsa Vercel projesinde **Settings → Git → Ignored Build Step**
-   ayarına ve `[skip ci]` davranışına bakın.
+2. Vercel → **Settings → Git → Ignored Build Step** boş olmalı; orada elle
+   bir komut varsa `vercel.json`'dakiyle çelişir, silin.
+3. Hiç yeni dağıtım açılmıyorsa Hobby planının günlük dağıtım sınırına
+   takılmış olabilirsiniz; panelden çok sayıda fotoğraf yüklenen günlerde
+   olabiliyor.
