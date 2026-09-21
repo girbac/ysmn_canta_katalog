@@ -9,6 +9,30 @@ noktalarını** bulur, iletişim bilgisini toplar, puanlar ve iki çıktı üret
 Veri kaynağı Apify'dır: önce Google Haritalar taranır, sonra kalan mağazaların
 **kendi web sitelerinden** e-posta ve Instagram toplanır.
 
+## Ağ izni (bulut oturumunda zorunlu)
+
+Bulut oturumları varsayılan olarak yalnız **Trusted** alan adlarına çıkabilir;
+`api.apify.com` bu listede yoktur ve istekler proxy'de düşer. Açmak için
+claude.ai/code'da mesaj kutusunun üstündeki bulut simgesi → ortamın dişli
+simgesi → **Network access: Custom** → **Allowed domains**:
+
+```text
+api.apify.com
+*.apify.com
+```
+
+**"Also include default list of common package managers"** kutusu işaretli
+kalsın, yoksa pip/npm/GitHub erişimi de kapanır. Ayar yalnız **yeni
+oturumlarda** geçerlidir; açık oturum eski politikayla çalışmaya devam eder.
+
+Jeton iki yoldan verilebilir:
+
+- Ortam değişkeni: aynı pencerede **Environment variables** → `APIFY_TOKEN=apify_api_...`
+  (o ortamı kullanan herkes değeri görebilir).
+- Pro/Max planında daha iyisi: **API credentials** → host `api.apify.com`.
+  Jeton VM'e hiç girmez, isteğe proxy ekler; `apify.py` jeton bulamazsa
+  sessizce bu yolu kullanır.
+
 ## Çalıştırma
 
 ```bash
