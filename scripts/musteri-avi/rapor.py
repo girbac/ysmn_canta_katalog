@@ -190,10 +190,11 @@ for (const cip of document.querySelectorAll('.cip[data-kademe]')) {{
 
 const govde = document.querySelector('#tablo tbody');
 document.querySelectorAll('#tablo th').forEach((th, i) => {{
-  let artan = false;
+  const sayi = th.dataset.tur === 'sayi';
+  // Sayı sütunları önce büyükten küçüğe, metin sütunları A'dan Z'ye açılır.
+  let artan = sayi;
   th.addEventListener('click', () => {{
     artan = !artan;
-    const sayi = th.dataset.tur === 'sayi';
     [...govde.rows].sort((a, b) => {{
       const x = a.cells[i].dataset.v ?? a.cells[i].textContent;
       const y = b.cells[i].dataset.v ?? b.cells[i].textContent;
