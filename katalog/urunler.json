@@ -1497,7 +1497,11 @@
           "en": "Black"
         },
         "hex": "#14110F",
-        "images": []
+        "images": [
+          "siyah-mudw6064-0.webp",
+          "siyah-mudw6064-1.webp",
+          "siyah-mudw6064-2.webp"
+        ]
       }
     ],
     "features": [
