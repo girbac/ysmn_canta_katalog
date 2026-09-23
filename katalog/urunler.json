@@ -1593,7 +1593,11 @@
           "en": "Espresso"
         },
         "hex": "#40301F",
-        "images": []
+        "images": [
+          "kahve-mudxch1u-0.webp",
+          "kahve-mudxch1u-1.webp",
+          "kahve-mudxch1u-2.webp"
+        ]
       }
     ],
     "features": [
