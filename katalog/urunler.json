@@ -1585,6 +1585,15 @@
           "siyah-mudxbzjb-1.webp",
           "siyah-mudxbzjb-2.webp"
         ]
+      },
+      {
+        "key": "kahve",
+        "name": {
+          "tr": "Koyu Kahve",
+          "en": "Espresso"
+        },
+        "hex": "#40301F",
+        "images": []
       }
     ],
     "features": [
