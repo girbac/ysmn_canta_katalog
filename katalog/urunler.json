@@ -1530,12 +1530,12 @@
         ]
       },
       {
-        "key": "taba",
+        "key": "tarcin",
         "name": {
-          "tr": "Taba",
-          "en": "Tan"
+          "tr": "Tarçın",
+          "en": "Cinnamon"
         },
-        "hex": "#A9784E",
+        "hex": "#9C5B2E",
         "images": []
       }
     ],
