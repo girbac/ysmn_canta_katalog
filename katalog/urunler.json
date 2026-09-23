@@ -1606,7 +1606,11 @@
           "en": "Sand"
         },
         "hex": "#D6C3A5",
-        "images": []
+        "images": [
+          "kum-mudxd113-0.webp",
+          "kum-mudxd113-1.webp",
+          "kum-mudxd113-2.webp"
+        ]
       },
       {
         "key": "taba",
