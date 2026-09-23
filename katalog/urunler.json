@@ -1504,15 +1504,6 @@
         ]
       },
       {
-        "key": "taba",
-        "name": {
-          "tr": "Taba",
-          "en": "Tan"
-        },
-        "hex": "#A9784E",
-        "images": []
-      },
-      {
         "key": "kahve",
         "name": {
           "tr": "Koyu Kahve",
@@ -1524,6 +1515,15 @@
           "kahve-mudw7lcx-1.webp",
           "kahve-mudw7lcx-2.webp"
         ]
+      },
+      {
+        "key": "kum",
+        "name": {
+          "tr": "Kum",
+          "en": "Sand"
+        },
+        "hex": "#D6C3A5",
+        "images": []
       }
     ],
     "features": [
