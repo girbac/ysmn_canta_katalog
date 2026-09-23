@@ -1476,14 +1476,14 @@
   },
   {
     "slug": "vera-baguette",
-    "code": "YSM-1203",
+    "code": "2099-S",
     "name": {
-      "tr": "Vera Baguette",
-      "en": "Vera Baguette"
+      "tr": "Hakiki Süet Deri Kadın Omuz Çantası",
+      "en": "Hakiki Süet Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
-    "form": "baguette",
-    "material": "saffiano",
+    "form": "omuz",
+    "material": "suet",
     "dimensions": {
       "w": 31,
       "h": 15,
@@ -1491,30 +1491,12 @@
     },
     "colors": [
       {
-        "key": "bordo",
-        "name": {
-          "tr": "Bordo",
-          "en": "Burgundy"
-        },
-        "hex": "#5C1F2B",
-        "images": []
-      },
-      {
         "key": "siyah",
         "name": {
           "tr": "Siyah",
           "en": "Black"
         },
         "hex": "#14110F",
-        "images": []
-      },
-      {
-        "key": "lacivert",
-        "name": {
-          "tr": "Lacivert",
-          "en": "Navy"
-        },
-        "hex": "#1E2A44",
         "images": []
       }
     ],
@@ -1528,7 +1510,8 @@
         "en": "Card slots"
       }
     ],
-    "strap": "zincir"
+    "strap": "sabit",
+    "price": 4500
   },
   {
     "slug": "zeyno-baguette",
