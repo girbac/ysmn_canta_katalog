@@ -1502,6 +1502,24 @@
           "siyah-mudw6064-1.webp",
           "siyah-mudw6064-2.webp"
         ]
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": []
+      },
+      {
+        "key": "kahve",
+        "name": {
+          "tr": "Koyu Kahve",
+          "en": "Espresso"
+        },
+        "hex": "#40301F",
+        "images": []
       }
     ],
     "features": [
