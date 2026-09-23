@@ -1559,14 +1559,14 @@
   },
   {
     "slug": "zeyno-baguette",
-    "code": "YSM-1204",
+    "code": "2099-D",
     "name": {
-      "tr": "Zeyno Baguette",
-      "en": "Zeyno Baguette"
+      "tr": "Hakiki Deri Kadın Omuz Çantası",
+      "en": "Hakiki Deri Kadın Omuz Çantası"
     },
     "segment": "kadin",
-    "form": "baguette",
-    "material": "nubuk",
+    "form": "omuz",
+    "material": "deri",
     "dimensions": {
       "w": 29,
       "h": 14,
@@ -1574,30 +1574,12 @@
     },
     "colors": [
       {
-        "key": "taba",
+        "key": "siyah",
         "name": {
-          "tr": "Taba",
-          "en": "Tan"
+          "tr": "Siyah",
+          "en": "Black"
         },
-        "hex": "#A9784E",
-        "images": []
-      },
-      {
-        "key": "zeytin",
-        "name": {
-          "tr": "Zeytin",
-          "en": "Olive"
-        },
-        "hex": "#4A4F35",
-        "images": []
-      },
-      {
-        "key": "vizon",
-        "name": {
-          "tr": "Vizon",
-          "en": "Taupe"
-        },
-        "hex": "#8C7B6B",
+        "hex": "#14110F",
         "images": []
       }
     ],
@@ -1611,7 +1593,8 @@
         "en": "Hand-stitched detail"
       }
     ],
-    "strap": "sabit"
+    "strap": "sabit",
+    "price": 4500
   },
   {
     "slug": "ela-baguette",
