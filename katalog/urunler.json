@@ -1523,7 +1523,11 @@
           "en": "Sand"
         },
         "hex": "#D6C3A5",
-        "images": []
+        "images": [
+          "kum-mudwahpi-0.webp",
+          "kum-mudwahpi-1.webp",
+          "kum-mudwahpi-2.webp"
+        ]
       }
     ],
     "features": [
