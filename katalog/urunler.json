@@ -1598,6 +1598,24 @@
           "kahve-mudxch1u-1.webp",
           "kahve-mudxch1u-2.webp"
         ]
+      },
+      {
+        "key": "kum",
+        "name": {
+          "tr": "Kum",
+          "en": "Sand"
+        },
+        "hex": "#D6C3A5",
+        "images": []
+      },
+      {
+        "key": "taba",
+        "name": {
+          "tr": "Taba",
+          "en": "Tan"
+        },
+        "hex": "#A9784E",
+        "images": []
       }
     ],
     "features": [
