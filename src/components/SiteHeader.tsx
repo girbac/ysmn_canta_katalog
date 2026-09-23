@@ -87,17 +87,33 @@ export function SiteHeader({
           İkinci bir çubuğa asla bölünmez. */}
       <div
         className={cx(
-          "mx-auto flex max-w-[1280px] items-center justify-between gap-5 rounded-full border border-line px-5 py-3 transition-colors duration-500 md:px-6",
+          "mx-auto flex max-w-[1280px] items-center justify-between gap-5 rounded-full border border-line px-5 py-2 transition-colors duration-500 md:px-6 md:py-2.5",
           scrolled ? "bg-ground-2" : "bg-ground-2/80 backdrop-blur-md",
         )}
       >
         <Link
           href={`/${locale}`}
-          className="flex items-center gap-2.5 text-ink"
+          className="flex items-center text-ink"
           aria-label={brand}
         >
-          <DotCluster />
-          <span className="text-subheading font-medium">{brand}</span>
+          {/* Marka işareti, görsel olarak değil MASKE olarak basılıyor:
+              dosya siyah bir logo, maske sayesinde rengini `--ink`ten
+              alıyor. Böylece erkek bölümünün koyu zemininde de kendini
+              gösteriyor — iki ayrı dosya tutmaya gerek kalmıyor. */}
+          <span
+            aria-hidden="true"
+            className="block aspect-[694/512] h-9 w-auto bg-current md:h-11"
+            style={{
+              maskImage: "url(/ysmn-logo.png)",
+              WebkitMaskImage: "url(/ysmn-logo.png)",
+              maskSize: "contain",
+              WebkitMaskSize: "contain",
+              maskRepeat: "no-repeat",
+              WebkitMaskRepeat: "no-repeat",
+              maskPosition: "center",
+              WebkitMaskPosition: "center",
+            }}
+          />
         </Link>
 
         {/* Fallback aynı menüyü işaretsiz basar: bağlantılar ilk HTML'de
@@ -205,19 +221,6 @@ function WithActiveHref({
 }
 
 /** Cosmos marka işareti: 3×3 ızgaradan ortası çıkarılmış sekiz nokta */
-function DotCluster() {
-  const dots = [0, 1, 2].flatMap((r) => [0, 1, 2].map((c) => [r, c] as const));
-  return (
-    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" className="shrink-0">
-      {dots
-        .filter(([r, c]) => !(r === 1 && c === 1))
-        .map(([r, c]) => (
-          <circle key={`${r}${c}`} cx={2.5 + c * 6.5} cy={2.5 + r * 6.5} r="2" fill="currentColor" />
-        ))}
-    </svg>
-  );
-}
-
 function DesktopNav({
   links,
   activeHref,
